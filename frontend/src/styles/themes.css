@@ -78,6 +78,121 @@ body {
   background: var(--bg-primary);
   color: var(--text-primary);
   min-height: 100vh;
+  position: relative;
+}
+
+/* Light Theme Background Design */
+[data-theme="light"] .App {
+  background: 
+    /* Health-focused radial gradients */
+    radial-gradient(circle at 20% 80%, rgba(0, 212, 170, 0.12) 0%, transparent 45%),
+    radial-gradient(circle at 80% 20%, rgba(0, 160, 133, 0.18) 0%, transparent 50%),
+    radial-gradient(circle at 40% 40%, rgba(82, 196, 160, 0.1) 0%, transparent 40%),
+    radial-gradient(circle at 60% 80%, rgba(0, 212, 170, 0.08) 0%, transparent 35%),
+    radial-gradient(circle at 90% 60%, rgba(20, 138, 115, 0.06) 0%, transparent 30%),
+    /* Medical cross pattern */
+    repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 100px,
+      rgba(0, 160, 133, 0.02) 100px,
+      rgba(0, 160, 133, 0.02) 102px
+    ),
+    /* Subtle health gradient overlay */
+    linear-gradient(135deg, 
+      rgba(248, 255, 254, 0.95) 0%, 
+      rgba(232, 248, 245, 0.98) 20%,
+      rgba(209, 242, 235, 0.92) 40%,
+      rgba(232, 248, 245, 0.96) 60%,
+      rgba(248, 255, 254, 0.94) 80%,
+      rgba(240, 253, 250, 0.97) 100%
+    ),
+    /* Base health color */
+    #f8fffe;
+}
+
+/* Light Theme Decorative Elements */
+[data-theme="light"] .App::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    /* Floating orbs */
+    radial-gradient(circle at 15% 15%, rgba(0, 212, 170, 0.05) 0%, transparent 25%),
+    radial-gradient(circle at 85% 85%, rgba(0, 160, 133, 0.08) 0%, transparent 30%),
+    radial-gradient(circle at 70% 30%, rgba(82, 196, 160, 0.04) 0%, transparent 20%),
+    radial-gradient(circle at 30% 70%, rgba(0, 212, 170, 0.06) 0%, transparent 25%),
+    /* Grid pattern */
+    linear-gradient(90deg, rgba(0, 160, 133, 0.02) 1px, transparent 1px),
+    linear-gradient(rgba(0, 160, 133, 0.02) 1px, transparent 1px);
+  background-size: 
+    100% 100%,
+    100% 100%,
+    100% 100%,
+    100% 100%,
+    50px 50px,
+    50px 50px;
+  pointer-events: none;
+  z-index: -1;
+  animation: light-bg-float 20s ease-in-out infinite;
+}
+
+/* Light Theme Animated Background */
+[data-theme="light"] .App::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    /* Moving health waves */
+    radial-gradient(ellipse at 0% 50%, rgba(0, 212, 170, 0.03) 0%, transparent 70%),
+    radial-gradient(ellipse at 100% 50%, rgba(0, 160, 133, 0.04) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: -1;
+  animation: light-health-waves 15s ease-in-out infinite alternate;
+}
+
+/* Light Theme Particle Override */
+[data-theme="light"] .particles-js-canvas-el {
+  opacity: 0.15;
+  filter: invert(0) hue-rotate(160deg) brightness(0.8) saturate(1.2);
+  mix-blend-mode: multiply;
+}
+
+/* Animations for Light Theme */
+@keyframes light-bg-float {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+    opacity: 1;
+  }
+  33% {
+    transform: translateY(-10px) rotate(1deg);
+    opacity: 0.8;
+  }
+  66% {
+    transform: translateY(5px) rotate(-1deg);
+    opacity: 0.9;
+  }
+}
+
+@keyframes light-health-waves {
+  0% {
+    transform: translateX(-5%) scale(1);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translateX(0%) scale(1.05);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateX(5%) scale(1);
+    opacity: 0.6;
+  }
 }
 
 /* Navigation links theme support */
@@ -88,6 +203,108 @@ body {
 
 .nav-links a:hover,
 .nav-links a.active {
+  color: var(--accent-primary) !important;
+  text-shadow: var(--glow-secondary) !important;
+}/* Light Th
+eme Robot Area Enhancement */
+[data-theme="light"] .App {
+  position: relative;
+}
+
+[data-theme="light"] .App::before {
+  /* Enhanced floating orbs and medical patterns */
+  background: 
+    /* Large health orbs */
+    radial-gradient(circle at 15% 15%, rgba(0, 212, 170, 0.06) 0%, transparent 30%),
+    radial-gradient(circle at 85% 85%, rgba(0, 160, 133, 0.08) 0%, transparent 35%),
+    radial-gradient(circle at 70% 30%, rgba(82, 196, 160, 0.05) 0%, transparent 25%),
+    radial-gradient(circle at 30% 70%, rgba(0, 212, 170, 0.07) 0%, transparent 28%),
+    radial-gradient(circle at 50% 10%, rgba(20, 138, 115, 0.04) 0%, transparent 20%),
+    radial-gradient(circle at 10% 50%, rgba(0, 160, 133, 0.05) 0%, transparent 22%),
+    /* Medical grid pattern */
+    linear-gradient(90deg, rgba(0, 160, 133, 0.03) 1px, transparent 1px),
+    linear-gradient(rgba(0, 160, 133, 0.03) 1px, transparent 1px),
+    /* Heartbeat line pattern */
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 20px,
+      rgba(0, 212, 170, 0.02) 20px,
+      rgba(0, 212, 170, 0.02) 21px
+    );
+  background-size: 
+    100% 100%,
+    100% 100%,
+    100% 100%,
+    100% 100%,
+    100% 100%,
+    100% 100%,
+    60px 60px,
+    60px 60px,
+    100% 100%;
+}
+
+/* Light Theme Robot Glow Effect */
+[data-theme="light"] canvas {
+  filter: drop-shadow(0 0 20px rgba(0, 160, 133, 0.15)) !important;
+}
+
+/* Light Theme Activation Button Enhancement */
+[data-theme="light"] .robot-activate-btn {
+  background: linear-gradient(135deg, 
+    rgba(248, 255, 254, 0.9), 
+    rgba(232, 248, 245, 0.95), 
+    rgba(209, 242, 235, 0.9)
+  ) !important;
+  border: 2px solid rgba(0, 160, 133, 0.4) !important;
+  box-shadow: 
+    0 0 20px rgba(0, 160, 133, 0.2),
+    inset 0 0 20px rgba(0, 212, 170, 0.1) !important;
+  backdrop-filter: blur(15px) !important;
+}
+
+[data-theme="light"] .robot-activate-btn:hover {
+  box-shadow: 
+    0 0 30px rgba(0, 160, 133, 0.3),
+    inset 0 0 30px rgba(0, 212, 170, 0.15) !important;
+  border-color: rgba(0, 160, 133, 0.6) !important;
+}
+
+[data-theme="light"] .robot-activate-btn.activated {
+  background: linear-gradient(135deg, 
+    rgba(255, 248, 248, 0.9), 
+    rgba(255, 240, 240, 0.95), 
+    rgba(255, 235, 235, 0.9)
+  ) !important;
+  border-color: rgba(231, 76, 60, 0.4) !important;
+  box-shadow: 
+    0 0 20px rgba(231, 76, 60, 0.2),
+    inset 0 0 20px rgba(231, 76, 60, 0.1) !important;
+}
+
+/* Light Theme Text Enhancements */
+[data-theme="light"] .hero-text-container h1 {
+  text-shadow: 0 2px 4px rgba(0, 160, 133, 0.1) !important;
+}
+
+[data-theme="light"] .hero-text-container p {
+  text-shadow: 0 1px 2px rgba(0, 160, 133, 0.05) !important;
+}
+
+/* Light Theme Navbar Title */
+[data-theme="light"] .logo-text {
+  color: var(--text-primary) !important;
+  text-shadow: 0 2px 4px rgba(0, 160, 133, 0.15) !important;
+  font-weight: 800 !important;
+}
+
+/* Light Theme Navbar Links */
+[data-theme="light"] .nav-bar nav a {
+  color: var(--text-primary) !important;
+  font-weight: 600 !important;
+}
+
+[data-theme="light"] .nav-bar nav a:hover {
   color: var(--accent-primary) !important;
   text-shadow: var(--glow-secondary) !important;
 }

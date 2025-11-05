@@ -2,12 +2,15 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './Home.css'; 
 import ParticleBackground from './ParticleBackground';
+import LightBackground from './LightBackground';
 import Agent from './model';
 import { useAuth } from '../contexts/AuthContext';
+import { useTheme } from '../contexts/ThemeContext';
 import Navbar from '../navbar/Navbar';
 
 function Home() {
   const { user, isAuthenticated } = useAuth();
+  const { theme } = useTheme();
   const [isRobotActivated, setIsRobotActivated] = useState(false);
 
   const handleActivateRobot = () => {
@@ -16,7 +19,7 @@ function Home() {
 
   return (
     <div className="App">
-      <ParticleBackground />
+      {theme === 'dark' ? <ParticleBackground /> : <LightBackground />}
       <Agent />
       
       {/* Robot Activation Button - positioned to the middle right of the robot */}
