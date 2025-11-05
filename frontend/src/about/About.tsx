@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import './About.css';
 import ParticleBackground from '../home/ParticleBackground';
-import Navbar from '../components/Navbar'; 
+import Navbar from '../navbar/Navbar'; 
 
 function About() {
   return (

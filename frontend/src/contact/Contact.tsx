@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './Contact.css';
 import ParticleBackground from '../home/ParticleBackground';
-import Navbar from '../components/Navbar';
+import Navbar from '../navbar/Navbar';
 
 function Contact() {
   const [formData, setFormData] = useState({

@@ -4,7 +4,7 @@ import './Home.css';
 import ParticleBackground from './ParticleBackground';
 import Agent from './model';
 import { useAuth } from '../contexts/AuthContext';
-import Navbar from '../components/Navbar';
+import Navbar from '../navbar/Navbar';
 
 function Home() {
   const { user, isAuthenticated } = useAuth();
