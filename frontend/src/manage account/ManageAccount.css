@@ -1,0 +1,571 @@
+/* Account Management Container */
+.account-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 120px 40px 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.account-header {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.account-header h1 {
+  font-size: 3rem;
+  color: #00FFFF;
+  margin-bottom: 15px;
+  font-family: 'Courier New', monospace;
+  letter-spacing: 3px;
+  text-shadow: 
+    0 0 10px #00FFFF,
+    0 0 20px #00FFFF,
+    0 0 30px #00FFFF;
+  animation: cyber-glow 3s ease-in-out infinite alternate;
+}
+
+.account-subtitle {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 1.1rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-family: 'Courier New', monospace;
+}
+
+/* Account Content */
+.account-content {
+  background: linear-gradient(135deg, rgba(0, 34, 68, 0.3), rgba(0, 17, 34, 0.5));
+  border: 1px solid rgba(0, 255, 255, 0.2);
+  border-radius: 12px;
+  backdrop-filter: blur(20px);
+  box-shadow: 
+    0 0 30px rgba(0, 255, 255, 0.1),
+    inset 0 0 30px rgba(0, 255, 255, 0.05);
+  position: relative;
+  overflow: hidden;
+}
+
+.account-content::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #00FFFF, transparent);
+  animation: scanline 3s linear infinite;
+}
+
+/* Tab Navigation */
+.tab-navigation {
+  display: flex;
+  border-bottom: 1px solid rgba(0, 255, 255, 0.2);
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.tab-button {
+  flex: 1;
+  padding: 20px 15px;
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.7);
+  font-family: 'Courier New', monospace;
+  font-size: 14px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.tab-button::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #00FFFF, #FFFFFF);
+  transition: width 0.3s ease;
+}
+
+.tab-button:hover {
+  color: #00FFFF;
+  background: rgba(0, 255, 255, 0.05);
+}
+
+.tab-button.active {
+  color: #00FFFF;
+  background: rgba(0, 255, 255, 0.1);
+  text-shadow: 0 0 10px #00FFFF;
+}
+
+.tab-button.active::before {
+  width: 100%;
+}
+
+.tab-icon {
+  font-size: 18px;
+  filter: grayscale(1);
+  transition: filter 0.3s ease;
+}
+
+.tab-button:hover .tab-icon,
+.tab-button.active .tab-icon {
+  filter: grayscale(0);
+}
+
+/* Tab Content */
+.tab-content {
+  padding: 40px;
+  min-height: 500px;
+}
+
+.tab-content h2 {
+  color: #00FFFF;
+  font-family: 'Courier New', monospace;
+  font-size: 24px;
+  letter-spacing: 2px;
+  margin-bottom: 30px;
+  text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+}
+
+/* Form Grid */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 25px;
+  margin-bottom: 30px;
+}
+
+.input-group {
+  position: relative;
+}
+
+.input-label {
+  display: block;
+  color: #00FFFF;
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+  font-family: 'Courier New', monospace;
+  text-transform: uppercase;
+}
+
+.cyber-input {
+  width: 100%;
+  padding: 15px 20px;
+  background: rgba(0, 0, 0, 0.5);
+  border: 2px solid rgba(0, 255, 255, 0.3);
+  border-radius: 8px;
+  color: white;
+  font-size: 16px;
+  font-family: 'Courier New', monospace;
+  outline: none;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+}
+
+.cyber-input:focus {
+  border-color: #00FFFF;
+  box-shadow: 
+    0 0 15px rgba(0, 255, 255, 0.3),
+    inset 0 0 15px rgba(0, 255, 255, 0.1);
+  background: rgba(0, 34, 68, 0.3);
+}
+
+/* Health Cards */
+.health-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 25px;
+}
+
+.health-card {
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.6), rgba(0, 34, 68, 0.3));
+  border: 1px solid rgba(0, 255, 255, 0.3);
+  border-radius: 12px;
+  padding: 25px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.health-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.1), transparent);
+  transition: left 0.6s ease;
+}
+
+.health-card:hover {
+  transform: translateY(-5px);
+  border-color: #00FFFF;
+  box-shadow: 0 10px 30px rgba(0, 255, 255, 0.2);
+}
+
+.health-card:hover::before {
+  left: 100%;
+}
+
+.health-card h3 {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 14px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 15px;
+  font-family: 'Courier New', monospace;
+}
+
+.metric-value {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #00FFFF;
+  margin-bottom: 10px;
+  font-family: 'Courier New', monospace;
+  text-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+}
+
+.metric-trend {
+  color: #00FF88;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.metric-status.healthy {
+  color: #00FF88;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.metric-progress {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 8px;
+  background: rgba(0, 255, 255, 0.2);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #00FFFF, #00FF88);
+  border-radius: 4px;
+  transition: width 0.3s ease;
+  box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+}
+
+/* Notification Options */
+.notification-options {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.notification-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 25px;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(0, 255, 255, 0.2);
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+.notification-item:hover {
+  border-color: rgba(0, 255, 255, 0.4);
+  background: rgba(0, 34, 68, 0.2);
+}
+
+.notification-info h3 {
+  color: #00FFFF;
+  font-size: 18px;
+  margin-bottom: 8px;
+  font-family: 'Courier New', monospace;
+}
+
+.notification-info p {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 14px;
+  margin: 0;
+}
+
+/* Cyber Switch */
+.cyber-switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 30px;
+}
+
+.cyber-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.switch-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  border: 2px solid rgba(0, 255, 255, 0.3);
+  border-radius: 30px;
+  transition: all 0.3s ease;
+}
+
+.switch-slider::before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 3px;
+  bottom: 3px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.cyber-switch input:checked + .switch-slider {
+  background: rgba(0, 255, 255, 0.2);
+  border-color: #00FFFF;
+  box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+}
+
+.cyber-switch input:checked + .switch-slider::before {
+  transform: translateX(30px);
+  background: #00FFFF;
+  box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+}
+
+/* Security Options */
+.security-options {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.security-card {
+  padding: 30px;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(0, 255, 255, 0.2);
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+.security-card.danger {
+  border-color: rgba(255, 68, 68, 0.3);
+  background: rgba(68, 0, 0, 0.2);
+}
+
+.security-card h3 {
+  color: #00FFFF;
+  font-size: 20px;
+  margin-bottom: 10px;
+  font-family: 'Courier New', monospace;
+}
+
+.security-card.danger h3 {
+  color: #FF4444;
+}
+
+.security-card p {
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+
+/* Cyber Buttons */
+.cyber-button {
+  background: linear-gradient(45deg, #001122, #002244);
+  color: #00FFFF;
+  border: 2px solid #00FFFF;
+  padding: 12px 25px;
+  font-size: 14px;
+  font-weight: bold;
+  font-family: 'Courier New', monospace;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  border-radius: 6px;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 10px rgba(0, 255, 255, 0.2);
+}
+
+.cyber-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.3), transparent);
+  transition: left 0.5s ease;
+}
+
+.cyber-button:hover {
+  transform: translateY(-2px);
+  color: #FFFFFF;
+  text-shadow: 0 0 10px #00FFFF;
+  box-shadow: 
+    0 0 20px rgba(0, 255, 255, 0.4),
+    0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.cyber-button:hover::before {
+  left: 100%;
+}
+
+.cyber-button.secondary {
+  background: transparent;
+  color: rgba(0, 255, 255, 0.8);
+  border-color: rgba(0, 255, 255, 0.5);
+}
+
+.cyber-button.secondary:hover {
+  background: rgba(0, 255, 255, 0.1);
+  color: #00FFFF;
+  border-color: #00FFFF;
+}
+
+.cyber-button.danger {
+  background: linear-gradient(45deg, #220011, #440022);
+  color: #FF4444;
+  border-color: #FF4444;
+  box-shadow: 0 0 10px rgba(255, 68, 68, 0.2);
+}
+
+.cyber-button.danger:hover {
+  color: #FFFFFF;
+  text-shadow: 0 0 10px #FF4444;
+  box-shadow: 
+    0 0 20px rgba(255, 68, 68, 0.4),
+    0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Account Actions */
+.account-actions {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  padding: 30px 40px;
+  border-top: 1px solid rgba(0, 255, 255, 0.2);
+  background: rgba(0, 0, 0, 0.2);
+}
+
+/* Animations */
+@keyframes cyber-glow {
+  0% {
+    text-shadow: 
+      0 0 10px #00FFFF,
+      0 0 20px #00FFFF,
+      0 0 30px #00FFFF;
+  }
+  100% {
+    text-shadow: 
+      0 0 15px #00FFFF,
+      0 0 25px #00FFFF,
+      0 0 35px #00FFFF,
+      0 0 45px #00FFFF;
+  }
+}
+
+@keyframes scanline {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .account-container {
+    padding: 100px 20px 20px;
+  }
+  
+  .account-header h1 {
+    font-size: 2rem;
+  }
+  
+  .tab-navigation {
+    flex-wrap: wrap;
+  }
+  
+  .tab-button {
+    flex: 1 1 50%;
+    min-width: 120px;
+  }
+  
+  .tab-content {
+    padding: 20px;
+  }
+  
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .health-cards {
+    grid-template-columns: 1fr;
+  }
+  
+  .account-actions {
+    flex-direction: column;
+    padding: 20px;
+  }
+  
+  .notification-item {
+    flex-direction: column;
+    gap: 15px;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .account-header h1 {
+    font-size: 1.5rem;
+    letter-spacing: 1px;
+  }
+  
+  .tab-button {
+    flex: 1 1 100%;
+    font-size: 12px;
+    padding: 15px 10px;
+  }
+  
+  .tab-icon {
+    font-size: 16px;
+  }
+  
+  .cyber-button {
+    width: 100%;
+    text-align: center;
+  }
+}
