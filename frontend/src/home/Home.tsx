@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './Home.css'; 
 import ParticleBackground from './ParticleBackground';
@@ -8,14 +8,34 @@ import Navbar from '../navbar/Navbar';
 
 function Home() {
   const { user, isAuthenticated } = useAuth();
+  const [isRobotActivated, setIsRobotActivated] = useState(false);
+
+  const handleActivateRobot = () => {
+    setIsRobotActivated(!isRobotActivated);
+  };
 
   return (
     <div className="App">
-      
       <ParticleBackground />
-
-      <Agent /> 
+      <Agent />
       
+      {/* Robot Activation Button - positioned to the middle right of the robot */}
+      {isAuthenticated && (
+        <div className="robot-activation-container">
+          <button 
+            className={`robot-activate-btn ${isRobotActivated ? 'activated' : ''}`}
+            onClick={handleActivateRobot}
+          >
+            <div className="activate-btn-inner">
+              <div className="activate-icon">⚡</div>
+              <div className="activate-text">
+                {isRobotActivated ? 'DEACTIVATE' : 'ACTIVATE'}
+              </div>
+            </div>
+            <div className="activate-pulse"></div>
+          </button>
+        </div>
+      )}
       
       <div className="main-content">
         <Navbar activeLink="home" />
