@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './ManageAccount.css';
 import ParticleBackground from '../home/ParticleBackground';
+import LightBackground from '../home/LightBackground';
 import Navbar from '../navbar/Navbar';
 import { useAuth } from '../contexts/AuthContext';
+import { useTheme } from '../contexts/ThemeContext';
 import ApiService from '../services/api';
 
 interface UserProfile {
@@ -27,6 +29,7 @@ interface UserProfile {
 function ManageAccount() {
   const navigate = useNavigate();
   const { user, isAuthenticated, logout, refreshUser } = useAuth();
+  const { theme } = useTheme();
   const [activeTab, setActiveTab] = useState('profile');
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState({ type: '', text: '' });
@@ -132,7 +135,7 @@ function ManageAccount() {
 
   return (
     <div className="App">
-      <ParticleBackground />
+      {theme === 'dark' ? <ParticleBackground /> : <LightBackground />}
       
       <div className="main-content">
         {/* Navigation Bar */}
@@ -211,7 +214,6 @@ function ManageAccount() {
                         disabled
                         style={{ opacity: 0.6, cursor: 'not-allowed' }}
                       />
-                      <small style={{ color: '#888', fontSize: '0.8em' }}>Email cannot be changed</small>
                     </div>
                     <div className="input-group">
                       <label className="input-label">Age</label>
@@ -276,10 +278,9 @@ function ManageAccount() {
                         className="cyber-input"
                         value={profile.healthProfile.goals.join(', ')}
                         onChange={(e) => handleHealthProfileUpdate('goals', e.target.value.split(', ').filter(goal => goal.trim()))}
-                        placeholder="Enter your health goals separated by commas"
+                        placeholder="Enter your health goals"
                         rows={3}
                       />
-                      <small style={{ color: '#888', fontSize: '0.8em' }}>Separate multiple goals with commas</small>
                     </div>
                   </div>
                 </div>

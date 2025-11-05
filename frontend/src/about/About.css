@@ -3,7 +3,7 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 2rem;
-  color: white; 
+  color: var(--text-primary); 
   padding-top: 4rem; 
 }
 
@@ -17,7 +17,7 @@
   font-size: 3.5rem;
   font-weight: 700;
   margin-bottom: 1rem;
-  background: linear-gradient(135deg, #00d4ff, #00FFFF);
+  background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -27,7 +27,7 @@
 
 .about-subtitle {
   font-size: 1.3rem;
-  color: #b0b0b0;
+  color: var(--text-secondary);
   max-width: 600px;
   margin: 0 auto;
   line-height: 1.6;
@@ -51,14 +51,14 @@
 .features-section h2 {
   font-size: 2.5rem;
   margin-bottom: 1.5rem;
-  color: #00d4ff;
+  color: var(--accent-primary);
 }
 
 .mission-section p,
 .vision-section p {
   font-size: 1.1rem;
   line-height: 1.8;
-  color: #e0e0e0;
+  color: var(--text-secondary);
 }
 
 .features-section {
@@ -78,9 +78,9 @@
 }
 
 .feature-card {
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--bg-glass);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--border-secondary);
   border-radius: 15px;
   padding: 2rem;
   text-align: center;
@@ -89,17 +89,18 @@
 
 .feature-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 10px 30px rgba(0, 212, 255, 0.2);
+  box-shadow: var(--shadow-primary);
+  border-color: var(--border-hover);
 }
 
 .feature-card h3 {
   font-size: 1.5rem;
   margin-bottom: 1rem;
-  color: #00d4ff;
+  color: var(--accent-primary);
 }
 
 .feature-card p {
-  color: #b0b0b0;
+  color: var(--text-secondary);
   line-height: 1.6;
 }
 
@@ -107,15 +108,15 @@
   text-align: center;
   margin-top: 4rem;
   padding: 3rem 2rem;
-  background: rgba(255, 255, 255, 0.05); 
+  background: var(--bg-glass); 
   border-radius: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--border-secondary);
 }
 
 .cta-section h3 {
   font-size: 2rem;
   margin-bottom: 2rem;
-  color: white;
+  color: var(--text-primary);
 }
 
 .cta-buttons {
@@ -135,24 +136,24 @@
 }
 
 .cta-button.primary {
-  background: linear-gradient(135deg, #00d4ff, #00FFFF);
-  color: white;
+  background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+  color: var(--text-primary);
 }
 
 .cta-button.primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(0, 212, 255, 0.4);
+  box-shadow: var(--shadow-hover);
 }
 
 .cta-button.secondary {
   background: transparent;
-  color: #00d4ff;
-  border: 2px solid #00d4ff;
+  color: var(--accent-primary);
+  border: 2px solid var(--accent-primary);
 }
 
 .cta-button.secondary:hover {
-  background: #00d4ff;
-  color: #000;
+  background: var(--accent-primary);
+  color: var(--bg-primary);
   transform: translateY(-2px);
 }
 

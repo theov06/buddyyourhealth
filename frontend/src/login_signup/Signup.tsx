@@ -2,11 +2,14 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './Auth.css';
 import ParticleBackground from '../home/ParticleBackground';
+import LightBackground from '../home/LightBackground';
 import { useAuth } from '../contexts/AuthContext';
+import { useTheme } from '../contexts/ThemeContext';
 
 const Signup: React.FC = () => {
   const navigate = useNavigate();
   const { createAccount } = useAuth();
+  const { theme } = useTheme();
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -107,7 +110,7 @@ const Signup: React.FC = () => {
 
   return (
     <div className="auth-container">
-      <ParticleBackground />
+      {theme === 'dark' ? <ParticleBackground /> : <LightBackground />}
       
       <div className="auth-content">
         <div className="auth-header">
