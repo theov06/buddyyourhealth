@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './Navbar.css';
 import { useAuth } from '../contexts/AuthContext';
+import { useTheme } from '../contexts/ThemeContext';
 
 interface NavbarProps {
   activeLink?: string;
@@ -10,6 +11,7 @@ interface NavbarProps {
 function Navbar({ activeLink }: NavbarProps) {
   const navigate = useNavigate();
   const { user, isAuthenticated, logout } = useAuth();
+  const { theme, toggleTheme } = useTheme();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -46,6 +48,15 @@ function Navbar({ activeLink }: NavbarProps) {
         {isAuthenticated && (
           <Link to="/account" className={activeLink === 'account' ? 'active' : ''}>Account</Link>
         )}
+        <button 
+          className="theme-toggle-btn"
+          onClick={toggleTheme}
+          title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+        >
+          <span className="theme-icon">
+            {theme === 'dark' ? '☀️' : '🌙'}
+          </span>
+        </button>
       </nav>
       <div className="menu-container" ref={menuRef}>
         <button 

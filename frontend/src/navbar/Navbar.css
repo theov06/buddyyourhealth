@@ -7,7 +7,7 @@
 
 .menu-button {
   background: transparent;
-  border: 2px solid rgba(0, 255, 255, 0.3);
+  border: 2px solid var(--border-primary);
   border-radius: 6px;
   padding: 10px 15px;
   cursor: pointer;
@@ -16,12 +16,12 @@
 }
 
 .menu-button:hover {
-  border-color: #00FFFF;
-  box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+  border-color: var(--border-hover);
+  box-shadow: var(--shadow-secondary);
 }
 
 .menu-icon {
-  color: #00FFFF;
+  color: var(--accent-primary);
   font-size: 18px;
   font-weight: bold;
 }
@@ -32,13 +32,11 @@
   top: 100%;
   right: 0;
   margin-top: 10px;
-  background: linear-gradient(135deg, rgba(0, 34, 68, 0.9), rgba(0, 17, 34, 0.95));
-  border: 1px solid rgba(0, 255, 255, 0.3);
+  background: var(--bg-glass);
+  border: 1px solid var(--border-primary);
   border-radius: 12px;
   backdrop-filter: blur(20px);
-  box-shadow: 
-    0 0 30px rgba(0, 255, 255, 0.2),
-    inset 0 0 30px rgba(0, 255, 255, 0.05);
+  box-shadow: var(--shadow-primary);
   min-width: 200px;
   z-index: 1000;
   animation: dropdownFade 0.3s ease-out;
@@ -49,7 +47,7 @@
   align-items: center;
   gap: 12px;
   padding: 15px 20px;
-  color: rgba(255, 255, 255, 0.8);
+  color: var(--text-secondary);
   text-decoration: none;
   font-family: 'Courier New', monospace;
   font-size: 14px;
@@ -57,7 +55,7 @@
   letter-spacing: 1px;
   text-transform: uppercase;
   transition: all 0.3s ease;
-  border-bottom: 1px solid rgba(0, 255, 255, 0.1);
+  border-bottom: 1px solid var(--border-secondary);
 }
 
 .menu-item:last-child {
@@ -65,9 +63,9 @@
 }
 
 .menu-item:hover {
-  background: rgba(0, 255, 255, 0.1);
-  color: #00FFFF;
-  text-shadow: 0 0 10px #00FFFF;
+  background: var(--bg-glass-hover);
+  color: var(--accent-primary);
+  text-shadow: var(--glow-secondary);
 }
 
 .menu-item-icon {
@@ -87,13 +85,13 @@
 }
 
 .user-greeting {
-  color: #00FFFF;
+  color: var(--accent-primary);
   font-family: 'Courier New', monospace;
   font-size: 12px;
   font-weight: bold;
   letter-spacing: 1px;
   text-transform: uppercase;
-  text-shadow: 0 0 10px #00FFFF;
+  text-shadow: var(--glow-secondary);
 }
 
 /* Sign Out Button */
@@ -107,8 +105,8 @@
 }
 
 .sign-out-button:hover {
-  background: rgba(255, 68, 68, 0.1);
-  color: #ff4444;
+  background: rgba(231, 76, 60, 0.1);
+  color: var(--accent-danger);
 }
 
 .sign-out-button:hover .menu-item-icon {
@@ -132,6 +130,39 @@
 .nav-links {
   display: flex;
   gap: 30px;
+  align-items: center;
+}
+
+/* Theme Toggle Button */
+.theme-toggle-btn {
+  background: linear-gradient(135deg, var(--bg-secondary), var(--bg-tertiary));
+  border: 2px solid var(--border-primary);
+  border-radius: 50%;
+  width: 45px;
+  height: 45px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  box-shadow: var(--shadow-secondary);
+  margin-left: 15px;
+}
+
+.theme-toggle-btn:hover {
+  border-color: var(--border-hover);
+  box-shadow: var(--shadow-hover);
+  transform: scale(1.05);
+}
+
+.theme-icon {
+  font-size: 20px;
+  transition: transform 0.3s ease;
+}
+
+.theme-toggle-btn:hover .theme-icon {
+  transform: rotate(15deg) scale(1.1);
 }
 
 @keyframes dropdownFade {
