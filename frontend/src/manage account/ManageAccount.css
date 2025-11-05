@@ -150,6 +150,10 @@
   position: relative;
 }
 
+.input-group.full-width {
+  grid-column: 1 / -1;
+}
+
 .input-label {
   display: block;
   color: #00FFFF;
@@ -181,6 +185,25 @@
     0 0 15px rgba(0, 255, 255, 0.3),
     inset 0 0 15px rgba(0, 255, 255, 0.1);
   background: rgba(0, 34, 68, 0.3);
+}
+
+.cyber-input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.cyber-input[type="textarea"] {
+  resize: vertical;
+  min-height: 80px;
+}
+
+select.cyber-input {
+  cursor: pointer;
+}
+
+select.cyber-input option {
+  background: #001122;
+  color: white;
 }
 
 /* Health Cards */

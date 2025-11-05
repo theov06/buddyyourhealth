@@ -12,6 +12,18 @@ interface SignupData {
   password: string;
 }
 
+interface ProfileUpdateData {
+  firstName?: string;
+  lastName?: string;
+  healthProfile?: {
+    age?: number;
+    height?: number;
+    weight?: number;
+    activityLevel?: 'sedentary' | 'light' | 'moderate' | 'active' | 'very_active';
+    goals?: string[];
+  };
+}
+
 interface ApiResponse<T = any> {
   success: boolean;
   message: string;
@@ -93,11 +105,18 @@ class ApiService {
     return this.makeRequest('/auth/me');
   }
 
-  async updateProfile(profileData: any): Promise<ApiResponse> {
-    return this.makeRequest('/users/profile', {
+  async updateProfile(profileData: ProfileUpdateData): Promise<ApiResponse> {
+    const response = await this.makeRequest('/users/profile', {
       method: 'PUT',
       body: JSON.stringify(profileData),
     });
+
+    // Update stored user data if successful
+    if (response.success && response.user) {
+      localStorage.setItem('user', JSON.stringify(response.user));
+    }
+
+    return response;
   }
 
   // Utility methods
