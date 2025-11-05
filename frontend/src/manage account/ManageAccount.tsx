@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './ManageAccount.css';
 import ParticleBackground from '../home/ParticleBackground';
-import Navbar from '../components/Navbar';
+import Navbar from '../navbar/Navbar';
 import { useAuth } from '../contexts/AuthContext';
 import ApiService from '../services/api';
 
@@ -26,7 +26,7 @@ interface UserProfile {
 
 function ManageAccount() {
   const navigate = useNavigate();
-  const { user, isAuthenticated, logout } = useAuth();
+  const { user, isAuthenticated, logout, refreshUser } = useAuth();
   const [activeTab, setActiveTab] = useState('profile');
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState({ type: '', text: '' });
@@ -118,8 +118,8 @@ function ManageAccount() {
 
       if (response.success) {
         setMessage({ type: 'success', text: 'Profile updated successfully!' });
-        // Update the auth context with new user data
-        window.location.reload(); // Simple way to refresh user data
+        // Refresh user data in the auth context
+        await refreshUser();
       } else {
         setMessage({ type: 'error', text: response.message || 'Failed to update profile' });
       }
