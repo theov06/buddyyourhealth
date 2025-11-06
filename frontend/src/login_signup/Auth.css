@@ -523,7 +523,106 @@
 /* =
 ==== LIGHT THEME OVERRIDES ===== */
 [data-theme="light"] .auth-container {
-  background: var(--bg-primary) !important;
+  background: 
+    /* Health-focused radial gradients */
+    radial-gradient(circle at 20% 80%, rgba(0, 212, 170, 0.12) 0%, transparent 45%),
+    radial-gradient(circle at 80% 20%, rgba(0, 160, 133, 0.18) 0%, transparent 50%),
+    radial-gradient(circle at 40% 40%, rgba(82, 196, 160, 0.1) 0%, transparent 40%),
+    radial-gradient(circle at 60% 80%, rgba(0, 212, 170, 0.08) 0%, transparent 35%),
+    radial-gradient(circle at 90% 60%, rgba(20, 138, 115, 0.06) 0%, transparent 30%),
+    /* Medical cross pattern */
+    repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 100px,
+      rgba(0, 160, 133, 0.02) 100px,
+      rgba(0, 160, 133, 0.02) 102px
+    ),
+    /* Subtle health gradient overlay */
+    linear-gradient(135deg, 
+      rgba(248, 255, 254, 0.95) 0%, 
+      rgba(232, 248, 245, 0.98) 20%,
+      rgba(209, 242, 235, 0.92) 40%,
+      rgba(232, 248, 245, 0.96) 60%,
+      rgba(248, 255, 254, 0.94) 80%,
+      rgba(240, 253, 250, 0.97) 100%
+    ),
+    /* Base health color */
+    #f8fffe !important;
+}
+
+[data-theme="light"] .auth-container::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    /* Floating orbs */
+    radial-gradient(circle at 15% 15%, rgba(0, 212, 170, 0.05) 0%, transparent 25%),
+    radial-gradient(circle at 85% 85%, rgba(0, 160, 133, 0.08) 0%, transparent 30%),
+    radial-gradient(circle at 70% 30%, rgba(82, 196, 160, 0.04) 0%, transparent 20%),
+    radial-gradient(circle at 30% 70%, rgba(0, 212, 170, 0.06) 0%, transparent 25%),
+    /* Grid pattern */
+    linear-gradient(90deg, rgba(0, 160, 133, 0.02) 1px, transparent 1px),
+    linear-gradient(rgba(0, 160, 133, 0.02) 1px, transparent 1px);
+  background-size: 
+    100% 100%,
+    100% 100%,
+    100% 100%,
+    100% 100%,
+    50px 50px,
+    50px 50px;
+  pointer-events: none;
+  z-index: -1;
+  animation: light-auth-float 20s ease-in-out infinite;
+}
+
+[data-theme="light"] .auth-container::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    /* Moving health waves */
+    radial-gradient(ellipse at 0% 50%, rgba(0, 212, 170, 0.03) 0%, transparent 70%),
+    radial-gradient(ellipse at 100% 50%, rgba(0, 160, 133, 0.04) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: -1;
+  animation: light-auth-waves 15s ease-in-out infinite alternate;
+}
+
+@keyframes light-auth-float {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+    opacity: 1;
+  }
+  33% {
+    transform: translateY(-10px) rotate(1deg);
+    opacity: 0.8;
+  }
+  66% {
+    transform: translateY(5px) rotate(-1deg);
+    opacity: 0.9;
+  }
+}
+
+@keyframes light-auth-waves {
+  0% {
+    transform: translateX(-5%) scale(1);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translateX(0%) scale(1.05);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateX(5%) scale(1);
+    opacity: 0.6;
+  }
 }
 
 /* Light Theme Form Container */
@@ -858,8 +957,3 @@
     0 0 40px rgba(4, 120, 87, 0.1) !important;
 }
 
-[data-theme="light"] .auth-button:hover:not(:disabled) {
-  box-shadow: 
-    var(--shadow-hover),
-    0 0 25px rgba(4, 120, 87, 0.2) !important;
-}

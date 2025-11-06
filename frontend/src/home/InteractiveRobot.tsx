@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Suspense } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { useGLTF } from '@react-three/drei';
 import * as THREE from 'three';
@@ -87,6 +88,7 @@ function FeatureButton({ label, description, position, delay, onClick, theme }: 
 export default function InteractiveRobot() {
   const { user, isAuthenticated, isLoading } = useAuth();
   const { theme } = useTheme();
+  const navigate = useNavigate();
   const [isActivated, setIsActivated] = useState(false);
   const [showFeatures, setShowFeatures] = useState(false);
 
@@ -98,9 +100,17 @@ export default function InteractiveRobot() {
       hasToken: !!token, 
       hasStoredUser: !!storedUser,
       token: token ? 'EXISTS' : 'NULL',
-      storedUser: storedUser ? 'EXISTS' : 'NULL'
+      storedUser: storedUser ? 'EXISTS' : 'NULL',
+      authContextState: { isAuthenticated, user: !!user, isLoading }
     });
-  }, []);
+    
+    // If there's no user in context but there's localStorage data, it might be stale
+    if (!user && !isLoading && (token || storedUser)) {
+      console.warn('Potential stale auth data detected - clearing...');
+      localStorage.removeItem('authToken');
+      localStorage.removeItem('user');
+    }
+  }, [user, isAuthenticated, isLoading]);
 
   const handleRobotClick = () => {
     console.log('Robot clicked! isAuthenticated:', isAuthenticated, 'isActivated:', isActivated);
@@ -144,8 +154,8 @@ export default function InteractiveRobot() {
         alert('💓 Health Monitor: Access real-time monitoring of your vital signs, heart rate, and health metrics.');
         break;
       case 'smart-reminders':
-        // Open smart reminders settings
-        alert('📱 Smart Reminders: Set up personalized health reminders for medications, workouts, and wellness checks.');
+        // Navigate to smart reminders loading page
+        navigate('/loading/neural-reminders');
         break;
     }
   };
@@ -182,7 +192,14 @@ export default function InteractiveRobot() {
     showFeatures, 
     user: user ? 'User exists' : 'No user',
     userEmail: user?.email || 'No email',
-    shouldShowButton: !isActivated && !isLoading && isAuthenticated
+    shouldShowButton: !isActivated && !isLoading && isAuthenticated && user && user.id,
+    buttonConditions: {
+      notActivated: !isActivated,
+      notLoading: !isLoading,
+      authenticated: isAuthenticated,
+      hasUser: !!user,
+      hasUserId: !!(user && user.id)
+    }
   });
 
   return (
@@ -224,7 +241,7 @@ export default function InteractiveRobot() {
 
 
       {/* Activation Button (positioned near the robot) - Only show when authenticated */}
-      {!isActivated && !isLoading && isAuthenticated && (
+      {!isActivated && !isLoading && isAuthenticated && user && user.id && (
         <div 
           className={`robot-activation-button ${theme}`} 
           onClick={(e) => {

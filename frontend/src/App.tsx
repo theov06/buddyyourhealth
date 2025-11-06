@@ -6,7 +6,10 @@ import Contact from './contact/Contact';
 import ThankYou from './contact/ThankYou';
 import { Login, Signup } from './login_signup';
 import LoadingScreen from './loading/LoadingScreen';
+import NeuralRemindersLoading from './loading/NeuralRemindersLoading';
+import HomeLoading from './loading/HomeLoading';
 import ManageAccount from './manage account/ManageAccount';
+import SmartReminders from './smart-reminders/SmartReminders';
 import { AuthProvider } from './contexts/AuthContext';
 import { ThemeProvider } from './contexts/ThemeContext';
 
@@ -22,9 +25,12 @@ function App() {
             <Route path="/thank-you" element={<ThankYou />} />
             <Route path="/loading/signup" element={<LoadingScreen destination="/signup" loadingText="INITIALIZING ACCOUNT CREATION" />} />
             <Route path="/loading/login" element={<LoadingScreen destination="/login" loadingText="ACCESSING AUTHENTICATION PORTAL" />} />
+            <Route path="/loading/neural-reminders" element={<NeuralRemindersLoading />} />
+            <Route path="/loading/home" element={<HomeLoading />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/account" element={<ManageAccount />} />
+            <Route path="/smart-reminders" element={<SmartReminders />} />
           </Routes>
         </Router>
       </AuthProvider>

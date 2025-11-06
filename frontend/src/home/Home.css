@@ -269,6 +269,16 @@
   z-index: 1;
 }
 
+[data-theme="light"] .cta-button::before {
+  background: 
+    linear-gradient(
+      75deg,
+      transparent 20%,
+      rgba(255, 255, 255, 0.6) 50%,
+      transparent 80%
+    );
+}
+
 
 
 /* Text Layer */
@@ -320,6 +330,16 @@
       75deg,
       transparent 20%,
       rgba(0, 255, 255, 0.6) 50%,
+      transparent 80%
+    );
+}
+
+[data-theme="light"] .cta-button.secondary::before {
+  background: 
+    linear-gradient(
+      75deg,
+      transparent 20%,
+      rgba(4, 120, 87, 0.6) 50%,
       transparent 80%
     );
 }

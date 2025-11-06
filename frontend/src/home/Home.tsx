@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './Home.css'; 
 import ParticleBackground from './ParticleBackground';
 import LightBackground from './LightBackground';
@@ -11,6 +11,7 @@ import Navbar from '../navbar/Navbar';
 function Home() {
   const { user, isAuthenticated } = useAuth();
   const { theme } = useTheme();
+  const navigate = useNavigate();
   const [isActivated, setIsActivated] = useState(false);
 
   const handleActivateClick = () => {
@@ -23,15 +24,17 @@ function Home() {
       {theme === 'dark' ? <ParticleBackground /> : <LightBackground />}
       <Agent />
       
-      {/* Activate Button */}
-      <div className={`activate-button-container ${theme}`}>
-        <button 
-          className={`activate-button ${isActivated ? 'activated' : ''} ${theme}`}
-          onClick={handleActivateClick}
-        >
-          {isActivated ? 'DEACTIVATE' : 'ACTIVATE'}
-        </button>
-      </div>
+      {/* Activate Button - Only show when authenticated */}
+      {isAuthenticated && (
+        <div className={`activate-button-container ${theme}`}>
+          <button 
+            className={`activate-button ${isActivated ? 'activated' : ''} ${theme}`}
+            onClick={handleActivateClick}
+          >
+            {isActivated ? 'DEACTIVATE' : 'ACTIVATE'}
+          </button>
+        </div>
+      )}
 
       {/* Health Monitoring Button - appears when activated */}
       {isActivated && (
@@ -72,8 +75,7 @@ function Home() {
             className={`reminder-button ${theme}`}
             onClick={() => {
               console.log('Reminder clicked!');
-              // Add your reminder functionality here
-              alert('⏰ Reminder: Set up personalized health reminders for medications, workouts, and wellness checks!');
+              navigate('/loading/neural-reminders');
             }}
           >
             Reminder

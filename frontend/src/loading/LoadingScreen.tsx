@@ -52,11 +52,11 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ destination, loadingText 
   }, [destination, loadingText, navigate]);
 
   return (
-    <div className="loading-screen">
+    <div className={`loading-screen ${theme}`} data-theme={theme}>
       {theme === 'dark' ? <ParticleBackground /> : <LightBackground />}
       
-      <div className="loading-content">
-        <div className="loading-header">
+      <div className="loadingscreen-content">
+        <div className="loadingscreen-header">
           <div className="logo">
             <img src="/logo/logo.png" alt="Buddy Your Health Logo" className="logo-image" />
             <span className="logo-text">BUDDY YOUR HEALTH®</span>
@@ -74,7 +74,7 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ destination, loadingText 
                 cy="50"
                 r="45"
                 fill="none"
-                stroke="rgba(0, 255, 255, 0.2)"
+                stroke={theme === 'light' ? 'rgba(4, 120, 87, 0.2)' : 'rgba(0, 255, 255, 0.2)'}
                 strokeWidth="2"
               />
               <circle
@@ -82,7 +82,7 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ destination, loadingText 
                 cy="50"
                 r="45"
                 fill="none"
-                stroke="#00FFFF"
+                stroke={theme === 'light' ? '#047857' : '#00FFFF'}
                 strokeWidth="2"
                 strokeLinecap="round"
                 strokeDasharray="283"
@@ -93,7 +93,7 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ destination, loadingText 
           </div>
           
           <div className="loading-text">
-            <h2 className="loading-title">{currentText}</h2>
+            <h2 className="loadingscreen-title">{currentText}</h2>
             <div className="loading-dots">
               <span></span>
               <span></span>
@@ -113,7 +113,7 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ destination, loadingText 
         </div>
 
         <div className="loading-footer">
-          <p className="loading-subtitle">Preparing your health journey...</p>
+          <p className="loadingscreen-subtitle">PREPARING YOUR HEALTH JOURNEY...</p>
         </div>
       </div>
     </div>
