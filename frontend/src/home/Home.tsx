@@ -11,10 +11,11 @@ import Navbar from '../navbar/Navbar';
 function Home() {
   const { user, isAuthenticated } = useAuth();
   const { theme } = useTheme();
-  const [isRobotActivated, setIsRobotActivated] = useState(false);
+  const [isActivated, setIsActivated] = useState(false);
 
-  const handleActivateRobot = () => {
-    setIsRobotActivated(!isRobotActivated);
+  const handleActivateClick = () => {
+    setIsActivated(!isActivated);
+    console.log('Robot activated:', !isActivated);
   };
 
   return (
@@ -22,20 +23,60 @@ function Home() {
       {theme === 'dark' ? <ParticleBackground /> : <LightBackground />}
       <Agent />
       
-      {/* Robot Activation Button - positioned to the middle right of the robot */}
-      {isAuthenticated && (
-        <div className="robot-activation-container">
+      {/* Activate Button */}
+      <div className={`activate-button-container ${theme}`}>
+        <button 
+          className={`activate-button ${isActivated ? 'activated' : ''} ${theme}`}
+          onClick={handleActivateClick}
+        >
+          {isActivated ? 'DEACTIVATE' : 'ACTIVATE'}
+        </button>
+      </div>
+
+      {/* Health Monitoring Button - appears when activated */}
+      {isActivated && (
+        <div className={`health-monitoring-container ${theme}`}>
           <button 
-            className={`robot-activate-btn ${isRobotActivated ? 'activated' : ''}`}
-            onClick={handleActivateRobot}
+            className={`health-monitoring-button ${theme}`}
+            onClick={() => {
+              console.log('Health monitoring clicked!');
+              // Add your health monitoring functionality here
+              alert('💓 Health Monitoring: Access real-time monitoring of your vital signs, heart rate, and health metrics!');
+            }}
           >
-            <div className="activate-btn-inner">
-              <div className="activate-icon">⚡</div>
-              <div className="activate-text">
-                {isRobotActivated ? 'DEACTIVATE' : 'ACTIVATE'}
-              </div>
-            </div>
-            <div className="activate-pulse"></div>
+            Health monitoring
+          </button>
+        </div>
+      )}
+
+      {/* Generative AI Button - appears when activated */}
+      {isActivated && (
+        <div className={`generative-ai-container ${theme}`}>
+          <button 
+            className={`generative-ai-button ${theme}`}
+            onClick={() => {
+              console.log('Generative AI clicked!');
+              // Add your AI functionality here
+              alert('🤖 Generative AI: Ready to assist with your health questions and provide personalized insights!');
+            }}
+          >
+            Generative AI
+          </button>
+        </div>
+      )}
+
+      {/* Reminder Button - appears when activated */}
+      {isActivated && (
+        <div className={`reminder-container ${theme}`}>
+          <button 
+            className={`reminder-button ${theme}`}
+            onClick={() => {
+              console.log('Reminder clicked!');
+              // Add your reminder functionality here
+              alert('⏰ Reminder: Set up personalized health reminders for medications, workouts, and wellness checks!');
+            }}
+          >
+            Reminder
           </button>
         </div>
       )}

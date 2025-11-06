@@ -4,6 +4,7 @@ import { Canvas, useFrame } from '@react-three/fiber';
 import { useGLTF } from '@react-three/drei';
 import * as THREE from 'three';
 import { useAuth } from '../contexts/AuthContext';
+import { useTheme } from '../contexts/ThemeContext';
 import './InteractiveRobot.css';
 
 interface RobotProps {
@@ -51,27 +52,30 @@ function RobotModel({ isActivated, onClick }: RobotProps) {
 }
 
 interface FeatureButtonProps {
-  icon: string;
   label: string;
   description: string;
   position: { x: number; y: number };
   delay: number;
   onClick: () => void;
+  theme: string;
 }
 
-function FeatureButton({ icon, label, description, position, delay, onClick }: FeatureButtonProps) {
+function FeatureButton({ label, description, position, delay, onClick, theme }: FeatureButtonProps) {
   return (
     <div
-      className="feature-button"
+      className={`feature-button ${theme}`}
       style={{
         left: `${position.x}%`,
         top: `${position.y}%`,
         animationDelay: `${delay}ms`
       }}
-      onClick={onClick}
+      onClick={(e) => {
+        console.log('FeatureButton clicked:', label);
+        e.stopPropagation();
+        onClick();
+      }}
     >
       <div className="feature-button-inner">
-        <div className="feature-icon">{icon}</div>
         <div className="feature-label">{label}</div>
         <div className="feature-description">{description}</div>
       </div>
@@ -81,97 +85,105 @@ function FeatureButton({ icon, label, description, position, delay, onClick }: F
 }
 
 export default function InteractiveRobot() {
-  const { user, isAuthenticated } = useAuth();
+  const { user, isAuthenticated, isLoading } = useAuth();
+  const { theme } = useTheme();
   const [isActivated, setIsActivated] = useState(false);
   const [showFeatures, setShowFeatures] = useState(false);
 
+  // Debug: Check localStorage for any stale auth data
+  useEffect(() => {
+    const token = localStorage.getItem('authToken');
+    const storedUser = localStorage.getItem('user');
+    console.log('localStorage check:', { 
+      hasToken: !!token, 
+      hasStoredUser: !!storedUser,
+      token: token ? 'EXISTS' : 'NULL',
+      storedUser: storedUser ? 'EXISTS' : 'NULL'
+    });
+  }, []);
+
   const handleRobotClick = () => {
-    if (!isAuthenticated) return;
+    console.log('Robot clicked! isAuthenticated:', isAuthenticated, 'isActivated:', isActivated);
+    
+    // Only allow activation if user is authenticated
+    if (!isAuthenticated) {
+      alert('Please sign in to activate the AI assistant and access health features.');
+      return;
+    }
     
     if (!isActivated) {
+      console.log('Activating robot...');
       setIsActivated(true);
-      setTimeout(() => setShowFeatures(true), 800);
+      setTimeout(() => {
+        console.log('Showing features...');
+        setShowFeatures(true);
+      }, 800);
     } else {
+      console.log('Deactivating robot...');
       setShowFeatures(false);
       setTimeout(() => setIsActivated(false), 300);
     }
+  };
+
+  const handleCloseClick = () => {
+    console.log('Close button clicked!');
+    setShowFeatures(false);
+    setTimeout(() => setIsActivated(false), 300);
   };
 
   const handleFeatureClick = (feature: string) => {
     console.log(`Feature clicked: ${feature}`);
     // Add navigation or modal logic here
     switch (feature) {
-      case 'health-scan':
-        // Navigate to health dashboard
+      case 'ai-staff':
+        // Open AI chat interface or navigate to AI consultation page
+        alert('🤖 AI Staff: Hello! I\'m here to help with your health questions. This feature will connect you to our AI health assistant.');
         break;
-      case 'ai-insights':
-        // Open AI insights modal
+      case 'health-monitor':
+        // Navigate to health monitoring dashboard
+        alert('💓 Health Monitor: Access real-time monitoring of your vital signs, heart rate, and health metrics.');
         break;
-      case 'workout-plan':
-        // Navigate to workout planner
-        break;
-      case 'nutrition':
-        // Open nutrition tracker
-        break;
-      case 'progress':
-        // Show progress analytics
-        break;
-      case 'reminders':
-        // Open reminder settings
+      case 'smart-reminders':
+        // Open smart reminders settings
+        alert('📱 Smart Reminders: Set up personalized health reminders for medications, workouts, and wellness checks.');
         break;
     }
   };
 
   const features = [
     {
-      icon: '🔬',
-      label: 'Health Scan',
-      description: 'AI-powered health analysis',
-      position: { x: 15, y: 20 },
+      label: 'Ask Our AI Staff',
+      description: 'Get instant health advice',
+      position: { x: 50, y: 15 }, // Top - centered
       delay: 0,
-      id: 'health-scan'
+      id: 'ai-staff'
     },
     {
-      icon: '🧠',
-      label: 'AI Insights',
-      description: 'Personalized recommendations',
-      position: { x: 85, y: 25 },
+      label: 'Health Monitor',
+      description: 'Real-time vital tracking',
+      position: { x: 20, y: 50 }, // Left - moved more to the right
       delay: 100,
-      id: 'ai-insights'
+      id: 'health-monitor'
     },
     {
-      icon: '💪',
-      label: 'Workout Plan',
-      description: 'Custom fitness routines',
-      position: { x: 20, y: 75 },
+      label: 'Smart Reminders',
+      description: 'Personalized health alerts',
+      position: { x: 80, y: 50 }, // Right - positioned on the right side
       delay: 200,
-      id: 'workout-plan'
-    },
-    {
-      icon: '🥗',
-      label: 'Nutrition',
-      description: 'Smart meal planning',
-      position: { x: 80, y: 70 },
-      delay: 300,
-      id: 'nutrition'
-    },
-    {
-      icon: '📊',
-      label: 'Progress',
-      description: 'Track your journey',
-      position: { x: 10, y: 50 },
-      delay: 400,
-      id: 'progress'
-    },
-    {
-      icon: '⏰',
-      label: 'Reminders',
-      description: 'Never miss a goal',
-      position: { x: 90, y: 50 },
-      delay: 500,
-      id: 'reminders'
+      id: 'smart-reminders'
     }
   ];
+
+  // Debug logging
+  console.log('InteractiveRobot render:', { 
+    isAuthenticated, 
+    isLoading,
+    isActivated, 
+    showFeatures, 
+    user: user ? 'User exists' : 'No user',
+    userEmail: user?.email || 'No email',
+    shouldShowButton: !isActivated && !isLoading && isAuthenticated
+  });
 
   return (
     <div className="interactive-robot-container">
@@ -181,11 +193,11 @@ export default function InteractiveRobot() {
         style={{
           position: 'absolute',
           top: '50%',
-          right: '5%',
+          right: '50px',
           width: '500px',
           height: '500px',
           transform: 'translateY(-50%)',
-          zIndex: isActivated ? 10 : 0,
+          zIndex: isActivated ? 5 : 0,
           filter: isActivated ? 'drop-shadow(0 0 30px #00ffff)' : 'none',
           transition: 'all 0.5s ease'
         }}
@@ -209,12 +221,24 @@ export default function InteractiveRobot() {
         </Suspense>
       </Canvas>
 
-      {/* Activation Button (positioned near the robot) */}
-      {isAuthenticated && !isActivated && (
-        <div className="robot-activation-button" onClick={handleRobotClick}>
+
+
+      {/* Activation Button (positioned near the robot) - Only show when authenticated */}
+      {!isActivated && !isLoading && isAuthenticated && (
+        <div 
+          className={`robot-activation-button ${theme}`} 
+          onClick={(e) => {
+            e.stopPropagation();
+            console.log('Activation button clicked!');
+            handleRobotClick();
+          }}
+          style={{ 
+            cursor: 'pointer'
+          }}
+        >
           <div className="robot-activation-inner">
-            <div className="activation-icon">⚡</div>
-            <div className="activation-text">ACTIVATE</div>
+            <div className="activation-label">ACTIVATE</div>
+            <div className="activation-description">Start AI Assistant</div>
           </div>
           <div className="activation-pulse"></div>
         </div>
@@ -223,29 +247,32 @@ export default function InteractiveRobot() {
       {/* Feature Buttons (positioned around the robot) */}
       {showFeatures && (
         <div className="robot-features-container">
-          {features.map((feature, index) => (
+          {features.map((feature) => (
             <FeatureButton
               key={feature.id}
-              icon={feature.icon}
               label={feature.label}
               description={feature.description}
               position={feature.position}
               delay={feature.delay}
+              theme={theme}
               onClick={() => handleFeatureClick(feature.id)}
             />
           ))}
           
           {/* Deactivate Button */}
-          <div className="robot-deactivate-button" onClick={handleRobotClick}>
-            <div className="deactivate-icon">❌</div>
-            <div className="deactivate-text">CLOSE</div>
+          <div className={`robot-deactivate-button ${theme}`} onClick={handleCloseClick}>
+            <div className="robot-deactivate-inner">
+              <div className="deactivate-label">CLOSE</div>
+              <div className="deactivate-description">Stop AI Assistant</div>
+            </div>
+            <div className="deactivate-pulse"></div>
           </div>
         </div>
       )}
 
       {/* Compact Status Display */}
-      {isAuthenticated && isActivated && (
-        <div className="robot-status-compact">
+      {isActivated && (
+        <div className={`robot-status-compact ${theme}`}>
           <div className="status-indicator active"></div>
           <div className="status-text">AI ONLINE</div>
         </div>

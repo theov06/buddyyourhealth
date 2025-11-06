@@ -1,9 +1,25 @@
 /* Interactive Robot Container */
 .interactive-robot-container {
-  position: relative;
-  width: 100%;
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 500px;
   height: 100vh;
-  overflow: hidden;
+  overflow: visible;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.interactive-robot-container > * {
+  pointer-events: auto;
+}
+
+/* Ensure interactive elements have pointer events */
+.robot-activation-button,
+.feature-button,
+.robot-deactivate-button,
+.robot-status-compact {
+  pointer-events: auto;
 }
 
 /* Robot Activation Button (positioned near robot) */
@@ -12,9 +28,10 @@
   top: 50%;
   right: 2%;
   transform: translateY(-50%);
-  z-index: 15;
+  z-index: 100;
   cursor: pointer;
   animation: float 3s ease-in-out infinite;
+  pointer-events: auto !important;
 }
 
 .robot-activation-inner {
@@ -56,6 +73,25 @@
   text-shadow: 0 0 8px rgba(0, 255, 255, 0.5);
 }
 
+.activation-label {
+  color: #00FFFF;
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+  font-size: 14px;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  text-shadow: 0 0 10px rgba(0, 255, 255, 0.6);
+}
+
+.activation-description {
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 11px;
+  font-family: 'Courier New', monospace;
+  letter-spacing: 0.8px;
+  line-height: 1.3;
+}
+
 .activation-pulse {
   position: absolute;
   top: 50%;
@@ -71,10 +107,10 @@
 /* Robot Feature Buttons (positioned around robot area) */
 .robot-features-container {
   position: absolute;
-  top: 10%;
+  top: 5%;
   right: 0%;
   width: 600px;
-  height: 80%;
+  height: 90%;
   pointer-events: none;
   z-index: 12;
 }
@@ -89,51 +125,54 @@
 }
 
 .feature-button-inner {
-  background: linear-gradient(135deg, rgba(0, 17, 34, 0.9), rgba(0, 34, 68, 0.9));
-  border: 2px solid rgba(0, 255, 255, 0.4);
-  border-radius: 20px;
-  padding: 15px 20px;
-  min-width: 180px;
+  background: linear-gradient(135deg, rgba(0, 17, 34, 0.95), rgba(0, 34, 68, 0.95));
+  border: 2px solid rgba(0, 255, 255, 0.6);
+  border-radius: 25px;
+  padding: 20px 25px;
+  min-width: 200px;
   text-align: center;
   position: relative;
   overflow: hidden;
-  backdrop-filter: blur(15px);
+  backdrop-filter: blur(20px);
   transition: all 0.3s ease;
   box-shadow: 
-    0 0 20px rgba(0, 255, 255, 0.2),
-    inset 0 0 20px rgba(0, 255, 255, 0.05);
+    0 0 25px rgba(0, 255, 255, 0.3),
+    inset 0 0 25px rgba(0, 255, 255, 0.08);
+  transform: translateX(-50%);
 }
 
 .feature-button:hover .feature-button-inner {
-  transform: translateY(-5px) scale(1.05);
+  transform: translateX(-50%) translateY(-8px) scale(1.08);
   border-color: #00FFFF;
   box-shadow: 
-    0 10px 30px rgba(0, 255, 255, 0.4),
-    inset 0 0 30px rgba(0, 255, 255, 0.1);
+    0 15px 40px rgba(0, 255, 255, 0.5),
+    inset 0 0 35px rgba(0, 255, 255, 0.15);
 }
 
 .feature-icon {
-  font-size: 28px;
-  margin-bottom: 8px;
-  filter: drop-shadow(0 0 10px rgba(0, 255, 255, 0.3));
+  font-size: 32px;
+  margin-bottom: 10px;
+  filter: drop-shadow(0 0 15px rgba(0, 255, 255, 0.4));
+  animation: icon-pulse 3s ease-in-out infinite;
 }
 
 .feature-label {
   color: #00FFFF;
   font-family: 'Courier New', monospace;
   font-weight: bold;
-  font-size: 12px;
-  letter-spacing: 1px;
+  font-size: 14px;
+  letter-spacing: 1.2px;
   text-transform: uppercase;
-  margin-bottom: 5px;
-  text-shadow: 0 0 8px rgba(0, 255, 255, 0.5);
+  margin-bottom: 8px;
+  text-shadow: 0 0 10px rgba(0, 255, 255, 0.6);
 }
 
 .feature-description {
-  color: rgba(255, 255, 255, 0.8);
-  font-size: 10px;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 11px;
   font-family: 'Courier New', monospace;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.8px;
+  line-height: 1.3;
 }
 
 .feature-button-glow {
@@ -154,54 +193,90 @@
   animation: rotate-glow 2s linear infinite;
 }
 
-/* Deactivate Button */
-.deactivate-button {
+/* Deactivate Button - Enhanced Design */
+.robot-deactivate-button {
   position: absolute;
   top: 10%;
   right: 10%;
-  background: linear-gradient(135deg, #220011, #440022);
-  border: 2px solid #FF4444;
-  border-radius: 50%;
-  width: 80px;
-  height: 80px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
   cursor: pointer;
-  transition: all 0.3s ease;
+  animation: feature-appear 0.6s ease-out 600ms forwards, deactivate-float 3s ease-in-out infinite;
+  opacity: 0;
+  transform: scale(0);
+  pointer-events: auto !important;
+}
+
+.robot-deactivate-inner {
+  background: linear-gradient(135deg, #220011, #440022, #660033);
+  border: 2px solid #FF4444;
+  border-radius: 25px;
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+  overflow: hidden;
   backdrop-filter: blur(10px);
   box-shadow: 
     0 0 20px rgba(255, 68, 68, 0.3),
     inset 0 0 20px rgba(255, 68, 68, 0.1);
-  animation: feature-appear 0.6s ease-out 600ms forwards;
-  opacity: 0;
-  transform: scale(0);
+  transition: all 0.3s ease;
 }
 
-.deactivate-button:hover {
-  transform: scale(1.1);
+.robot-deactivate-button:hover .robot-deactivate-inner {
+  transform: scale(1.05);
   box-shadow: 
     0 0 30px rgba(255, 68, 68, 0.5),
     inset 0 0 30px rgba(255, 68, 68, 0.2);
+  border-color: #FF6666;
 }
 
 .deactivate-icon {
-  font-size: 20px;
-  margin-bottom: 2px;
+  font-size: 24px;
+  animation: deactivate-pulse-glow 2s ease-in-out infinite;
 }
 
 .deactivate-text {
   color: #FF4444;
   font-family: 'Courier New', monospace;
-  font-size: 8px;
   font-weight: bold;
+  font-size: 12px;
   letter-spacing: 1px;
-  text-shadow: 0 0 5px rgba(255, 68, 68, 0.5);
+  text-shadow: 0 0 8px rgba(255, 68, 68, 0.5);
 }
 
-/* Robot Status */
-.robot-status {
+.deactivate-label {
+  color: #FF4444;
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+  font-size: 14px;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  text-shadow: 0 0 10px rgba(255, 68, 68, 0.6);
+}
+
+.deactivate-description {
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 11px;
+  font-family: 'Courier New', monospace;
+  letter-spacing: 0.8px;
+  line-height: 1.3;
+}
+
+.deactivate-pulse {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  border: 2px solid rgba(255, 68, 68, 0.3);
+  border-radius: 50px;
+  transform: translate(-50%, -50%);
+  animation: deactivate-pulse-ring 2s ease-out infinite;
+}
+
+/* Compact Status Display */
+.robot-status-compact {
   position: absolute;
   bottom: 20px;
   right: 20px;
@@ -215,38 +290,26 @@
   backdrop-filter: blur(10px);
   transition: all 0.3s ease;
   z-index: 20;
-}
-
-.robot-status.active {
   border-color: #00FFFF;
   box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
 }
 
-.robot-status.active .status-indicator {
+.robot-status-compact .status-indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
   background: #00FFFF;
   box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
   animation: pulse-dot 1.5s ease-in-out infinite;
 }
 
-.status-indicator {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.5);
-  transition: all 0.3s ease;
-}
-
-.status-text {
-  color: rgba(255, 255, 255, 0.8);
+.robot-status-compact .status-text {
+  color: #00FFFF;
   font-family: 'Courier New', monospace;
   font-size: 10px;
   font-weight: bold;
   letter-spacing: 1px;
   text-transform: uppercase;
-}
-
-.robot-status.active .status-text {
-  color: #00FFFF;
   text-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
 }
 
@@ -308,9 +371,79 @@
   }
 }
 
+@keyframes icon-pulse {
+  0%, 100% { 
+    transform: scale(1);
+    filter: drop-shadow(0 0 15px rgba(0, 255, 255, 0.4));
+  }
+  50% { 
+    transform: scale(1.1);
+    filter: drop-shadow(0 0 20px rgba(0, 255, 255, 0.6));
+  }
+}
+
+/* Red-themed animations for deactivate button */
+@keyframes deactivate-float {
+  0%, 100% { transform: translateY(0) translateX(0); }
+  50% { transform: translateY(-5px) translateX(-5px); }
+}
+
+@keyframes deactivate-pulse-glow {
+  0%, 100% { 
+    text-shadow: 0 0 10px rgba(255, 68, 68, 0.5);
+    transform: scale(1);
+  }
+  50% { 
+    text-shadow: 0 0 20px rgba(255, 68, 68, 0.8);
+    transform: scale(1.1);
+  }
+}
+
+@keyframes deactivate-pulse-ring {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1.5);
+    opacity: 0;
+  }
+}
+
+/* Nature-inspired animations for light mode buttons */
+@keyframes nature-breathe {
+  0%, 100% { 
+    transform: translateY(0) scale(1);
+    filter: brightness(1);
+  }
+  50% { 
+    transform: translateY(-2px) scale(1.01);
+    filter: brightness(1.05);
+  }
+}
+
+@keyframes organic-flow {
+  0% { 
+    background-position: 0% 50%;
+    filter: hue-rotate(0deg);
+  }
+  33% { 
+    background-position: 50% 100%;
+    filter: hue-rotate(10deg);
+  }
+  66% { 
+    background-position: 100% 50%;
+    filter: hue-rotate(-10deg);
+  }
+  100% { 
+    background-position: 0% 50%;
+    filter: hue-rotate(0deg);
+  }
+}
+
 /* Responsive Design */
 @media (max-width: 1200px) {
-  .activation-button {
+  .robot-activation-button {
     right: 5%;
   }
   
@@ -325,18 +458,27 @@
 }
 
 @media (max-width: 768px) {
-  .activation-button {
+  .robot-activation-button {
     right: 50%;
     transform: translate(50%, -50%);
     top: 60%;
   }
   
-  .activation-button-inner {
+  .robot-activation-inner {
     padding: 15px 25px;
+    min-width: 150px;
   }
   
   .activation-text {
     font-size: 12px;
+  }
+  
+  .activation-label {
+    font-size: 12px;
+  }
+  
+  .activation-description {
+    font-size: 9px;
   }
   
   .feature-button-inner {
@@ -356,11 +498,14 @@
     font-size: 8px;
   }
   
-  .deactivate-button {
-    width: 60px;
-    height: 60px;
+  .robot-deactivate-button {
     top: 5%;
     right: 5%;
+  }
+  
+  .robot-deactivate-inner {
+    padding: 10px 15px;
+    min-width: 150px;
   }
   
   .deactivate-icon {
@@ -368,12 +513,20 @@
   }
   
   .deactivate-text {
-    font-size: 6px;
+    font-size: 10px;
+  }
+  
+  .deactivate-label {
+    font-size: 12px;
+  }
+  
+  .deactivate-description {
+    font-size: 9px;
   }
 }
 
 @media (max-width: 480px) {
-  .activation-button-inner {
+  .robot-activation-inner {
     flex-direction: column;
     gap: 8px;
     padding: 12px 20px;
@@ -384,18 +537,359 @@
     letter-spacing: 1px;
   }
   
+  .robot-deactivate-inner {
+    padding: 8px 12px;
+    min-width: 120px;
+  }
+  
+  .deactivate-text {
+    font-size: 8px;
+    letter-spacing: 0.5px;
+  }
+  
+  .deactivate-label {
+    font-size: 10px;
+  }
+  
+  .deactivate-description {
+    font-size: 8px;
+  }
+  
   .feature-button-inner {
     min-width: 100px;
     padding: 8px 10px;
   }
   
-  .robot-status {
+  .robot-status-compact {
     bottom: 10px;
     right: 10px;
     padding: 8px 15px;
   }
   
-  .status-text {
+  .robot-status-compact .status-text {
     font-size: 8px;
   }
+}
+
+/* Specific positioning for different button locations */
+.feature-button[style*="left: 20%"] .feature-button-inner {
+  transform: translateX(0); /* Left button - no centering to avoid overflow */
+}
+
+.feature-button[style*="left: 50%"] .feature-button-inner {
+  transform: translateX(-50%); /* Center buttons - normal centering */
+}
+
+.feature-button[style*="left: 80%"] .feature-button-inner {
+  transform: translateX(-100%); /* Right button - align to the right */
+}
+
+/* Hover effects for positioned buttons */
+.feature-button[style*="left: 20%"]:hover .feature-button-inner {
+  transform: translateX(-5px) translateY(-8px) scale(1.08);
+}
+
+.feature-button[style*="left: 50%"]:hover .feature-button-inner {
+  transform: translateX(-50%) translateY(-8px) scale(1.08);
+}
+
+.feature-button[style*="left: 80%"]:hover .feature-button-inner {
+  transform: translateX(-100%) translateY(-8px) scale(1.08);
+}/* Theme
+ Support for Feature Buttons */
+.feature-button.light .feature-button-inner {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(240, 240, 240, 0.95));
+  border: 2px solid rgba(0, 123, 255, 0.6);
+  color: #333;
+  box-shadow: 
+    0 0 25px rgba(0, 123, 255, 0.3),
+    inset 0 0 25px rgba(0, 123, 255, 0.08);
+}
+
+.feature-button.light:hover .feature-button-inner {
+  border-color: #007bff;
+  box-shadow: 
+    0 15px 40px rgba(0, 123, 255, 0.5),
+    inset 0 0 35px rgba(0, 123, 255, 0.15);
+}
+
+.feature-button.light .feature-label {
+  color: #007bff;
+  text-shadow: 0 0 10px rgba(0, 123, 255, 0.6);
+}
+
+.feature-button.light .feature-description {
+  color: rgba(51, 51, 51, 0.85);
+}
+
+.feature-button.light .feature-button-glow {
+  background: linear-gradient(45deg, transparent, rgba(0, 123, 255, 0.1), transparent);
+}
+
+
+
+/* Remove icon styles since we're not using icons anymore */
+.feature-icon {
+  display: none;
+}
+
+/* Adjust button layout without icons */
+.feature-button-inner {
+  padding: 15px 20px;
+  min-width: 180px;
+}
+
+.feature-label {
+  margin-bottom: 5px;
+  font-size: 13px;
+}
+
+.feature-description {
+  font-size: 10px;
+}/* Th
+eme Support for Activation Button */
+.robot-activation-button.light .robot-activation-inner {
+  background: linear-gradient(135deg, 
+    rgba(255, 255, 255, 0.95), 
+    rgba(240, 248, 255, 0.9), 
+    rgba(230, 245, 255, 0.95)
+  );
+  border: none;
+  border-radius: 60px;
+  padding: 18px 45px;
+  width: 220px;
+  height: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  backdrop-filter: blur(15px);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 
+    0 0 25px rgba(0, 123, 255, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6),
+    inset 0 -1px 0 rgba(0, 123, 255, 0.1);
+  animation: nature-breathe 4s ease-in-out infinite;
+}
+
+/* Organic growth pattern for activation button */
+.robot-activation-button.light .robot-activation-inner::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(45deg, 
+    #007bff, 
+    #0056b3, 
+    #4dabf7, 
+    #0056b3, 
+    #007bff
+  );
+  background-size: 300% 300%;
+  border-radius: 62px;
+  z-index: -1;
+  animation: organic-flow 5s ease infinite;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+/* Leaf-like sweep effect for activation button */
+.robot-activation-button.light .robot-activation-inner::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, 
+    transparent, 
+    rgba(0, 123, 255, 0.2), 
+    rgba(77, 171, 247, 0.3),
+    rgba(0, 123, 255, 0.2), 
+    transparent
+  );
+  transition: left 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 60px;
+}
+
+.robot-activation-button.light:hover .robot-activation-inner {
+  transform: translateY(-3px) scale(1.05);
+  border-color: #0056b3;
+  box-shadow: 
+    0 0 35px rgba(0, 123, 255, 0.5),
+    inset 0 2px 0 rgba(255, 255, 255, 0.8),
+    inset 0 -2px 0 rgba(0, 123, 255, 0.2);
+}
+
+.robot-activation-button.light:hover .robot-activation-inner::before {
+  opacity: 1;
+}
+
+.robot-activation-button.light:hover .robot-activation-inner::after {
+  left: 100%;
+}
+
+/* Theme S
+upport for Status Display */
+.robot-status-compact.light {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(0, 123, 255, 0.3);
+  box-shadow: 0 0 20px rgba(0, 123, 255, 0.3);
+}
+
+.robot-status-compact.light .status-indicator {
+  background: #007bff;
+  box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
+}
+
+.robot-status-compact.light .status-text {
+  color: #007bff;
+  text-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}/* 
+========================================
+/* ========================================
+   LIGHT MODE BUTTONS - FEATURE BUTTON DESIGN
+   ======================================== */
+
+/* Activation Button - Light Mode (Exact Feature Button Design) */
+.robot-activation-button.light .robot-activation-inner {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(240, 240, 240, 0.95)) !important;
+  border: 2px solid rgba(0, 123, 255, 0.6) !important;
+  border-radius: 25px !important;
+  padding: 20px 25px !important;
+  min-width: 200px !important;
+  text-align: center !important;
+  position: relative !important;
+  overflow: hidden !important;
+  backdrop-filter: blur(20px) !important;
+  transition: all 0.3s ease !important;
+  box-shadow: 
+    0 0 25px rgba(0, 123, 255, 0.3),
+    inset 0 0 25px rgba(0, 123, 255, 0.08) !important;
+  color: #333 !important;
+  transform: translateX(-50%) !important;
+}
+
+.robot-activation-button.light:hover .robot-activation-inner {
+  transform: translateX(-50%) translateY(-8px) scale(1.08) !important;
+  border-color: #007bff !important;
+  box-shadow: 
+    0 15px 40px rgba(0, 123, 255, 0.5),
+    inset 0 0 35px rgba(0, 123, 255, 0.15) !important;
+}
+
+.robot-activation-button.light .activation-label {
+  color: #007bff !important;
+  font-family: 'Courier New', monospace !important;
+  font-weight: bold !important;
+  font-size: 14px !important;
+  letter-spacing: 1.2px !important;
+  text-transform: uppercase !important;
+  margin-bottom: 8px !important;
+  text-shadow: 0 0 10px rgba(0, 123, 255, 0.6) !important;
+}
+
+.robot-activation-button.light .activation-description {
+  color: rgba(51, 51, 51, 0.85) !important;
+  font-size: 11px !important;
+  font-family: 'Courier New', monospace !important;
+  letter-spacing: 0.8px !important;
+  line-height: 1.3 !important;
+}
+
+/* Feature button glow effect for activation */
+.robot-activation-button.light .robot-activation-inner::after {
+  content: '' !important;
+  position: absolute !important;
+  top: -2px !important;
+  left: -2px !important;
+  right: -2px !important;
+  bottom: -2px !important;
+  background: linear-gradient(45deg, transparent, rgba(0, 123, 255, 0.1), transparent) !important;
+  border-radius: 27px !important;
+  opacity: 0 !important;
+  transition: opacity 0.3s ease !important;
+  pointer-events: none !important;
+  z-index: -1 !important;
+}
+
+.robot-activation-button.light:hover .robot-activation-inner::after {
+  opacity: 1 !important;
+  animation: rotate-glow 2s linear infinite !important;
+}
+
+/* Deactivate Button - Light Mode (Exact Feature Button Design) */
+.robot-deactivate-button.light .robot-deactivate-inner {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(240, 240, 240, 0.95)) !important;
+  border: 2px solid rgba(220, 53, 69, 0.6) !important;
+  border-radius: 25px !important;
+  padding: 20px 25px !important;
+  min-width: 200px !important;
+  text-align: center !important;
+  position: relative !important;
+  overflow: hidden !important;
+  backdrop-filter: blur(20px) !important;
+  transition: all 0.3s ease !important;
+  box-shadow: 
+    0 0 25px rgba(220, 53, 69, 0.3),
+    inset 0 0 25px rgba(220, 53, 69, 0.08) !important;
+  color: #333 !important;
+  transform: translateX(-50%) !important;
+}
+
+.robot-deactivate-button.light:hover .robot-deactivate-inner {
+  transform: translateX(-50%) translateY(-8px) scale(1.08) !important;
+  border-color: #dc3545 !important;
+  box-shadow: 
+    0 15px 40px rgba(220, 53, 69, 0.5),
+    inset 0 0 35px rgba(220, 53, 69, 0.15) !important;
+}
+
+.robot-deactivate-button.light .deactivate-label {
+  color: #dc3545 !important;
+  font-family: 'Courier New', monospace !important;
+  font-weight: bold !important;
+  font-size: 14px !important;
+  letter-spacing: 1.2px !important;
+  text-transform: uppercase !important;
+  margin-bottom: 8px !important;
+  text-shadow: 0 0 10px rgba(220, 53, 69, 0.6) !important;
+}
+
+.robot-deactivate-button.light .deactivate-description {
+  color: rgba(51, 51, 51, 0.85) !important;
+  font-size: 11px !important;
+  font-family: 'Courier New', monospace !important;
+  letter-spacing: 0.8px !important;
+  line-height: 1.3 !important;
+}
+
+/* Feature button glow effect for deactivate */
+.robot-deactivate-button.light .robot-deactivate-inner::after {
+  content: '' !important;
+  position: absolute !important;
+  top: -2px !important;
+  left: -2px !important;
+  right: -2px !important;
+  bottom: -2px !important;
+  background: linear-gradient(45deg, transparent, rgba(220, 53, 69, 0.1), transparent) !important;
+  border-radius: 27px !important;
+  opacity: 0 !important;
+  transition: opacity 0.3s ease !important;
+  pointer-events: none !important;
+  z-index: -1 !important;
+}
+
+.robot-deactivate-button.light:hover .robot-deactivate-inner::after {
+  opacity: 1 !important;
+  animation: rotate-glow 2s linear infinite !important;
+}
+
+/* Remove pulse effects for light mode */
+.robot-activation-button.light .activation-pulse,
+.robot-deactivate-button.light .deactivate-pulse {
+  display: none !important;
 }

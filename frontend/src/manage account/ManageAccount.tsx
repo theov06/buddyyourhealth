@@ -100,6 +100,24 @@ function ManageAccount() {
     }));
   };
 
+  const calculateBMI = () => {
+    const height = Number(profile.healthProfile.height);
+    const weight = Number(profile.healthProfile.weight);
+    
+    if (height > 0 && weight > 0) {
+      const heightInMeters = height / 100;
+      return (weight / (heightInMeters * heightInMeters)).toFixed(1);
+    }
+    return null;
+  };
+
+  const getBMICategory = (bmi: number) => {
+    if (bmi < 18.5) return { category: 'Underweight', color: '#4a90e2' };
+    if (bmi < 25) return { category: 'Normal weight', color: '#00ff88' };
+    if (bmi < 30) return { category: 'Overweight', color: '#ffa500' };
+    return { category: 'Obese', color: '#ff4444' };
+  };
+
   const handleSaveChanges = async () => {
     setLoading(true);
     setMessage({ type: '', text: '' });
@@ -282,6 +300,109 @@ function ManageAccount() {
                         rows={3}
                       />
                     </div>
+                  </div>
+
+                  {/* BMI Calculator Section */}
+                  <div className="bmi-section" style={{ marginTop: '30px' }}>
+                    <h3>BMI Calculator</h3>
+                    {(() => {
+                      const bmi = calculateBMI();
+                      if (bmi) {
+                        const bmiValue = parseFloat(bmi);
+                        const { category, color } = getBMICategory(bmiValue);
+                        return (
+                          <div className="bmi-result" style={{
+                            padding: '20px',
+                            borderRadius: '12px',
+                            background: 'rgba(0, 255, 136, 0.1)',
+                            border: '1px solid rgba(0, 255, 136, 0.3)',
+                            marginTop: '15px'
+                          }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+                              <div className="bmi-value" style={{
+                                fontSize: '2.5rem',
+                                fontWeight: 'bold',
+                                color: '#00ff88'
+                              }}>
+                                {bmi}
+                              </div>
+                              <div className="bmi-info">
+                                <div style={{
+                                  fontSize: '1.2rem',
+                                  fontWeight: '600',
+                                  color: color,
+                                  marginBottom: '5px'
+                                }}>
+                                  {category}
+                                </div>
+                                <div style={{
+                                  fontSize: '0.9rem',
+                                  color: 'rgba(255, 255, 255, 0.7)'
+                                }}>
+                                  BMI = Weight (kg) / Height² (m²)
+                                </div>
+                              </div>
+                            </div>
+                            
+                            {/* BMI Scale */}
+                            <div className="bmi-scale" style={{ marginTop: '20px' }}>
+                              <div style={{
+                                fontSize: '0.9rem',
+                                color: 'rgba(255, 255, 255, 0.8)',
+                                marginBottom: '10px'
+                              }}>
+                                BMI Categories:
+                              </div>
+                              <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
+                                <div style={{ 
+                                  color: bmiValue < 18.5 ? '#4a90e2' : 'rgba(255, 255, 255, 0.5)',
+                                  fontWeight: bmiValue < 18.5 ? 'bold' : 'normal'
+                                }}>
+                                  • Underweight: Below 18.5
+                                </div>
+                                <div style={{ 
+                                  color: bmiValue >= 18.5 && bmiValue < 25 ? '#00ff88' : 'rgba(255, 255, 255, 0.5)',
+                                  fontWeight: bmiValue >= 18.5 && bmiValue < 25 ? 'bold' : 'normal'
+                                }}>
+                                  • Normal weight: 18.5 - 24.9
+                                </div>
+                                <div style={{ 
+                                  color: bmiValue >= 25 && bmiValue < 30 ? '#ffa500' : 'rgba(255, 255, 255, 0.5)',
+                                  fontWeight: bmiValue >= 25 && bmiValue < 30 ? 'bold' : 'normal'
+                                }}>
+                                  • Overweight: 25 - 29.9
+                                </div>
+                                <div style={{ 
+                                  color: bmiValue >= 30 ? '#ff4444' : 'rgba(255, 255, 255, 0.5)',
+                                  fontWeight: bmiValue >= 30 ? 'bold' : 'normal'
+                                }}>
+                                  • Obese: 30 and above
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      } else {
+                        return (
+                          <div className="bmi-placeholder" style={{
+                            padding: '20px',
+                            borderRadius: '12px',
+                            background: 'rgba(255, 255, 255, 0.05)',
+                            border: '1px solid rgba(255, 255, 255, 0.1)',
+                            marginTop: '15px',
+                            textAlign: 'center',
+                            color: 'rgba(255, 255, 255, 0.6)'
+                          }}>
+                            <div style={{ fontSize: '1.1rem', marginBottom: '10px' }}>
+                              📊 Enter your height and weight to calculate BMI
+                            </div>
+                            <div style={{ fontSize: '0.9rem' }}>
+                              BMI helps assess if your weight is in a healthy range for your height
+                            </div>
+                          </div>
+                        );
+                      }
+                    })()}
                   </div>
                 </div>
               )}
