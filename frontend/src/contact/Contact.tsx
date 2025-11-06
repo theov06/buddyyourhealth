@@ -2,9 +2,12 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './Contact.css';
 import ParticleBackground from '../home/ParticleBackground';
-import Navbar from '../components/Navbar';
+import LightBackground from '../home/LightBackground';
+import Navbar from '../navbar/Navbar';
+import { useTheme } from '../contexts/ThemeContext';
 
 function Contact() {
+  const { theme } = useTheme();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -26,7 +29,7 @@ function Contact() {
 
   return (
     <div className="App">
-      <ParticleBackground />
+      {theme === 'dark' ? <ParticleBackground /> : <LightBackground />}
       
       <div className="main-content">
         <Navbar activeLink="contact" />

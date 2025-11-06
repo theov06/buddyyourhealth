@@ -2,13 +2,17 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import './About.css';
 import ParticleBackground from '../home/ParticleBackground';
-import Navbar from '../components/Navbar'; 
+import LightBackground from '../home/LightBackground';
+import Navbar from '../navbar/Navbar';
+import { useTheme } from '../contexts/ThemeContext'; 
 
 function About() {
+  const { theme } = useTheme();
+  
   return (
     <div className="App">
-      {/* 배경 입자 효과 컴포넌트 */}
-      <ParticleBackground />
+      {/* Background based on theme */}
+      {theme === 'dark' ? <ParticleBackground /> : <LightBackground />}
       
       <div className="main-content">
         

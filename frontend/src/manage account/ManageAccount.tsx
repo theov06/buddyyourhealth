@@ -2,15 +2,23 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './ManageAccount.css';
 import ParticleBackground from '../home/ParticleBackground';
-import Navbar from '../components/Navbar';
+import LightBackground from '../home/LightBackground';
+import Navbar from '../navbar/Navbar';
 import { useAuth } from '../contexts/AuthContext';
+import { useTheme } from '../contexts/ThemeContext';
+import ApiService from '../services/api';
 
 interface UserProfile {
-  name: string;
+  firstName: string;
+  lastName: string;
   email: string;
-  phone: string;
-  dateOfBirth: string;
-  healthGoals: string[];
+  healthProfile: {
+    age: number | '';
+    height: number | '';
+    weight: number | '';
+    activityLevel: 'sedentary' | 'light' | 'moderate' | 'active' | 'very_active' | '';
+    goals: string[];
+  };
   notifications: {
     email: boolean;
     push: boolean;
@@ -20,14 +28,22 @@ interface UserProfile {
 
 function ManageAccount() {
   const navigate = useNavigate();
-  const { user, isAuthenticated, logout } = useAuth();
+  const { user, isAuthenticated, logout, refreshUser } = useAuth();
+  const { theme } = useTheme();
   const [activeTab, setActiveTab] = useState('profile');
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState({ type: '', text: '' });
   const [profile, setProfile] = useState<UserProfile>({
-    name: '',
+    firstName: '',
+    lastName: '',
     email: '',
-    phone: '',
-    dateOfBirth: '',
-    healthGoals: [],
+    healthProfile: {
+      age: '',
+      height: '',
+      weight: '',
+      activityLevel: '',
+      goals: []
+    },
     notifications: {
       email: true,
       push: true,
@@ -46,14 +62,32 @@ function ManageAccount() {
     if (user) {
       setProfile(prev => ({
         ...prev,
-        name: user.fullName,
-        email: user.email
+        firstName: user.firstName || '',
+        lastName: user.lastName || '',
+        email: user.email || '',
+        healthProfile: {
+          age: user.healthProfile?.age || '',
+          height: user.healthProfile?.height || '',
+          weight: user.healthProfile?.weight || '',
+          activityLevel: user.healthProfile?.activityLevel || '',
+          goals: user.healthProfile?.goals || []
+        }
       }));
     }
   }, [isAuthenticated, user, navigate]);
 
   const handleProfileUpdate = (field: keyof UserProfile, value: any) => {
     setProfile(prev => ({ ...prev, [field]: value }));
+  };
+
+  const handleHealthProfileUpdate = (field: keyof UserProfile['healthProfile'], value: any) => {
+    setProfile(prev => ({
+      ...prev,
+      healthProfile: {
+        ...prev.healthProfile,
+        [field]: value
+      }
+    }));
   };
 
   const handleNotificationChange = (type: keyof UserProfile['notifications']) => {
@@ -66,9 +100,42 @@ function ManageAccount() {
     }));
   };
 
+  const handleSaveChanges = async () => {
+    setLoading(true);
+    setMessage({ type: '', text: '' });
+
+    try {
+      const updateData = {
+        firstName: profile.firstName,
+        lastName: profile.lastName,
+        healthProfile: {
+          age: profile.healthProfile.age ? Number(profile.healthProfile.age) : undefined,
+          height: profile.healthProfile.height ? Number(profile.healthProfile.height) : undefined,
+          weight: profile.healthProfile.weight ? Number(profile.healthProfile.weight) : undefined,
+          activityLevel: profile.healthProfile.activityLevel || undefined,
+          goals: profile.healthProfile.goals
+        }
+      };
+
+      const response = await ApiService.updateProfile(updateData);
+
+      if (response.success) {
+        setMessage({ type: 'success', text: 'Profile updated successfully!' });
+        // Refresh user data in the auth context
+        await refreshUser();
+      } else {
+        setMessage({ type: 'error', text: response.message || 'Failed to update profile' });
+      }
+    } catch (error: any) {
+      setMessage({ type: 'error', text: error.message || 'An error occurred while updating profile' });
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="App">
-      <ParticleBackground />
+      {theme === 'dark' ? <ParticleBackground /> : <LightBackground />}
       
       <div className="main-content">
         {/* Navigation Bar */}
@@ -121,12 +188,21 @@ function ManageAccount() {
                   <h2>Personal Information</h2>
                   <div className="form-grid">
                     <div className="input-group">
-                      <label className="input-label">Full Name</label>
+                      <label className="input-label">First Name</label>
                       <input 
                         type="text" 
                         className="cyber-input"
-                        value={profile.name}
-                        onChange={(e) => handleProfileUpdate('name', e.target.value)}
+                        value={profile.firstName}
+                        onChange={(e) => handleProfileUpdate('firstName', e.target.value)}
+                      />
+                    </div>
+                    <div className="input-group">
+                      <label className="input-label">Last Name</label>
+                      <input 
+                        type="text" 
+                        className="cyber-input"
+                        value={profile.lastName}
+                        onChange={(e) => handleProfileUpdate('lastName', e.target.value)}
                       />
                     </div>
                     <div className="input-group">
@@ -135,25 +211,19 @@ function ManageAccount() {
                         type="email" 
                         className="cyber-input"
                         value={profile.email}
-                        onChange={(e) => handleProfileUpdate('email', e.target.value)}
+                        disabled
+                        style={{ opacity: 0.6, cursor: 'not-allowed' }}
                       />
                     </div>
                     <div className="input-group">
-                      <label className="input-label">Phone Number</label>
+                      <label className="input-label">Age</label>
                       <input 
-                        type="tel" 
+                        type="number" 
                         className="cyber-input"
-                        value={profile.phone}
-                        onChange={(e) => handleProfileUpdate('phone', e.target.value)}
-                      />
-                    </div>
-                    <div className="input-group">
-                      <label className="input-label">Date of Birth</label>
-                      <input 
-                        type="date" 
-                        className="cyber-input"
-                        value={profile.dateOfBirth}
-                        onChange={(e) => handleProfileUpdate('dateOfBirth', e.target.value)}
+                        value={profile.healthProfile.age}
+                        onChange={(e) => handleHealthProfileUpdate('age', e.target.value)}
+                        min="1"
+                        max="120"
                       />
                     </div>
                   </div>
@@ -162,27 +232,55 @@ function ManageAccount() {
 
               {activeTab === 'health' && (
                 <div className="health-section">
-                  <h2>Health Metrics</h2>
-                  <div className="health-cards">
-                    <div className="health-card">
-                      <h3>Current Weight</h3>
-                      <div className="metric-value">75.2 kg</div>
-                      <div className="metric-trend">↓ 2.1kg this month</div>
+                  <h2>Health Profile</h2>
+                  <div className="form-grid">
+                    <div className="input-group">
+                      <label className="input-label">Height (cm)</label>
+                      <input 
+                        type="number" 
+                        className="cyber-input"
+                        value={profile.healthProfile.height}
+                        onChange={(e) => handleHealthProfileUpdate('height', e.target.value)}
+                        min="50"
+                        max="300"
+                      />
                     </div>
-                    <div className="health-card">
-                      <h3>BMI Index</h3>
-                      <div className="metric-value">22.4</div>
-                      <div className="metric-status healthy">Normal Range</div>
+                    <div className="input-group">
+                      <label className="input-label">Weight (kg)</label>
+                      <input 
+                        type="number" 
+                        className="cyber-input"
+                        value={profile.healthProfile.weight}
+                        onChange={(e) => handleHealthProfileUpdate('weight', e.target.value)}
+                        min="20"
+                        max="500"
+                        step="0.1"
+                      />
                     </div>
-                    <div className="health-card">
-                      <h3>Daily Steps</h3>
-                      <div className="metric-value">8,547</div>
-                      <div className="metric-progress">
-                        <div className="progress-bar">
-                          <div className="progress-fill" style={{width: '85%'}}></div>
-                        </div>
-                        <span>85% of goal</span>
-                      </div>
+                    <div className="input-group">
+                      <label className="input-label">Activity Level</label>
+                      <select 
+                        className="cyber-input"
+                        value={profile.healthProfile.activityLevel}
+                        onChange={(e) => handleHealthProfileUpdate('activityLevel', e.target.value)}
+                      >
+                        <option value="">Select activity level</option>
+                        <option value="sedentary">Sedentary (little/no exercise)</option>
+                        <option value="light">Light (light exercise 1-3 days/week)</option>
+                        <option value="moderate">Moderate (moderate exercise 3-5 days/week)</option>
+                        <option value="active">Active (hard exercise 6-7 days/week)</option>
+                        <option value="very_active">Very Active (very hard exercise, physical job)</option>
+                      </select>
+                    </div>
+                    <div className="input-group full-width">
+                      <label className="input-label">Health Goals</label>
+                      <textarea 
+                        className="cyber-input"
+                        value={profile.healthProfile.goals.join(', ')}
+                        onChange={(e) => handleHealthProfileUpdate('goals', e.target.value.split(', ').filter(goal => goal.trim()))}
+                        placeholder="Enter your health goals"
+                        rows={3}
+                      />
                     </div>
                   </div>
                 </div>
@@ -262,9 +360,29 @@ function ManageAccount() {
               )}
             </div>
 
+            {/* Message Display */}
+            {message.text && (
+              <div className={`message ${message.type}`} style={{
+                padding: '12px',
+                borderRadius: '8px',
+                marginBottom: '20px',
+                backgroundColor: message.type === 'success' ? '#1a4d3a' : '#4d1a1a',
+                border: `1px solid ${message.type === 'success' ? '#00ff88' : '#ff4444'}`,
+                color: message.type === 'success' ? '#00ff88' : '#ff4444'
+              }}>
+                {message.text}
+              </div>
+            )}
+
             {/* Action Buttons */}
             <div className="account-actions">
-              <button className="cyber-button primary">Save Changes</button>
+              <button 
+                className="cyber-button primary" 
+                onClick={handleSaveChanges}
+                disabled={loading}
+              >
+                {loading ? 'Saving...' : 'Save Changes'}
+              </button>
               <Link to="/" className="cyber-button secondary">Back to Home</Link>
             </div>
           </div>

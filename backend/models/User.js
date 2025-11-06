@@ -35,11 +35,23 @@ const userSchema = new mongoose.Schema({
   lastLogin: {
     type: Date
   },
-  // Health-related fields for future use
+  // Health-related fields
   healthProfile: {
-    age: Number,
-    height: Number,
-    weight: Number,
+    age: {
+      type: Number,
+      min: 1,
+      max: 120
+    },
+    height: {
+      type: Number,
+      min: 50,
+      max: 300
+    },
+    weight: {
+      type: Number,
+      min: 20,
+      max: 500
+    },
     activityLevel: {
       type: String,
       enum: ['sedentary', 'light', 'moderate', 'active', 'very_active']

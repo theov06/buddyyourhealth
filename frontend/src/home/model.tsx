@@ -33,7 +33,7 @@ export default function Agent() {
       style={{ 
         position: 'absolute', 
         top: '50%', 
-        right: '5%', 
+        right: '15%', 
         width: '500px', 
         height: '500px', 
         transform: 'translateY(-50%)', 

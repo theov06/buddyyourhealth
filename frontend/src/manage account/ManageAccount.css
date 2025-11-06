@@ -150,6 +150,10 @@
   position: relative;
 }
 
+.input-group.full-width {
+  grid-column: 1 / -1;
+}
+
 .input-label {
   display: block;
   color: #00FFFF;
@@ -181,6 +185,25 @@
     0 0 15px rgba(0, 255, 255, 0.3),
     inset 0 0 15px rgba(0, 255, 255, 0.1);
   background: rgba(0, 34, 68, 0.3);
+}
+
+.cyber-input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.cyber-input[type="textarea"] {
+  resize: vertical;
+  min-height: 80px;
+}
+
+select.cyber-input {
+  cursor: pointer;
+}
+
+select.cyber-input option {
+  background: #001122;
+  color: white;
 }
 
 /* Health Cards */
@@ -293,6 +316,7 @@
   border: 1px solid rgba(0, 255, 255, 0.2);
   border-radius: 12px;
   transition: all 0.3s ease;
+  min-height: 80px;
 }
 
 .notification-item:hover {
@@ -300,17 +324,31 @@
   background: rgba(0, 34, 68, 0.2);
 }
 
+.notification-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  flex: 1;
+  padding-top: 0px;
+  margin-top: -15px;
+  text-align: left;
+}
+
 .notification-info h3 {
   color: #00FFFF;
   font-size: 18px;
   margin-bottom: 8px;
   font-family: 'Courier New', monospace;
+  line-height: 1.2;
+  text-align: left;
 }
 
 .notification-info p {
   color: rgba(255, 255, 255, 0.7);
   font-size: 14px;
   margin: 0;
+  line-height: 1.4;
+  text-align: left;
 }
 
 /* Cyber Switch */
@@ -545,6 +583,13 @@
     flex-direction: column;
     gap: 15px;
     text-align: center;
+    min-height: auto;
+    align-items: center;
+  }
+  
+  .notification-info {
+    text-align: center;
+    width: 100%;
   }
 }
 

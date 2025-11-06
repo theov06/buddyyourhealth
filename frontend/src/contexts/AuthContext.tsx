@@ -7,6 +7,13 @@ interface User {
   lastName: string;
   email: string;
   fullName: string;
+  healthProfile?: {
+    age?: number;
+    height?: number;
+    weight?: number;
+    activityLevel?: 'sedentary' | 'light' | 'moderate' | 'active' | 'very_active';
+    goals?: string[];
+  };
 }
 
 interface AuthContextType {
@@ -17,6 +24,7 @@ interface AuthContextType {
   signup: (firstName: string, lastName: string, email: string, password: string) => Promise<void>;
   createAccount: (firstName: string, lastName: string, email: string, password: string) => Promise<void>;
   logout: () => void;
+  refreshUser: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -101,6 +109,19 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setUser(null);
   };
 
+  const refreshUser = async () => {
+    try {
+      if (ApiService.isAuthenticated()) {
+        const response = await ApiService.getCurrentUser();
+        if (response.success && response.user) {
+          setUser(response.user);
+        }
+      }
+    } catch (error) {
+      console.error('Error refreshing user data:', error);
+    }
+  };
+
   const value: AuthContextType = {
     user,
     isAuthenticated: !!user,
@@ -109,6 +130,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     signup,
     createAccount,
     logout,
+    refreshUser,
   };
 
   return (

@@ -62,7 +62,8 @@ router.post('/signup', async (req, res) => {
         firstName: user.firstName,
         lastName: user.lastName,
         email: user.email,
-        fullName: user.fullName
+        fullName: user.fullName,
+        healthProfile: user.healthProfile
       }
     });
 
@@ -129,6 +130,7 @@ router.post('/login', async (req, res) => {
         lastName: user.lastName,
         email: user.email,
         fullName: user.fullName,
+        healthProfile: user.healthProfile,
         lastLogin: user.lastLogin
       }
     });
@@ -150,7 +152,15 @@ router.get('/me', auth, async (req, res) => {
     const user = await User.findById(req.user.userId).select('-password');
     res.json({
       success: true,
-      user
+      user: {
+        id: user._id,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        fullName: user.fullName,
+        healthProfile: user.healthProfile,
+        lastLogin: user.lastLogin
+      }
     });
   } catch (error) {
     console.error('Get user error:', error);

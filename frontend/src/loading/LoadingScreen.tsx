@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './LoadingScreen.css';
 import ParticleBackground from '../home/ParticleBackground';
+import LightBackground from '../home/LightBackground';
+import { useTheme } from '../contexts/ThemeContext';
 
 interface LoadingScreenProps {
   destination: string;
@@ -10,6 +12,7 @@ interface LoadingScreenProps {
 
 const LoadingScreen: React.FC<LoadingScreenProps> = ({ destination, loadingText }) => {
   const navigate = useNavigate();
+  const { theme } = useTheme();
   const [progress, setProgress] = useState(0);
   const [currentText, setCurrentText] = useState('');
 
@@ -50,7 +53,7 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ destination, loadingText 
 
   return (
     <div className="loading-screen">
-      <ParticleBackground />
+      {theme === 'dark' ? <ParticleBackground /> : <LightBackground />}
       
       <div className="loading-content">
         <div className="loading-header">
