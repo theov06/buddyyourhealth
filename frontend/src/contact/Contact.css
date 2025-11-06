@@ -37,10 +37,10 @@
 
 /* Contact Content */
 .contact-content {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
+  flex-direction: column;
   gap: 40px;
-  align-items: start;
+  align-items: center;
 }
 
 /* Contact Form Section */
@@ -55,6 +55,8 @@
     inset 0 0 30px rgba(0, 255, 255, 0.05);
   position: relative;
   overflow: hidden;
+  width: 100%;
+  max-width: 600px;
 }
 
 .contact-form-section::before {
@@ -136,6 +138,11 @@
 }
 
 /* Contact Info Section */
+.contact-info-section {
+  width: 100%;
+  max-width: 1000px;
+}
+
 .contact-info-section h2 {
   color: #00FFFF;
   font-family: 'Courier New', monospace;
@@ -143,11 +150,12 @@
   letter-spacing: 2px;
   margin-bottom: 30px;
   text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+  text-align: center;
 }
 
 .contact-cards {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
   gap: 20px;
 }
 
@@ -291,7 +299,6 @@
   }
   
   .contact-content {
-    grid-template-columns: 1fr;
     gap: 30px;
   }
   
@@ -302,6 +309,11 @@
   .form-row {
     grid-template-columns: 1fr;
     gap: 25px;
+  }
+  
+  .contact-cards {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
   }
 }
 
@@ -322,5 +334,10 @@
   .cyber-button {
     width: 100%;
     text-align: center;
+  }
+  
+  .contact-cards {
+    grid-template-columns: 1fr;
+    gap: 15px;
   }
 }

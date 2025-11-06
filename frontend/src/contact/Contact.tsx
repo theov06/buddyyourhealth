@@ -43,7 +43,7 @@ function Contact() {
               <form className="contact-form" onSubmit={handleSubmit}>
                 <div className="form-row">
                   <div className="input-group">
-                    <label className="input-label">Full Name</label>
+                    <label className="input-label">Name</label>
                     <input 
                       type="text" 
                       name="name"
@@ -97,7 +97,7 @@ function Contact() {
                 <div className="contact-card">
                   <div className="contact-icon">📧</div>
                   <h3>Email</h3>
-                  <p>support@buddyyourhealth.com</p>
+                  <p>buddyyourhealth@gmail.com</p>
                 </div>
                 <div className="contact-card">
                   <div className="contact-icon">📱</div>
@@ -107,7 +107,7 @@ function Contact() {
                 <div className="contact-card">
                   <div className="contact-icon">🏢</div>
                   <h3>Office</h3>
-                  <p>123 Health Tech Ave<br />San Francisco, CA 94105</p>
+                  <p>3333 University Way<br />Kelowna, BC V1V 1V7</p>
                 </div>
                 <div className="contact-card">
                   <div className="contact-icon">⏰</div>
