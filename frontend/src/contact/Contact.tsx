@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './Contact.css';
 import ParticleBackground from '../home/ParticleBackground';
 import LightBackground from '../home/LightBackground';
@@ -8,6 +8,7 @@ import { useTheme } from '../contexts/ThemeContext';
 
 function Contact() {
   const { theme } = useTheme();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -25,6 +26,8 @@ function Contact() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log('Form submitted:', formData);
+    // Redirect to Thank You page
+    navigate('/thank-you');
   };
 
   return (
