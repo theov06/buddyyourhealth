@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useTheme } from '../contexts/ThemeContext';
+import aiService from '../services/aiService';
 import './SmartReminders.css';
 
 interface Reminder {
@@ -23,9 +24,16 @@ export default function SmartReminders() {
   const navigate = useNavigate();
   const [reminders, setReminders] = useState<Reminder[]>([]);
   const [showAddForm, setShowAddForm] = useState(false);
-  const [aiSuggestions, setAiSuggestions] = useState<string[]>([]);
+  const [aiSuggestions, setAiSuggestions] = useState<any[]>([]);
   const [isAiAnalyzing, setIsAiAnalyzing] = useState(false);
   const [showNavDropdown, setShowNavDropdown] = useState(false);
+  const [aiInsights, setAiInsights] = useState<any[]>([]);
+  const [isLoadingInsights, setIsLoadingInsights] = useState(false);
+  const [refreshMessage, setRefreshMessage] = useState('');
+  const [appliedInsights, setAppliedInsights] = useState<Set<number>>(new Set());
+  const [applyMessage, setApplyMessage] = useState('');
+  const [deletingReminder, setDeletingReminder] = useState<string | null>(null);
+  const [isInitializing, setIsInitializing] = useState(false);
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -45,57 +53,268 @@ export default function SmartReminders() {
     };
   }, [showNavDropdown]);
 
+  // Load AI Health Insights
+  const loadAIInsights = async () => {
+    setIsLoadingInsights(true);
+    
+    // Add a small delay to show the loading state
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    
+    try {
+      // For now, use mock data with randomization. Replace with real AI call when AWS credentials are configured
+      const mockInsights = generateRandomizedInsights();
+      console.log('Generated new AI insights:', mockInsights);
+      setAiInsights(mockInsights);
+      
+      // Uncomment below when AWS credentials are configured:
+      // const response = await aiService.generateHealthInsights({
+      //   activityLevel: 'moderate',
+      //   sleepQuality: 'good',
+      //   stressLevel: 'low',
+      //   nutritionScore: 'fair'
+      // });
+      // setAiInsights(response.insights);
+    } catch (error) {
+      console.error('Error loading AI insights:', error);
+      // Fallback to mock data
+      const mockInsights = aiService.getMockHealthInsights();
+      setAiInsights(mockInsights.insights);
+    } finally {
+      setIsLoadingInsights(false);
+      setAppliedInsights(new Set()); // Reset applied insights when new ones are loaded
+      setRefreshMessage('✨ New insights generated!');
+      setTimeout(() => setRefreshMessage(''), 3000);
+    }
+  };
+
+  // Generate randomized insights for demo purposes
+  const generateRandomizedInsights = () => {
+    const insightPool = [
+      {
+        title: "Optimize Your Hydration",
+        description: "Based on your activity level, aim for 10-12 glasses of water daily. Consider adding electrolytes after workouts to maintain optimal hydration balance.",
+        priority: "high",
+        category: "hydration"
+      },
+      {
+        title: "Enhance Sleep Recovery",
+        description: "Your sleep quality could benefit from a consistent bedtime routine. Try dimming lights 1 hour before bed and avoiding screens to improve deep sleep phases.",
+        priority: "high",
+        category: "sleep"
+      },
+      {
+        title: "Boost Nutritional Variety",
+        description: "Incorporate more colorful vegetables into your meals. Aim for 5 different colored fruits and vegetables daily to maximize nutrient diversity.",
+        priority: "medium",
+        category: "nutrition"
+      },
+      {
+        title: "Increase Daily Movement",
+        description: "Add 2-3 short walking breaks throughout your day. Even 5-minute walks can significantly improve circulation and energy levels.",
+        priority: "medium",
+        category: "exercise"
+      },
+      {
+        title: "Stress Management Focus",
+        description: "Consider implementing a 10-minute daily meditation practice. Deep breathing exercises can reduce cortisol levels and improve mental clarity.",
+        priority: "high",
+        category: "stress"
+      },
+      {
+        title: "Vitamin D Optimization",
+        description: "Your indoor lifestyle suggests potential vitamin D deficiency. Consider 15 minutes of morning sunlight or a quality supplement.",
+        priority: "medium",
+        category: "general"
+      },
+      {
+        title: "Posture Improvement",
+        description: "Set hourly reminders to check and correct your posture. Poor posture can lead to back pain and reduced energy levels.",
+        priority: "low",
+        category: "exercise"
+      },
+      {
+        title: "Meal Timing Optimization",
+        description: "Try eating your largest meal earlier in the day. This can improve digestion and support better sleep quality.",
+        priority: "medium",
+        category: "nutrition"
+      }
+    ];
+
+    // Randomly select 3 insights
+    const shuffled = insightPool.sort(() => 0.5 - Math.random());
+    return shuffled.slice(0, 3);
+  };
+
+  // Load AI Smart Reminders
+  const loadAIReminders = async () => {
+    setIsAiAnalyzing(true);
+    try {
+      // For now, use mock data. Replace with real AI call when AWS credentials are configured
+      const mockReminders = aiService.getMockSmartReminders();
+      
+      // Convert AI reminders to our Reminder format
+      const aiReminders: Reminder[] = mockReminders.reminders.map((reminder: any, index: number) => ({
+        id: `ai-${index + 1}`,
+        title: reminder.title,
+        description: reminder.description,
+        time: reminder.time,
+        frequency: reminder.frequency as 'daily' | 'weekly' | 'monthly' | 'custom',
+        category: reminder.category as 'medication' | 'exercise' | 'checkup' | 'wellness' | 'nutrition',
+        isActive: true,
+        nextReminder: new Date(Date.now() + Math.random() * 24 * 60 * 60 * 1000),
+        aiGenerated: true,
+        priority: reminder.priority as 'low' | 'medium' | 'high' | 'critical'
+      }));
+      
+      setReminders(aiReminders);
+      
+      // Uncomment below when AWS credentials are configured:
+      // const response = await aiService.generateSmartReminders({
+      //   schedule: 'standard work hours',
+      //   focusAreas: ['hydration', 'exercise', 'nutrition', 'sleep']
+      // });
+      // const aiReminders: Reminder[] = response.reminders.map((reminder: any, index: number) => ({
+      //   id: `ai-${index + 1}`,
+      //   title: reminder.title,
+      //   description: reminder.description,
+      //   time: reminder.time,
+      //   frequency: reminder.frequency,
+      //   category: reminder.category,
+      //   isActive: true,
+      //   nextReminder: new Date(Date.now() + Math.random() * 24 * 60 * 60 * 1000),
+      //   aiGenerated: true,
+      //   priority: reminder.priority
+      // }));
+      // setReminders(aiReminders);
+    } catch (error) {
+      console.error('Error loading AI reminders:', error);
+    } finally {
+      setIsAiAnalyzing(false);
+    }
+  };
+
   // Sample AI-generated reminders
   useEffect(() => {
     if (isAuthenticated) {
-      const sampleReminders: Reminder[] = [
-        {
-          id: '1',
-          title: 'Morning Vitamin D',
-          description: 'AI detected low sunlight exposure. Take 2000 IU Vitamin D supplement',
-          time: '08:00',
-          frequency: 'daily',
-          category: 'medication',
-          isActive: true,
-          nextReminder: new Date(Date.now() + 8 * 60 * 60 * 1000),
-          aiGenerated: true,
-          priority: 'high'
-        },
-        {
-          id: '2',
-          title: 'Hydration Check',
-          description: 'AI analysis: Drink 500ml water based on your activity level',
-          time: '14:00',
-          frequency: 'daily',
-          category: 'wellness',
-          isActive: true,
-          nextReminder: new Date(Date.now() + 6 * 60 * 60 * 1000),
-          aiGenerated: true,
-          priority: 'medium'
-        },
-        {
-          id: '3',
-          title: 'Cardio Session',
-          description: 'AI recommends 25-min moderate cardio based on heart rate data',
-          time: '18:30',
-          frequency: 'daily',
-          category: 'exercise',
-          isActive: false,
-          nextReminder: new Date(Date.now() + 12 * 60 * 60 * 1000),
-          aiGenerated: true,
-          priority: 'medium'
-        }
-      ];
-      setReminders(sampleReminders);
+      // Don't auto-load - let users initialize the system manually
+      // loadAIInsights();
+      // loadAIReminders();
+      // Don't load sample data automatically - let users initialize the system
+      // const sampleReminders: Reminder[] = [...];
+      // setReminders(sampleReminders);
       
-      // Simulate AI suggestions
-      setAiSuggestions([
-        'Based on your sleep pattern, consider a melatonin reminder at 21:00',
-        'Your stress levels suggest adding a 5-minute meditation break',
-        'AI detected irregular meal times - shall I create nutrition reminders?'
-      ]);
+      // Don't auto-load AI suggestions - they'll be loaded during initialization
+      // setAiSuggestions([...]);
     }
   }, [isAuthenticated]);
+
+  const handleApplyInsight = (insight: any, index: number) => {
+    // Check if already applied
+    if (appliedInsights.has(index)) {
+      setApplyMessage('⚠️ This insight has already been applied!');
+      setTimeout(() => setApplyMessage(''), 3000);
+      return;
+    }
+
+    // Generate smart time based on category
+    const getSmartTime = (category: string) => {
+      switch (category) {
+        case 'hydration': return '08:00';
+        case 'exercise': return '17:00';
+        case 'nutrition': return '12:00';
+        case 'sleep': return '21:00';
+        case 'stress': return '15:00';
+        default: return '09:00';
+      }
+    };
+
+    // Convert insight to a reminder
+    const newReminder: Reminder = {
+      id: `insight-${Date.now()}-${index}`,
+      title: `💡 ${insight.title}`,
+      description: `AI Insight: ${insight.description}`,
+      time: getSmartTime(insight.category),
+      frequency: 'daily',
+      category: insight.category === 'hydration' ? 'wellness' : 
+                insight.category === 'general' ? 'wellness' : 
+                insight.category === 'stress' ? 'wellness' :
+                insight.category as 'medication' | 'exercise' | 'checkup' | 'wellness' | 'nutrition',
+      isActive: true,
+      nextReminder: new Date(Date.now() + 24 * 60 * 60 * 1000),
+      aiGenerated: true,
+      priority: insight.priority as 'low' | 'medium' | 'high' | 'critical'
+    };
+
+    // Add to reminders
+    setReminders(prev => [...prev, newReminder]);
+    
+    // Mark as applied
+    setAppliedInsights(prev => new Set(Array.from(prev).concat(index)));
+    
+    // Show success message
+    setApplyMessage(`✅ "${insight.title}" added as a ${getSmartTime(insight.category)} reminder!`);
+    setTimeout(() => setApplyMessage(''), 4000);
+    
+    console.log('Applied insight as reminder:', insight.title, 'at', getSmartTime(insight.category));
+  };
+
+  const handleDeleteReminder = (reminderId: string, reminderTitle: string) => {
+    // Show confirmation dialog
+    const confirmed = window.confirm(
+      `Are you sure you want to delete "${reminderTitle}"?\n\nThis action cannot be undone.`
+    );
+    
+    if (!confirmed) {
+      return;
+    }
+    
+    // Set deleting state for animation
+    setDeletingReminder(reminderId);
+    
+    // Remove the reminder after a short delay for animation
+    setTimeout(() => {
+      setReminders(prev => prev.filter(reminder => reminder.id !== reminderId));
+      setDeletingReminder(null);
+    }, 300);
+    
+    // Show success message
+    setApplyMessage(`🗑️ "${reminderTitle}" has been deleted`);
+    setTimeout(() => setApplyMessage(''), 3000);
+    
+    console.log('Deleted reminder:', reminderTitle);
+  };
+
+  const handleInitializeSystem = async () => {
+    setIsInitializing(true);
+    setApplyMessage('🚀 Initializing Neural Health System...');
+    
+    try {
+      // Step 1: Generate AI insights (with delay for effect)
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      setApplyMessage('🧠 Analyzing your health profile...');
+      
+      await loadAIInsights();
+      
+      // Step 2: Generate initial reminders
+      await new Promise(resolve => setTimeout(resolve, 800));
+      setApplyMessage('⚡ Creating personalized reminders...');
+      
+      await loadAIReminders();
+      
+      // Step 3: Complete initialization
+      await new Promise(resolve => setTimeout(resolve, 500));
+      setApplyMessage('✅ Neural Health System initialized successfully!');
+      
+      setTimeout(() => setApplyMessage(''), 4000);
+      
+    } catch (error) {
+      console.error('Initialization error:', error);
+      setApplyMessage('❌ Initialization failed. Please try again.');
+      setTimeout(() => setApplyMessage(''), 3000);
+    } finally {
+      setIsInitializing(false);
+    }
+  };
 
   const handleAiAnalysis = () => {
     setIsAiAnalyzing(true);
@@ -244,30 +463,77 @@ export default function SmartReminders() {
         </div>
       </div>
 
-      {/* AI Suggestions Panel */}
-      {aiSuggestions.length > 0 && (
-        <div className="ai-suggestions-panel">
-          <div className="panel-header">
-            <span className="panel-icon">🤖</span>
-            <h3>AI HEALTH INSIGHTS</h3>
-          </div>
-          <div className="suggestions-list">
-            {aiSuggestions.map((suggestion, index) => (
-              <div key={index} className="suggestion-item">
-                <div className="suggestion-pulse"></div>
-                <span className="suggestion-text">{suggestion}</span>
-                <button className="suggestion-action">APPLY</button>
-              </div>
-            ))}
-          </div>
+      {/* AI Health Insights Panel */}
+      <div className="ai-suggestions-panel">
+        <div className="panel-header">
+          <span className="panel-icon">🤖</span>
+          <h3>AI HEALTH INSIGHTS</h3>
+          {isLoadingInsights && <span className="loading-indicator">Analyzing...</span>}
         </div>
-      )}
+        <div className="suggestions-list">
+          {isLoadingInsights ? (
+            <div className="suggestion-item">
+              <div className="suggestion-pulse"></div>
+              <span className="suggestion-text">AI is analyzing your health data...</span>
+              <button className="suggestion-action" disabled>LOADING</button>
+            </div>
+          ) : (
+            aiInsights.map((insight, index) => (
+              <div key={index} className={`suggestion-item ${appliedInsights.has(index) ? 'applied' : ''}`}>
+                <div className="suggestion-pulse"></div>
+                <div className="suggestion-content">
+                  <div className="suggestion-title">{insight.title}</div>
+                  <span className="suggestion-text">{insight.description}</span>
+                  <div className="suggestion-meta">
+                    <span className={`priority-badge ${insight.priority}`}>{insight.priority.toUpperCase()}</span>
+                    <span className="category-badge">{insight.category}</span>
+                  </div>
+                </div>
+                <button 
+                  className={`suggestion-action ${appliedInsights.has(index) ? 'applied' : ''}`}
+                  onClick={() => handleApplyInsight(insight, index)}
+                  disabled={appliedInsights.has(index)}
+                >
+                  {appliedInsights.has(index) ? '✓ APPLIED' : 'APPLY'}
+                </button>
+              </div>
+            ))
+          )}
+        </div>
+        <div className="ai-actions">
+          <button 
+            className="refresh-insights-btn"
+            onClick={loadAIInsights}
+            disabled={isLoadingInsights}
+          >
+            {isLoadingInsights ? (
+              <>
+                <span className="spinning">🔄</span> Generating Insights...
+              </>
+            ) : (
+              <>
+                🔄 Refresh Insights
+              </>
+            )}
+          </button>
+          {refreshMessage && (
+            <div className="refresh-message">
+              {refreshMessage}
+            </div>
+          )}
+          {applyMessage && (
+            <div className="apply-message">
+              {applyMessage}
+            </div>
+          )}
+        </div>
+      </div>
 
       {/* Reminders Grid */}
       <div className="reminders-content">
         <div className="reminders-grid">
           {reminders.map((reminder) => (
-            <div key={reminder.id} className={`reminder-card ${reminder.isActive ? 'active' : 'inactive'} ${reminder.aiGenerated ? 'ai-generated' : ''}`}>
+            <div key={reminder.id} className={`reminder-card ${reminder.isActive ? 'active' : 'inactive'} ${reminder.aiGenerated ? 'ai-generated' : ''} ${deletingReminder === reminder.id ? 'deleting' : ''}`}>
               {reminder.aiGenerated && (
                 <div className="ai-badge">
                   <span>AI</span>
@@ -286,6 +552,13 @@ export default function SmartReminders() {
                 <div className="card-actions">
                   <button className={`toggle-btn ${reminder.isActive ? 'active' : 'inactive'}`}>
                     {reminder.isActive ? '🔔' : '🔕'}
+                  </button>
+                  <button 
+                    className="delete-btn"
+                    onClick={() => handleDeleteReminder(reminder.id, reminder.title)}
+                    title="Delete this reminder"
+                  >
+                    🗑️
                   </button>
                 </div>
               </div>
@@ -331,14 +604,26 @@ export default function SmartReminders() {
               <div className="neural-pulse"></div>
               <div className="empty-icon">⚡</div>
             </div>
-            <h3>NEURAL NETWORK READY</h3>
-            <p>Initialize your first AI-powered health reminder to begin optimization</p>
+            <h3>{isInitializing ? 'SYSTEM INITIALIZING...' : 'NEURAL NETWORK READY'}</h3>
+            <p>
+              {isInitializing 
+                ? 'AI is analyzing your health profile and creating personalized reminders...'
+                : 'Initialize your first AI-powered health reminder to begin optimization'
+              }
+            </p>
             <button 
               className="initialize-btn"
-              onClick={() => setShowAddForm(true)}
+              onClick={handleInitializeSystem}
+              disabled={isInitializing}
             >
               <span className="btn-glow"></span>
-              INITIALIZE SYSTEM
+              {isInitializing ? (
+                <>
+                  <span className="spinning">⚡</span> INITIALIZING...
+                </>
+              ) : (
+                'INITIALIZE SYSTEM'
+              )}
             </button>
           </div>
         )}
