@@ -56,6 +56,8 @@
 .auth-nav {
   display: flex;
   justify-content: center;
+  align-items: center;
+  gap: 15px;
   margin-top: 30px;
   padding-bottom: 20px;
 }
@@ -164,6 +166,135 @@
   display: flex;
   flex-direction: column;
   gap: 25px;
+}
+
+/* Social Auth Buttons */
+.social-auth-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.social-auth-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px 20px;
+  font-size: 18px;
+  font-weight: 600;
+  font-family: 'Courier New', monospace;
+  letter-spacing: 1px;
+  border: 1px solid #00FFFF;
+  border-radius: 8px;
+  background: rgba(0, 34, 68, 0.4);
+  color: #00FFFF;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  position: relative;
+  overflow: hidden;
+  text-shadow: 0 0 10px #00FFFF;
+}
+
+.social-auth-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.1), transparent);
+  transition: left 0.5s ease;
+}
+
+.social-auth-button:hover::before {
+  left: 100%;
+}
+
+.social-auth-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 255, 255, 0.2);
+}
+
+.google-button {
+  border-color: #00FFFF;
+}
+
+.google-button:hover {
+  background: rgba(0, 255, 255, 0.1);
+  border-color: #00FFFF;
+  box-shadow: 0 8px 24px rgba(0, 255, 255, 0.3);
+}
+
+.apple-button {
+  border-color: #00FFFF;
+}
+
+.apple-button:hover {
+  background: rgba(0, 255, 255, 0.1);
+  border-color: #00FFFF;
+  box-shadow: 0 8px 24px rgba(0, 255, 255, 0.2);
+}
+
+.social-icon {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+}
+
+/* Theme Toggle Button */
+.auth-nav .theme-toggle-btn {
+  background: rgba(0, 34, 68, 0.3);
+  border: 2px solid #00FFFF;
+  border-radius: 50%;
+  width: 45px;
+  height: 45px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 2px 8px rgba(0, 255, 255, 0.1);
+}
+
+.auth-nav .theme-toggle-btn:hover {
+  border-color: #00FFFF;
+  box-shadow: 0 4px 16px rgba(0, 255, 255, 0.3);
+  transform: scale(1.05);
+}
+
+.auth-nav .theme-icon {
+  font-size: 20px;
+  transition: transform 0.3s ease;
+}
+
+.auth-nav .theme-toggle-btn:hover .theme-icon {
+  transform: rotate(15deg) scale(1.1);
+}
+
+/* Auth Divider */
+.auth-divider {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin: 10px 0;
+}
+
+.divider-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #334155, transparent);
+}
+
+.divider-text {
+  color: #8892b0;
+  font-size: 14px;
+  font-weight: bold;
+  font-family: 'Courier New', monospace;
+  letter-spacing: 2px;
 }
 
 .input-row {
@@ -472,8 +603,16 @@
   .form-title {
     font-size: 24px;
   }
-  
 
+  .social-auth-button {
+    font-size: 16px;
+    padding: 10px 16px;
+  }
+
+  .social-icon {
+    width: 20px;
+    height: 20px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -494,6 +633,16 @@
   .auth-button {
     padding: 15px 30px;
     font-size: 14px;
+  }
+
+  .social-auth-button {
+    font-size: 14px;
+    padding: 10px 14px;
+  }
+
+  .social-icon {
+    width: 18px;
+    height: 18px;
   }
 }
 
@@ -814,6 +963,17 @@
   font-weight: 700 !important;
 }
 
+[data-theme="light"] .auth-nav .theme-toggle-btn {
+  background: var(--bg-glass) !important;
+  border: 2px solid var(--border-primary) !important;
+  box-shadow: var(--shadow-secondary) !important;
+}
+
+[data-theme="light"] .auth-nav .theme-toggle-btn:hover {
+  border-color: var(--border-hover) !important;
+  box-shadow: var(--shadow-hover) !important;
+}
+
 /* Light Theme Footer */
 [data-theme="light"] .auth-footer {
   border-top: 1px solid var(--border-secondary) !important;
@@ -841,6 +1001,49 @@
   border-radius: 8px !important;
   font-weight: 600 !important;
   box-shadow: 0 2px 8px rgba(5, 150, 105, 0.15) !important;
+}
+
+/* Light Theme Social Auth Buttons */
+[data-theme="light"] .social-auth-button {
+  background: var(--bg-glass) !important;
+  border: 2px solid var(--border-primary) !important;
+  color: var(--accent-primary) !important;
+  font-weight: 700 !important;
+  box-shadow: var(--shadow-secondary) !important;
+  text-shadow: 0 1px 2px rgba(4, 120, 87, 0.1) !important;
+}
+
+[data-theme="light"] .social-auth-button::before {
+  background: linear-gradient(90deg, transparent, rgba(4, 120, 87, 0.1), transparent) !important;
+}
+
+[data-theme="light"] .google-button {
+  border-color: var(--border-primary) !important;
+}
+
+[data-theme="light"] .google-button:hover {
+  background: var(--bg-glass-hover) !important;
+  border-color: var(--border-hover) !important;
+  box-shadow: var(--shadow-hover) !important;
+}
+
+[data-theme="light"] .apple-button {
+  border-color: var(--border-primary) !important;
+}
+
+[data-theme="light"] .apple-button:hover {
+  background: var(--bg-glass-hover) !important;
+  border-color: var(--border-hover) !important;
+  box-shadow: var(--shadow-hover) !important;
+}
+
+[data-theme="light"] .divider-line {
+  background: linear-gradient(90deg, transparent, var(--border-primary), transparent) !important;
+}
+
+[data-theme="light"] .divider-text {
+  color: var(--text-secondary) !important;
+  font-weight: 700 !important;
 }
 
 /* Light Theme Enhanced Form Styling */
