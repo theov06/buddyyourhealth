@@ -18,14 +18,14 @@
 }
 
 .new-reminder-modal {
-  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-  border: 2px solid rgba(0, 255, 255, 0.3);
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a0f00 50%, #0a0a0a 100%);
+  border: 2px solid rgba(255, 165, 0, 0.3);
   border-radius: 20px;
   width: 100%;
   max-width: 650px;
   max-height: 90vh;
   overflow-y: auto;
-  box-shadow: 0 20px 60px rgba(0, 255, 255, 0.3);
+  box-shadow: 0 20px 60px rgba(255, 165, 0, 0.3);
   animation: slideUp 0.3s ease-out;
 }
 
@@ -39,7 +39,7 @@
 
 .form-label {
   display: block;
-  color: #00ffff;
+  color: #FFA500;
   font-size: 0.9rem;
   font-weight: 600;
   text-transform: uppercase;
@@ -56,8 +56,9 @@
 .form-textarea,
 .form-select {
   width: 100%;
+  box-sizing: border-box;
   background: rgba(255, 255, 255, 0.05);
-  border: 2px solid rgba(0, 255, 255, 0.3);
+  border: 2px solid rgba(255, 165, 0, 0.3);
   border-radius: 10px;
   padding: 12px 16px;
   color: #fff;
@@ -70,9 +71,9 @@
 .form-textarea:focus,
 .form-select:focus {
   outline: none;
-  border-color: #00ffff;
-  box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
-  background: rgba(0, 255, 255, 0.05);
+  border-color: #FFA500;
+  box-shadow: 0 0 20px rgba(255, 165, 0, 0.3);
+  background: rgba(255, 165, 0, 0.05);
 }
 
 .form-input.error,
@@ -88,7 +89,7 @@
 .time-input {
   font-family: 'Courier New', monospace;
   font-weight: 700;
-  color: #00ffff;
+  color: #FFA500;
 }
 
 .time-input::-webkit-calendar-picker-indicator {
@@ -99,14 +100,14 @@
 .form-select {
   cursor: pointer;
   appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2300ffff' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23FFA500' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 16px center;
   padding-right: 40px;
 }
 
 .form-select option {
-  background: #1a1a2e;
+  background: #0a0a0a;
   color: #fff;
 }
 
@@ -146,7 +147,7 @@
 
 .category-btn {
   background: rgba(255, 255, 255, 0.05);
-  border: 2px solid rgba(0, 255, 255, 0.2);
+  border: 2px solid rgba(255, 165, 0, 0.2);
   border-radius: 12px;
   padding: 15px 10px;
   cursor: pointer;
@@ -158,15 +159,15 @@
 }
 
 .category-btn:hover {
-  background: rgba(0, 255, 255, 0.1);
-  border-color: rgba(0, 255, 255, 0.5);
+  background: rgba(255, 165, 0, 0.1);
+  border-color: rgba(255, 165, 0, 0.5);
   transform: translateY(-2px);
 }
 
 .category-btn.selected {
-  background: linear-gradient(135deg, rgba(0, 255, 255, 0.2) 0%, rgba(138, 43, 226, 0.2) 100%);
-  border-color: #00ffff;
-  box-shadow: 0 0 20px rgba(0, 255, 255, 0.4);
+  background: linear-gradient(135deg, rgba(255, 165, 0, 0.2) 0%, rgba(255, 140, 0, 0.2) 100%);
+  border-color: #FFA500;
+  box-shadow: 0 0 20px rgba(255, 165, 0, 0.4);
 }
 
 .category-icon {
@@ -222,8 +223,8 @@
 }
 
 .calendar-section {
-  background: rgba(0, 255, 255, 0.05);
-  border: 1px solid rgba(0, 255, 255, 0.2);
+  background: rgba(255, 165, 0, 0.05);
+  border: 1px solid rgba(255, 165, 0, 0.2);
   border-radius: 12px;
   padding: 20px;
 }
@@ -287,9 +288,9 @@
 }
 
 .calendar-type-btn.selected {
-  background: linear-gradient(135deg, rgba(0, 255, 255, 0.2) 0%, rgba(138, 43, 226, 0.2) 100%);
-  border-color: #00ffff;
-  box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+  background: linear-gradient(135deg, rgba(255, 165, 0, 0.2) 0%, rgba(255, 140, 0, 0.2) 100%);
+  border-color: #FFA500;
+  box-shadow: 0 0 15px rgba(255, 165, 0, 0.3);
 }
 
 .calendar-icon {
@@ -308,7 +309,7 @@
   justify-content: flex-end;
   margin-top: 30px;
   padding-top: 20px;
-  border-top: 1px solid rgba(0, 255, 255, 0.2);
+  border-top: 1px solid rgba(255, 165, 0, 0.2);
 }
 
 .cancel-btn,
@@ -336,18 +337,18 @@
 }
 
 .submit-btn {
-  background: linear-gradient(135deg, #00ffff 0%, #8a2be2 100%);
-  border-color: #00ffff;
+  background: linear-gradient(135deg, #FFA500 0%, #FF8C00 100%);
+  border-color: #FFA500;
   color: #000;
   display: flex;
   align-items: center;
   gap: 8px;
-  box-shadow: 0 0 20px rgba(0, 255, 255, 0.4);
+  box-shadow: 0 0 20px rgba(255, 165, 0, 0.4);
 }
 
 .submit-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 5px 30px rgba(0, 255, 255, 0.6);
+  box-shadow: 0 5px 30px rgba(255, 165, 0, 0.6);
 }
 
 .btn-icon {
@@ -356,13 +357,13 @@
 
 /* Light Theme Support */
 .light .new-reminder-modal {
-  background: linear-gradient(135deg, #f0f4f8 0%, #e2e8f0 100%);
-  border-color: rgba(0, 150, 255, 0.3);
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+  background: linear-gradient(135deg, #ffffff 0%, #fef3c7 50%, #ffffff 100%);
+  border-color: rgba(146, 64, 14, 0.3);
+  box-shadow: 0 20px 60px rgba(146, 64, 14, 0.2);
 }
 
 .light .form-label {
-  color: #0096ff;
+  color: #92400e;
 }
 
 .light .required {
@@ -372,17 +373,17 @@
 .light .form-input,
 .light .form-textarea,
 .light .form-select {
-  background: rgba(0, 0, 0, 0.03);
-  border-color: rgba(0, 150, 255, 0.3);
-  color: #1a1a2e;
+  background: rgba(251, 191, 36, 0.05);
+  border-color: rgba(146, 64, 14, 0.3);
+  color: #92400e;
 }
 
 .light .form-input:focus,
 .light .form-textarea:focus,
 .light .form-select:focus {
-  border-color: #0096ff;
-  box-shadow: 0 0 20px rgba(0, 150, 255, 0.2);
-  background: rgba(0, 150, 255, 0.05);
+  border-color: #d97706;
+  box-shadow: 0 0 20px rgba(245, 158, 11, 0.2);
+  background: rgba(251, 191, 36, 0.1);
 }
 
 .light .form-input.error,
@@ -391,16 +392,16 @@
 }
 
 .light .time-input {
-  color: #0096ff;
+  color: #d97706;
 }
 
 .light .form-select {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%230096ff' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23d97706' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
 }
 
 .light .form-select option {
-  background: #f0f4f8;
-  color: #1a1a2e;
+  background: #ffffff;
+  color: #92400e;
 }
 
 .light .error-message {
@@ -412,78 +413,78 @@
 }
 
 .light .category-btn {
-  background: rgba(0, 0, 0, 0.03);
-  border-color: rgba(0, 150, 255, 0.2);
+  background: rgba(251, 191, 36, 0.05);
+  border-color: rgba(146, 64, 14, 0.2);
 }
 
 .light .category-btn:hover {
-  background: rgba(0, 150, 255, 0.1);
-  border-color: rgba(0, 150, 255, 0.5);
+  background: rgba(251, 191, 36, 0.15);
+  border-color: rgba(146, 64, 14, 0.5);
 }
 
 .light .category-btn.selected {
-  background: linear-gradient(135deg, rgba(0, 150, 255, 0.2) 0%, rgba(138, 43, 226, 0.2) 100%);
-  border-color: #0096ff;
-  box-shadow: 0 0 20px rgba(0, 150, 255, 0.3);
+  background: linear-gradient(135deg, rgba(251, 191, 36, 0.2) 0%, rgba(245, 158, 11, 0.2) 100%);
+  border-color: #d97706;
+  box-shadow: 0 0 20px rgba(245, 158, 11, 0.3);
 }
 
 .light .category-label {
-  color: #1a1a2e;
+  color: #92400e;
 }
 
 .light .priority-btn {
-  background: rgba(0, 0, 0, 0.03);
-  border-color: rgba(0, 0, 0, 0.2);
+  background: rgba(251, 191, 36, 0.05);
+  border-color: rgba(146, 64, 14, 0.2);
 }
 
 .light .priority-btn.selected {
-  background: rgba(0, 0, 0, 0.05);
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  background: rgba(251, 191, 36, 0.1);
+  box-shadow: 0 0 15px rgba(245, 158, 11, 0.2);
 }
 
 .light .priority-label {
-  color: #1a1a2e;
+  color: #92400e;
 }
 
 .light .calendar-section {
-  background: rgba(0, 150, 255, 0.05);
-  border-color: rgba(0, 150, 255, 0.2);
+  background: rgba(251, 191, 36, 0.05);
+  border-color: rgba(146, 64, 14, 0.2);
 }
 
 .light .calendar-toggle label {
-  color: #1a1a2e;
+  color: #92400e;
 }
 
 .light .calendar-type-btn {
-  background: rgba(0, 0, 0, 0.03);
-  border-color: rgba(0, 0, 0, 0.2);
+  background: rgba(251, 191, 36, 0.05);
+  border-color: rgba(146, 64, 14, 0.2);
 }
 
 .light .calendar-type-btn.selected {
-  background: linear-gradient(135deg, rgba(0, 150, 255, 0.2) 0%, rgba(138, 43, 226, 0.2) 100%);
-  border-color: #0096ff;
-  box-shadow: 0 0 15px rgba(0, 150, 255, 0.3);
+  background: linear-gradient(135deg, rgba(251, 191, 36, 0.2) 0%, rgba(245, 158, 11, 0.2) 100%);
+  border-color: #d97706;
+  box-shadow: 0 0 15px rgba(245, 158, 11, 0.3);
 }
 
 .light .calendar-name {
-  color: #1a1a2e;
+  color: #92400e;
 }
 
 .light .form-actions {
-  border-top-color: rgba(0, 150, 255, 0.2);
+  border-top-color: rgba(146, 64, 14, 0.2);
 }
 
 .light .cancel-btn {
-  background: rgba(0, 0, 0, 0.05);
-  border-color: rgba(0, 0, 0, 0.3);
-  color: #1a1a2e;
+  background: rgba(146, 64, 14, 0.05);
+  border-color: rgba(146, 64, 14, 0.3);
+  color: #92400e;
 }
 
 .light .submit-btn {
-  background: linear-gradient(135deg, #0096ff 0%, #8a2be2 100%);
-  border-color: #0096ff;
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  border-color: #d97706;
   color: #fff;
-  box-shadow: 0 0 20px rgba(0, 150, 255, 0.3);
+  box-shadow: 0 0 20px rgba(245, 158, 11, 0.3);
 }
 
 /* Responsive Design */
