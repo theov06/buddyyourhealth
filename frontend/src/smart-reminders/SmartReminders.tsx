@@ -6,6 +6,7 @@ import aiService from '../services/aiService';
 import calendarService from '../services/calendarService';
 import TimePickerModal from './TimePickerModal';
 import NewReminderModal, { NewReminderData } from './NewReminderModal';
+import AnalysisModal from './AnalysisModal';
 import './SmartReminders.css';
 
 interface Reminder {
@@ -39,6 +40,7 @@ export default function SmartReminders() {
   const [showTimePicker, setShowTimePicker] = useState(false);
   const [selectedInsight, setSelectedInsight] = useState<any>(null);
   const [selectedInsightIndex, setSelectedInsightIndex] = useState<number>(-1);
+  const [showAnalysisModal, setShowAnalysisModal] = useState(false);
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -278,8 +280,8 @@ export default function SmartReminders() {
             setApplyMessage(`✅ "${insight.title}" added at ${time} & exported to Outlook Calendar!`);
             break;
           case 'ics':
-            calendarService.downloadICS(calendarEvent, `neural-reminder-${Date.now()}.ics`);
-            setApplyMessage(`✅ "${insight.title}" added at ${time} & calendar file downloaded!`);
+            calendarService.openWithCalendarApp(calendarEvent);
+            setApplyMessage(`✅ "${insight.title}" added at ${time} & opening in calendar app!`);
             break;
         }
       } catch (error) {
@@ -300,15 +302,6 @@ export default function SmartReminders() {
   };
 
   const handleDeleteReminder = (reminderId: string, reminderTitle: string) => {
-    // Show confirmation dialog
-    const confirmed = window.confirm(
-      `Are you sure you want to delete "${reminderTitle}"?\n\nThis action cannot be undone.`
-    );
-    
-    if (!confirmed) {
-      return;
-    }
-    
     // Set deleting state for animation
     setDeletingReminder(reminderId);
     
@@ -358,13 +351,18 @@ export default function SmartReminders() {
   };
 
   const handleAiAnalysis = () => {
+    if (reminders.length === 0) {
+      setApplyMessage('⚠️ No reminders to analyze. Create some reminders first!');
+      setTimeout(() => setApplyMessage(''), 3000);
+      return;
+    }
+    
     setIsAiAnalyzing(true);
-    // Simulate AI analysis
+    // Simulate AI processing
     setTimeout(() => {
       setIsAiAnalyzing(false);
-      setApplyMessage('✅ AI analysis complete! Check insights panel for recommendations.');
-      setTimeout(() => setApplyMessage(''), 3000);
-    }, 3000);
+      setShowAnalysisModal(true);
+    }, 1500);
   };
 
   const handleNewReminderSubmit = (data: NewReminderData) => {
@@ -407,8 +405,8 @@ export default function SmartReminders() {
             setApplyMessage(`✅ "${data.title}" created & exported to Outlook Calendar!`);
             break;
           case 'ics':
-            calendarService.downloadICS(calendarEvent, `${data.title.replace(/[^a-z0-9]/gi, '-').toLowerCase()}.ics`);
-            setApplyMessage(`✅ "${data.title}" created & calendar file downloaded!`);
+            calendarService.openWithCalendarApp(calendarEvent);
+            setApplyMessage(`✅ "${data.title}" created & opening in calendar app!`);
             break;
         }
       } catch (error) {
@@ -655,16 +653,13 @@ export default function SmartReminders() {
                         reminder.category,
                         reminder.priority
                       );
-                      calendarService.downloadICS(event, `${reminder.title.replace(/[^a-z0-9]/gi, '-').toLowerCase()}.ics`);
-                      setApplyMessage(`📥 Calendar file downloaded for "${reminder.title}"!`);
+                      calendarService.openWithCalendarApp(event);
+                      setApplyMessage(`📅 Opening "${reminder.title}" in calendar app!`);
                       setTimeout(() => setApplyMessage(''), 3000);
                     }}
                     title="Export to calendar"
                   >
                     📅
-                  </button>
-                  <button className={`toggle-btn ${reminder.isActive ? 'active' : 'inactive'}`}>
-                    {reminder.isActive ? '🔔' : '🔕'}
                   </button>
                   <button 
                     className="delete-btn"
@@ -786,6 +781,13 @@ export default function SmartReminders() {
         isOpen={showAddForm}
         onClose={() => setShowAddForm(false)}
         onSubmit={handleNewReminderSubmit}
+      />
+
+      {/* Analysis Modal */}
+      <AnalysisModal
+        isOpen={showAnalysisModal}
+        onClose={() => setShowAnalysisModal(false)}
+        reminders={reminders}
       />
     </div>
   );

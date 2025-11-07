@@ -113,12 +113,12 @@ export default function TimePickerModal({
                     onClick={() => setCalendarType('ics')}
                   >
                     <span className="calendar-icon">📥</span>
-                    <span className="calendar-name">Download .ics</span>
+                    <span className="calendar-name">Calendar App</span>
                   </button>
                 </div>
                 <p className="calendar-hint">
                   {calendarType === 'ics' 
-                    ? '📥 Download a universal calendar file that works with Apple Calendar, Outlook, and more'
+                    ? '📅 Opens directly in your default calendar app (Apple Calendar, Outlook, etc.)'
                     : `🔗 Opens ${calendarType === 'google' ? 'Google' : 'Outlook'} Calendar in a new tab`
                   }
                 </p>

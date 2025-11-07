@@ -254,7 +254,7 @@ export default function NewReminderModal({ isOpen, onClose, onSubmit }: NewRemin
                     onClick={() => handleChange('calendarType', 'ics')}
                   >
                     <span className="calendar-icon">📥</span>
-                    <span className="calendar-name">Download</span>
+                    <span className="calendar-name">Calendar App</span>
                   </button>
                 </div>
               </div>

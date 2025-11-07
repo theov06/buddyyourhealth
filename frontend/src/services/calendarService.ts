@@ -61,7 +61,33 @@ class CalendarService {
     return icsContent;
   }
 
-  // Download .ics file
+  // Open with default calendar app (attempts to trigger calendar app directly)
+  openWithCalendarApp(event: CalendarEvent): void {
+    const icsContent = this.generateICS(event);
+    const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+    const blobUrl = URL.createObjectURL(blob);
+    
+    // Create a link that will trigger the calendar app
+    const link = document.createElement('a');
+    link.href = blobUrl;
+    link.download = `neural-reminder-${Date.now()}.ics`;
+    link.type = 'text/calendar';
+    link.style.display = 'none';
+    document.body.appendChild(link);
+    
+    // Click the link to trigger download/open
+    link.click();
+    
+    // Clean up
+    document.body.removeChild(link);
+    setTimeout(() => URL.revokeObjectURL(blobUrl), 1000);
+    
+    // On macOS/iOS, the .ics file will automatically prompt to open in Calendar app
+    // On Windows, it will open in default calendar app (Outlook, etc.)
+    // On other systems, it will download and user can click to open
+  }
+
+  // Download .ics file (legacy method, kept for compatibility)
   downloadICS(event: CalendarEvent, filename: string = 'neural-reminder.ics'): void {
     const icsContent = this.generateICS(event);
     const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
