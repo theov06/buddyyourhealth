@@ -6,7 +6,7 @@ import aiService from '../services/aiService';
 import calendarService from '../services/calendarService';
 import TimePickerModal from './TimePickerModal';
 import NewReminderModal, { NewReminderData } from './NewReminderModal';
-import AnalysisModal from './AnalysisModal';
+import DailyTrackerModal from './DailyTrackerModal';
 import './SmartReminders.css';
 
 interface Reminder {
@@ -40,7 +40,7 @@ export default function SmartReminders() {
   const [showTimePicker, setShowTimePicker] = useState(false);
   const [selectedInsight, setSelectedInsight] = useState<any>(null);
   const [selectedInsightIndex, setSelectedInsightIndex] = useState<number>(-1);
-  const [showAnalysisModal, setShowAnalysisModal] = useState(false);
+  const [showDailyTracker, setShowDailyTracker] = useState(false);
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -351,18 +351,7 @@ export default function SmartReminders() {
   };
 
   const handleAiAnalysis = () => {
-    if (reminders.length === 0) {
-      setApplyMessage('⚠️ No reminders to analyze. Create some reminders first!');
-      setTimeout(() => setApplyMessage(''), 3000);
-      return;
-    }
-    
-    setIsAiAnalyzing(true);
-    // Simulate AI processing
-    setTimeout(() => {
-      setIsAiAnalyzing(false);
-      setShowAnalysisModal(true);
-    }, 1500);
+    setShowDailyTracker(true);
   };
 
   const handleNewReminderSubmit = (data: NewReminderData) => {
@@ -540,10 +529,9 @@ export default function SmartReminders() {
           <button 
             className="ai-analyze-btn"
             onClick={handleAiAnalysis}
-            disabled={isAiAnalyzing}
           >
             <span className="btn-icon">◈</span>
-            {isAiAnalyzing ? 'ANALYZING...' : 'AI ANALYSIS'}
+            DAILY TRACKER
           </button>
           <button 
             className="add-reminder-btn"
@@ -783,11 +771,10 @@ export default function SmartReminders() {
         onSubmit={handleNewReminderSubmit}
       />
 
-      {/* Analysis Modal */}
-      <AnalysisModal
-        isOpen={showAnalysisModal}
-        onClose={() => setShowAnalysisModal(false)}
-        reminders={reminders}
+      {/* Daily Tracker Modal */}
+      <DailyTrackerModal
+        isOpen={showDailyTracker}
+        onClose={() => setShowDailyTracker(false)}
       />
     </div>
   );
