@@ -947,6 +947,29 @@
   border-color: #FFA500;
 }
 
+.calendar-export-btn {
+  padding: 8px 12px;
+  background: transparent;
+  border: 1px solid rgba(0, 150, 255, 0.3);
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: rgba(0, 150, 255, 0.7);
+}
+
+.calendar-export-btn:hover {
+  background: rgba(0, 150, 255, 0.1);
+  border-color: #0096ff;
+  color: #0096ff;
+  transform: translateY(-2px);
+  box-shadow: 0 0 15px rgba(0, 150, 255, 0.3);
+}
+
+.calendar-export-btn:active {
+  transform: translateY(0);
+}
+
 .delete-btn {
   padding: 8px 12px;
   background: transparent;
@@ -1882,6 +1905,18 @@
 .smart-reminders-container.light .toggle-btn.active {
   background: rgba(251, 191, 36, 0.2);
   border-color: #f59e0b;
+}
+
+.smart-reminders-container.light .calendar-export-btn {
+  border-color: rgba(0, 100, 200, 0.3);
+  color: rgba(0, 100, 200, 0.7);
+}
+
+.smart-reminders-container.light .calendar-export-btn:hover {
+  background: rgba(0, 100, 200, 0.1);
+  border-color: #0064c8;
+  color: #0064c8;
+  box-shadow: 0 0 15px rgba(0, 100, 200, 0.3);
 }
 
 .smart-reminders-container.light .delete-btn {

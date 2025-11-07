@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useTheme } from '../contexts/ThemeContext';
 import aiService from '../services/aiService';
+import calendarService from '../services/calendarService';
+import TimePickerModal from './TimePickerModal';
 import './SmartReminders.css';
 
 interface Reminder {
@@ -34,6 +36,9 @@ export default function SmartReminders() {
   const [applyMessage, setApplyMessage] = useState('');
   const [deletingReminder, setDeletingReminder] = useState<string | null>(null);
   const [isInitializing, setIsInitializing] = useState(false);
+  const [showTimePicker, setShowTimePicker] = useState(false);
+  const [selectedInsight, setSelectedInsight] = useState<any>(null);
+  const [selectedInsightIndex, setSelectedInsightIndex] = useState<number>(-1);
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -216,24 +221,24 @@ export default function SmartReminders() {
       return;
     }
 
-    // Generate smart time based on category
-    const getSmartTime = (category: string) => {
-      switch (category) {
-        case 'hydration': return '08:00';
-        case 'exercise': return '17:00';
-        case 'nutrition': return '12:00';
-        case 'sleep': return '21:00';
-        case 'stress': return '15:00';
-        default: return '09:00';
-      }
-    };
+    // Open time picker modal
+    setSelectedInsight(insight);
+    setSelectedInsightIndex(index);
+    setShowTimePicker(true);
+  };
+
+  const handleTimePickerConfirm = (time: string, addToCalendar: boolean, calendarType?: string) => {
+    if (!selectedInsight || selectedInsightIndex === -1) return;
+
+    const insight = selectedInsight;
+    const index = selectedInsightIndex;
 
     // Convert insight to a reminder
     const newReminder: Reminder = {
       id: `insight-${Date.now()}-${index}`,
       title: `💡 ${insight.title}`,
       description: `AI Insight: ${insight.description}`,
-      time: getSmartTime(insight.category),
+      time: time,
       frequency: 'daily',
       category: insight.category === 'hydration' ? 'wellness' : 
                 insight.category === 'general' ? 'wellness' : 
@@ -250,12 +255,48 @@ export default function SmartReminders() {
     
     // Mark as applied
     setAppliedInsights(prev => new Set(Array.from(prev).concat(index)));
+
+    // Handle calendar integration
+    if (addToCalendar && calendarType) {
+      const calendarEvent = calendarService.createEventFromReminder(
+        newReminder.title,
+        newReminder.description,
+        newReminder.time,
+        newReminder.frequency,
+        newReminder.category,
+        newReminder.priority
+      );
+
+      try {
+        switch (calendarType) {
+          case 'google':
+            calendarService.addToGoogleCalendar(calendarEvent);
+            setApplyMessage(`✅ "${insight.title}" added at ${time} & exported to Google Calendar!`);
+            break;
+          case 'outlook':
+            calendarService.addToOutlookCalendar(calendarEvent);
+            setApplyMessage(`✅ "${insight.title}" added at ${time} & exported to Outlook Calendar!`);
+            break;
+          case 'ics':
+            calendarService.downloadICS(calendarEvent, `neural-reminder-${Date.now()}.ics`);
+            setApplyMessage(`✅ "${insight.title}" added at ${time} & calendar file downloaded!`);
+            break;
+        }
+      } catch (error) {
+        console.error('Calendar export error:', error);
+        setApplyMessage(`✅ "${insight.title}" added at ${time} (calendar export failed)`);
+      }
+    } else {
+      setApplyMessage(`✅ "${insight.title}" added as a ${time} reminder!`);
+    }
     
-    // Show success message
-    setApplyMessage(`✅ "${insight.title}" added as a ${getSmartTime(insight.category)} reminder!`);
-    setTimeout(() => setApplyMessage(''), 4000);
+    setTimeout(() => setApplyMessage(''), 5000);
     
-    console.log('Applied insight as reminder:', insight.title, 'at', getSmartTime(insight.category));
+    console.log('Applied insight as reminder:', insight.title, 'at', time);
+    
+    // Reset selection
+    setSelectedInsight(null);
+    setSelectedInsightIndex(-1);
   };
 
   const handleDeleteReminder = (reminderId: string, reminderTitle: string) => {
@@ -550,6 +591,25 @@ export default function SmartReminders() {
                   </div>
                 </div>
                 <div className="card-actions">
+                  <button 
+                    className="calendar-export-btn"
+                    onClick={() => {
+                      const event = calendarService.createEventFromReminder(
+                        reminder.title,
+                        reminder.description,
+                        reminder.time,
+                        reminder.frequency,
+                        reminder.category,
+                        reminder.priority
+                      );
+                      calendarService.downloadICS(event, `${reminder.title.replace(/[^a-z0-9]/gi, '-').toLowerCase()}.ics`);
+                      setApplyMessage(`📥 Calendar file downloaded for "${reminder.title}"!`);
+                      setTimeout(() => setApplyMessage(''), 3000);
+                    }}
+                    title="Export to calendar"
+                  >
+                    📅
+                  </button>
                   <button className={`toggle-btn ${reminder.isActive ? 'active' : 'inactive'}`}>
                     {reminder.isActive ? '🔔' : '🔕'}
                   </button>
@@ -641,7 +701,7 @@ export default function SmartReminders() {
             <span className="stat-label">ADHERENCE</span>
           </div>
           <div className="stat-item">
-            <span className="stat-value">12</span>
+            <span className="stat-value">{reminders.length}</span>
             <span className="stat-label">ACTIVE</span>
           </div>
           <div className="stat-item">
@@ -650,6 +710,23 @@ export default function SmartReminders() {
           </div>
         </div>
       </div>
+
+      {/* Time Picker Modal */}
+      <TimePickerModal
+        isOpen={showTimePicker}
+        onClose={() => {
+          setShowTimePicker(false);
+          setSelectedInsight(null);
+          setSelectedInsightIndex(-1);
+        }}
+        onConfirm={handleTimePickerConfirm}
+        insightTitle={selectedInsight?.title || ''}
+        defaultTime={selectedInsight?.category === 'hydration' ? '08:00' :
+                     selectedInsight?.category === 'exercise' ? '17:00' :
+                     selectedInsight?.category === 'nutrition' ? '12:00' :
+                     selectedInsight?.category === 'sleep' ? '21:00' :
+                     selectedInsight?.category === 'stress' ? '15:00' : '09:00'}
+      />
     </div>
   );
 }
