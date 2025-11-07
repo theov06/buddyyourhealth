@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useTheme } from '../contexts/ThemeContext';
 import aiService from '../services/aiService';
 import calendarService from '../services/calendarService';
 import TimePickerModal from './TimePickerModal';
+import NewReminderModal, { NewReminderData } from './NewReminderModal';
 import './SmartReminders.css';
 
 interface Reminder {
@@ -21,12 +22,11 @@ interface Reminder {
 }
 
 export default function SmartReminders() {
-  const { user, isAuthenticated, logout } = useAuth();
+  const { isAuthenticated, logout } = useAuth();
   const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
   const [reminders, setReminders] = useState<Reminder[]>([]);
   const [showAddForm, setShowAddForm] = useState(false);
-  const [aiSuggestions, setAiSuggestions] = useState<any[]>([]);
   const [isAiAnalyzing, setIsAiAnalyzing] = useState(false);
   const [showNavDropdown, setShowNavDropdown] = useState(false);
   const [aiInsights, setAiInsights] = useState<any[]>([]);
@@ -362,12 +362,65 @@ export default function SmartReminders() {
     // Simulate AI analysis
     setTimeout(() => {
       setIsAiAnalyzing(false);
-      setAiSuggestions([
-        'AI detected you missed 3 workouts this week - adjusting intensity',
-        'Your medication adherence is 95% - excellent progress!',
-        'Recommend adding a posture check reminder every 2 hours'
-      ]);
+      setApplyMessage('✅ AI analysis complete! Check insights panel for recommendations.');
+      setTimeout(() => setApplyMessage(''), 3000);
     }, 3000);
+  };
+
+  const handleNewReminderSubmit = (data: NewReminderData) => {
+    // Create new reminder
+    const newReminder: Reminder = {
+      id: `custom-${Date.now()}`,
+      title: data.title,
+      description: data.description,
+      time: data.time,
+      frequency: data.frequency,
+      category: data.category,
+      isActive: true,
+      nextReminder: new Date(Date.now() + 24 * 60 * 60 * 1000),
+      aiGenerated: false,
+      priority: data.priority
+    };
+
+    // Add to reminders
+    setReminders(prev => [...prev, newReminder]);
+
+    // Handle calendar integration
+    if (data.addToCalendar && data.calendarType) {
+      const calendarEvent = calendarService.createEventFromReminder(
+        newReminder.title,
+        newReminder.description,
+        newReminder.time,
+        newReminder.frequency,
+        newReminder.category,
+        newReminder.priority
+      );
+
+      try {
+        switch (data.calendarType) {
+          case 'google':
+            calendarService.addToGoogleCalendar(calendarEvent);
+            setApplyMessage(`✅ "${data.title}" created & exported to Google Calendar!`);
+            break;
+          case 'outlook':
+            calendarService.addToOutlookCalendar(calendarEvent);
+            setApplyMessage(`✅ "${data.title}" created & exported to Outlook Calendar!`);
+            break;
+          case 'ics':
+            calendarService.downloadICS(calendarEvent, `${data.title.replace(/[^a-z0-9]/gi, '-').toLowerCase()}.ics`);
+            setApplyMessage(`✅ "${data.title}" created & calendar file downloaded!`);
+            break;
+        }
+      } catch (error) {
+        console.error('Calendar export error:', error);
+        setApplyMessage(`✅ "${data.title}" created successfully!`);
+      }
+    } else {
+      setApplyMessage(`✅ "${data.title}" created successfully!`);
+    }
+
+    setTimeout(() => setApplyMessage(''), 5000);
+    console.log('Created new reminder:', data.title);
   };
 
   const getCategoryIcon = (category: string) => {
@@ -726,6 +779,13 @@ export default function SmartReminders() {
                      selectedInsight?.category === 'nutrition' ? '12:00' :
                      selectedInsight?.category === 'sleep' ? '21:00' :
                      selectedInsight?.category === 'stress' ? '15:00' : '09:00'}
+      />
+
+      {/* New Reminder Modal */}
+      <NewReminderModal
+        isOpen={showAddForm}
+        onClose={() => setShowAddForm(false)}
+        onSubmit={handleNewReminderSubmit}
       />
     </div>
   );
