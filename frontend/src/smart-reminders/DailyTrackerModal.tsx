@@ -242,103 +242,158 @@ export default function DailyTrackerModal({ isOpen, onClose }: DailyTrackerModal
   };
 
   const handleAnalyze = () => {
-    if (meals.length === 0 && exercises.length === 0) {
-      alert('Please add at least one meal or exercise to analyze');
-      return;
-    }
-
     setIsAnalyzing(true);
     
     setTimeout(() => {
       const insights: AIInsight[] = [];
+      const hasMeals = meals.length > 0;
+      const hasExercises = exercises.length > 0;
       const totalCaloriesIn = meals.reduce((sum, m) => sum + m.calories, 0);
       const totalCaloriesOut = exercises.reduce((sum, e) => sum + e.caloriesBurned, 0);
       const netCalories = totalCaloriesIn - totalCaloriesOut;
       const totalExerciseTime = exercises.reduce((sum, e) => sum + e.duration, 0);
 
-      // Calorie balance analysis
-      if (netCalories > 500) {
-        insights.push({
-          type: 'warning',
-          message: `⚠️ High calorie surplus of ${netCalories} calories. Consider adding more physical activity or reducing portion sizes.`
-        });
-      } else if (netCalories < -500) {
-        insights.push({
-          type: 'warning',
-          message: `⚠️ Large calorie deficit of ${Math.abs(netCalories)} calories. Ensure you're eating enough to fuel your activities.`
-        });
-      } else {
-        insights.push({
-          type: 'success',
-          message: `✅ Well-balanced calorie intake! Net calories: ${netCalories > 0 ? '+' : ''}${netCalories}.`
-        });
+      // If user has entered data, provide specific analysis
+      if (hasMeals || hasExercises) {
+        // Calorie balance analysis (only if both meals and exercises exist)
+        if (hasMeals && hasExercises) {
+          if (netCalories > 500) {
+            insights.push({
+              type: 'warning',
+              message: `High calorie surplus of ${netCalories} calories detected. Consider adding more physical activity or reducing portion sizes to maintain balance.`
+            });
+          } else if (netCalories < -500) {
+            insights.push({
+              type: 'warning',
+              message: `Large calorie deficit of ${Math.abs(netCalories)} calories detected. Ensure you're eating enough to fuel your activities and support recovery.`
+            });
+          } else {
+            insights.push({
+              type: 'success',
+              message: `Well-balanced calorie intake! Your net calories (${netCalories > 0 ? '+' : ''}${netCalories}) are within a healthy range.`
+            });
+          }
+        }
+
+        // Meal-specific analysis
+        if (hasMeals) {
+          if (meals.length < 3) {
+            insights.push({
+              type: 'info',
+              message: `You logged ${meals.length} meal(s) today. Consider eating 3-5 smaller meals throughout the day for sustained energy and better metabolism.`
+            });
+          } else if (meals.length >= 3 && meals.length <= 5) {
+            insights.push({
+              type: 'success',
+              message: `Great meal frequency! ${meals.length} meals help maintain steady energy levels and support metabolic health.`
+            });
+          } else {
+            insights.push({
+              type: 'info',
+              message: `You logged ${meals.length} meals. While frequent eating can work for some, ensure you're not overeating. Focus on portion control.`
+            });
+          }
+
+          // Meal timing analysis
+          const morningMeals = meals.filter(m => {
+            const hour = parseInt(m.time.split(':')[0]);
+            return hour >= 5 && hour < 12;
+          });
+          
+          if (morningMeals.length === 0) {
+            insights.push({
+              type: 'info',
+              message: `No breakfast logged. Starting your day with a nutritious meal can boost metabolism and provide sustained energy throughout the morning.`
+            });
+          }
+
+          // Calorie intake analysis
+          if (totalCaloriesIn < 1200) {
+            insights.push({
+              type: 'warning',
+              message: `Your total calorie intake (${totalCaloriesIn} cal) is quite low. Ensure you're meeting your body's nutritional needs.`
+            });
+          } else if (totalCaloriesIn > 3000) {
+            insights.push({
+              type: 'warning',
+              message: `Your total calorie intake (${totalCaloriesIn} cal) is high. Monitor portion sizes and consider your activity level.`
+            });
+          }
+        }
+
+        // Exercise-specific analysis
+        if (hasExercises) {
+          if (totalExerciseTime < 30) {
+            insights.push({
+              type: 'info',
+              message: `Good start with ${totalExerciseTime} minutes of exercise! Try to reach 30+ minutes daily for optimal cardiovascular and metabolic health benefits.`
+            });
+          } else if (totalExerciseTime >= 30 && totalExerciseTime <= 90) {
+            insights.push({
+              type: 'success',
+              message: `Excellent! ${totalExerciseTime} minutes of exercise meets or exceeds the daily recommendation for maintaining good health.`
+            });
+          } else {
+            insights.push({
+              type: 'success',
+              message: `Outstanding! ${totalExerciseTime} minutes of exercise shows strong commitment. Ensure adequate rest and recovery between sessions.`
+            });
+          }
+
+          // Intensity analysis
+          const highIntensityCount = exercises.filter(e => e.intensity === 'high').length;
+          const lowIntensityCount = exercises.filter(e => e.intensity === 'low').length;
+          
+          if (highIntensityCount > 0) {
+            insights.push({
+              type: 'success',
+              message: `${highIntensityCount} high-intensity workout(s) detected! Excellent for cardiovascular health, calorie burn, and building endurance.`
+            });
+          }
+          
+          if (lowIntensityCount === exercises.length && exercises.length > 0) {
+            insights.push({
+              type: 'info',
+              message: `All exercises were low intensity. Consider adding moderate or high-intensity activities 2-3 times per week for better results.`
+            });
+          }
+
+          // Protein recommendation based on exercise
+          const estimatedProteinNeeded = Math.round(totalExerciseTime > 30 ? 80 : 60);
+          insights.push({
+            type: 'info',
+            message: `Based on your ${totalExerciseTime} minutes of activity, aim for approximately ${estimatedProteinNeeded}g of protein today to support muscle recovery and growth.`
+          });
+        }
       }
 
-      // Meal frequency analysis
-      if (meals.length < 3) {
-        insights.push({
-          type: 'info',
-          message: `💡 You logged ${meals.length} meal(s). Consider eating 3-5 smaller meals throughout the day for sustained energy.`
-        });
-      } else if (meals.length >= 3 && meals.length <= 5) {
-        insights.push({
-          type: 'success',
-          message: `✅ Great meal frequency! ${meals.length} meals help maintain steady energy levels.`
-        });
-      }
-
-      // Exercise analysis
-      if (exercises.length === 0) {
-        insights.push({
-          type: 'warning',
-          message: `🏃‍♂️ No exercise logged today. Aim for at least 30 minutes of physical activity daily.`
-        });
-      } else if (totalExerciseTime < 30) {
-        insights.push({
-          type: 'info',
-          message: `💪 Good start with ${totalExerciseTime} minutes of exercise! Try to reach 30+ minutes for optimal health benefits.`
-        });
-      } else {
-        insights.push({
-          type: 'success',
-          message: `🎉 Excellent! ${totalExerciseTime} minutes of exercise exceeds the daily recommendation.`
-        });
-      }
-
-      // Intensity analysis
-      const highIntensityCount = exercises.filter(e => e.intensity === 'high').length;
-      if (highIntensityCount > 0) {
-        insights.push({
-          type: 'success',
-          message: `🔥 ${highIntensityCount} high-intensity workout(s) detected! Great for cardiovascular health and calorie burn.`
-        });
-      }
-
-      // Meal timing analysis
-      const morningMeals = meals.filter(m => {
-        const hour = parseInt(m.time.split(':')[0]);
-        return hour >= 5 && hour < 12;
-      });
-      
-      if (morningMeals.length === 0) {
-        insights.push({
-          type: 'info',
-          message: `🌅 No breakfast logged. Starting your day with a nutritious meal can boost metabolism and energy.`
-        });
-      }
-
-      // Hydration reminder
+      // Always include general health tips
       insights.push({
         type: 'info',
-        message: `💧 Remember to drink 8-10 glasses of water throughout the day, especially after exercise!`
+        message: `Hydration reminder: Drink at least 2 liters (8-10 glasses) of water throughout the day. Increase intake during and after exercise.`
       });
 
-      // Protein recommendation
-      const estimatedProteinNeeded = Math.round(totalExerciseTime > 30 ? 80 : 60);
       insights.push({
         type: 'info',
-        message: `🥩 Based on your activity level, aim for ${estimatedProteinNeeded}g of protein today to support muscle recovery.`
+        message: `Sleep is crucial for recovery and health. Aim for 7-9 hours of quality sleep each night to support your fitness and nutrition goals.`
       });
+
+      if (!hasMeals && !hasExercises) {
+        insights.push({
+          type: 'info',
+          message: `Start tracking your meals and exercises to receive personalized AI insights about your nutrition and fitness patterns.`
+        });
+        
+        insights.push({
+          type: 'info',
+          message: `General tip: Eat a balanced diet with plenty of vegetables, lean proteins, whole grains, and healthy fats for optimal health.`
+        });
+        
+        insights.push({
+          type: 'info',
+          message: `Aim for at least 30 minutes of moderate physical activity most days of the week to maintain cardiovascular health and fitness.`
+        });
+      }
 
       setAiInsights(insights);
       setIsAnalyzing(false);

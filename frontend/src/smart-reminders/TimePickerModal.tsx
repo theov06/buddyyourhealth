@@ -18,7 +18,7 @@ export default function TimePickerModal({
 }: TimePickerModalProps) {
   const [selectedTime, setSelectedTime] = useState(defaultTime);
   const [addToCalendar, setAddToCalendar] = useState(false);
-  const [calendarType, setCalendarType] = useState<string>('ics');
+  const [calendarType, setCalendarType] = useState<string>('google');
 
   if (!isOpen) return null;
 
@@ -99,28 +99,18 @@ export default function TimePickerModal({
                     onClick={() => setCalendarType('google')}
                   >
                     <span className="calendar-icon">🔵</span>
-                    <span className="calendar-name">Google</span>
+                    <span className="calendar-name">Google Calendar</span>
                   </button>
                   <button
                     className={`calendar-type-btn ${calendarType === 'outlook' ? 'selected' : ''}`}
                     onClick={() => setCalendarType('outlook')}
                   >
                     <span className="calendar-icon">🔷</span>
-                    <span className="calendar-name">Outlook</span>
-                  </button>
-                  <button
-                    className={`calendar-type-btn ${calendarType === 'ics' ? 'selected' : ''}`}
-                    onClick={() => setCalendarType('ics')}
-                  >
-                    <span className="calendar-icon">📥</span>
-                    <span className="calendar-name">Calendar App</span>
+                    <span className="calendar-name">Outlook Calendar</span>
                   </button>
                 </div>
                 <p className="calendar-hint">
-                  {calendarType === 'ics' 
-                    ? '📅 Opens directly in your default calendar app (Apple Calendar, Outlook, etc.)'
-                    : `🔗 Opens ${calendarType === 'google' ? 'Google' : 'Outlook'} Calendar in a new tab`
-                  }
+                  Opens {calendarType === 'google' ? 'Google' : 'Outlook'} Calendar in a new tab. Click "Save" to add the event directly to your calendar - no downloads needed!
                 </p>
               </div>
             )}

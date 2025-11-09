@@ -99,51 +99,75 @@ export default function SmartReminders() {
     const insightPool = [
       {
         title: "Optimize Your Hydration",
-        description: "Based on your activity level, aim for 10-12 glasses of water daily. Consider adding electrolytes after workouts to maintain optimal hydration balance.",
+        description: "Aim for 8-10 glasses of water daily for optimal health. Increase intake during physical activity and warm weather to maintain proper hydration.",
         priority: "high",
         category: "hydration"
       },
       {
-        title: "Enhance Sleep Recovery",
-        description: "Your sleep quality could benefit from a consistent bedtime routine. Try dimming lights 1 hour before bed and avoiding screens to improve deep sleep phases.",
+        title: "Enhance Sleep Quality",
+        description: "Establish a consistent bedtime routine for better rest. Try dimming lights 1 hour before bed and avoiding screens to improve sleep quality.",
         priority: "high",
         category: "sleep"
       },
       {
         title: "Boost Nutritional Variety",
-        description: "Incorporate more colorful vegetables into your meals. Aim for 5 different colored fruits and vegetables daily to maximize nutrient diversity.",
+        description: "Incorporate more colorful vegetables into your meals. Aim for 5 different colored fruits and vegetables daily to maximize nutrient diversity and health benefits.",
         priority: "medium",
         category: "nutrition"
       },
       {
         title: "Increase Daily Movement",
-        description: "Add 2-3 short walking breaks throughout your day. Even 5-minute walks can significantly improve circulation and energy levels.",
+        description: "Add 2-3 short walking breaks throughout your day. Even 5-minute walks can significantly improve circulation, energy levels, and overall health.",
         priority: "medium",
         category: "exercise"
       },
       {
-        title: "Stress Management Focus",
-        description: "Consider implementing a 10-minute daily meditation practice. Deep breathing exercises can reduce cortisol levels and improve mental clarity.",
+        title: "Practice Stress Management",
+        description: "Consider implementing a 10-minute daily meditation or deep breathing practice. Regular stress management can improve mental clarity and overall wellbeing.",
         priority: "high",
         category: "stress"
       },
       {
-        title: "Vitamin D Optimization",
-        description: "Your indoor lifestyle suggests potential vitamin D deficiency. Consider 15 minutes of morning sunlight or a quality supplement.",
+        title: "Vitamin D Awareness",
+        description: "Many people have insufficient vitamin D levels. Consider 15-20 minutes of morning sunlight exposure or consult your doctor about supplementation.",
         priority: "medium",
         category: "general"
       },
       {
-        title: "Posture Improvement",
-        description: "Set hourly reminders to check and correct your posture. Poor posture can lead to back pain and reduced energy levels.",
+        title: "Posture Check Reminder",
+        description: "Set regular reminders to check and correct your posture throughout the day. Good posture can prevent back pain and improve energy levels.",
         priority: "low",
         category: "exercise"
       },
       {
-        title: "Meal Timing Optimization",
-        description: "Try eating your largest meal earlier in the day. This can improve digestion and support better sleep quality.",
+        title: "Meal Timing Strategy",
+        description: "Consider eating larger meals earlier in the day when your metabolism is more active. This can improve digestion and support better sleep quality at night.",
         priority: "medium",
         category: "nutrition"
+      },
+      {
+        title: "Protein Intake Focus",
+        description: "Ensure adequate protein intake throughout the day. Aim for 0.8-1g per kg of body weight to support muscle maintenance and overall health.",
+        priority: "medium",
+        category: "nutrition"
+      },
+      {
+        title: "Active Recovery Days",
+        description: "Include light activity on rest days such as walking, stretching, or yoga. Active recovery can improve circulation and reduce muscle soreness.",
+        priority: "low",
+        category: "exercise"
+      },
+      {
+        title: "Mindful Eating Practice",
+        description: "Take time to eat slowly and without distractions. Mindful eating can improve digestion, help with portion control, and increase meal satisfaction.",
+        priority: "medium",
+        category: "nutrition"
+      },
+      {
+        title: "Consistent Exercise Schedule",
+        description: "Aim for at least 150 minutes of moderate activity per week. Consistency is key for building sustainable fitness habits and seeing long-term results.",
+        priority: "high",
+        category: "exercise"
       }
     ];
 
@@ -273,15 +297,15 @@ export default function SmartReminders() {
         switch (calendarType) {
           case 'google':
             calendarService.addToGoogleCalendar(calendarEvent);
-            setApplyMessage(`✅ "${insight.title}" added at ${time} & exported to Google Calendar!`);
+            setApplyMessage(`✅ "${insight.title}" added at ${time} & opening Google Calendar!`);
             break;
           case 'outlook':
             calendarService.addToOutlookCalendar(calendarEvent);
-            setApplyMessage(`✅ "${insight.title}" added at ${time} & exported to Outlook Calendar!`);
+            setApplyMessage(`✅ "${insight.title}" added at ${time} & opening Outlook Calendar!`);
             break;
-          case 'ics':
-            calendarService.openWithCalendarApp(calendarEvent);
-            setApplyMessage(`✅ "${insight.title}" added at ${time} & opening in calendar app!`);
+          default:
+            calendarService.addToGoogleCalendar(calendarEvent);
+            setApplyMessage(`✅ "${insight.title}" added at ${time} & opening Google Calendar!`);
             break;
         }
       } catch (error) {
@@ -387,15 +411,15 @@ export default function SmartReminders() {
         switch (data.calendarType) {
           case 'google':
             calendarService.addToGoogleCalendar(calendarEvent);
-            setApplyMessage(`✅ "${data.title}" created & exported to Google Calendar!`);
+            setApplyMessage(`✅ "${data.title}" created & opening Google Calendar!`);
             break;
           case 'outlook':
             calendarService.addToOutlookCalendar(calendarEvent);
-            setApplyMessage(`✅ "${data.title}" created & exported to Outlook Calendar!`);
+            setApplyMessage(`✅ "${data.title}" created & opening Outlook Calendar!`);
             break;
-          case 'ics':
-            calendarService.openWithCalendarApp(calendarEvent);
-            setApplyMessage(`✅ "${data.title}" created & opening in calendar app!`);
+          default:
+            calendarService.addToGoogleCalendar(calendarEvent);
+            setApplyMessage(`✅ "${data.title}" created & opening Google Calendar!`);
             break;
         }
       } catch (error) {

@@ -27,7 +27,7 @@ export default function NewReminderModal({ isOpen, onClose, onSubmit }: NewRemin
     category: 'wellness',
     priority: 'medium',
     addToCalendar: false,
-    calendarType: 'ics'
+    calendarType: 'google'
   });
 
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
@@ -168,7 +168,7 @@ export default function NewReminderModal({ isOpen, onClose, onSubmit }: NewRemin
               >
                 {frequencyOptions.map(option => (
                   <option key={option.value} value={option.value}>
-                    {option.icon} {option.label}
+                    {option.label}
                   </option>
                 ))}
               </select>
@@ -231,6 +231,7 @@ export default function NewReminderModal({ isOpen, onClose, onSubmit }: NewRemin
 
             {formData.addToCalendar && (
               <div className="calendar-options">
+                <label className="section-label">Choose Calendar</label>
                 <div className="calendar-type-grid">
                   <button
                     type="button"
@@ -238,7 +239,7 @@ export default function NewReminderModal({ isOpen, onClose, onSubmit }: NewRemin
                     onClick={() => handleChange('calendarType', 'google')}
                   >
                     <span className="calendar-icon">🔵</span>
-                    <span className="calendar-name">Google</span>
+                    <span className="calendar-name">Google Calendar</span>
                   </button>
                   <button
                     type="button"
@@ -246,17 +247,12 @@ export default function NewReminderModal({ isOpen, onClose, onSubmit }: NewRemin
                     onClick={() => handleChange('calendarType', 'outlook')}
                   >
                     <span className="calendar-icon">🔷</span>
-                    <span className="calendar-name">Outlook</span>
-                  </button>
-                  <button
-                    type="button"
-                    className={`calendar-type-btn ${formData.calendarType === 'ics' ? 'selected' : ''}`}
-                    onClick={() => handleChange('calendarType', 'ics')}
-                  >
-                    <span className="calendar-icon">📥</span>
-                    <span className="calendar-name">Calendar App</span>
+                    <span className="calendar-name">Outlook Calendar</span>
                   </button>
                 </div>
+                <p className="calendar-hint">
+                  Opens {formData.calendarType === 'google' ? 'Google' : 'Outlook'} Calendar in a new tab. Click "Save" to add directly - no downloads!
+                </p>
               </div>
             )}
           </div>
