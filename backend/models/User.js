@@ -24,6 +24,22 @@ const userSchema = new mongoose.Schema({
     required: true,
     minlength: 6
   },
+  googleId: {
+    type: String,
+    sparse: true
+  },
+  appleId: {
+    type: String,
+    sparse: true
+  },
+  profilePicture: {
+    type: String
+  },
+  authProvider: {
+    type: String,
+    enum: ['local', 'google', 'apple'],
+    default: 'local'
+  },
   isVerified: {
     type: Boolean,
     default: false

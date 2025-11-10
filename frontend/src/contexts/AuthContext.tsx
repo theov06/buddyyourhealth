@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import ApiService from '../services/api';
+import OAuthService from '../services/oauthService';
 
 interface User {
   id: string;
@@ -23,6 +24,8 @@ interface AuthContextType {
   login: (email: string, password: string) => Promise<void>;
   signup: (firstName: string, lastName: string, email: string, password: string) => Promise<void>;
   createAccount: (firstName: string, lastName: string, email: string, password: string) => Promise<void>;
+  loginWithGoogle: (credential: string, clientId: string) => Promise<void>;
+  loginWithApple: (identityToken: string, user?: any) => Promise<void>;
   logout: () => void;
   refreshUser: () => Promise<void>;
 }
@@ -109,6 +112,24 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setUser(null);
   };
 
+  const loginWithGoogle = async (credential: string, clientId: string) => {
+    const response = await OAuthService.googleSignIn(credential, clientId);
+    if (response.success && response.user) {
+      setUser(response.user);
+    } else {
+      throw new Error(response.message || 'Google sign-in failed');
+    }
+  };
+
+  const loginWithApple = async (identityToken: string, user?: any) => {
+    const response = await OAuthService.appleSignIn(identityToken, user);
+    if (response.success && response.user) {
+      setUser(response.user);
+    } else {
+      throw new Error(response.message || 'Apple sign-in failed');
+    }
+  };
+
   const refreshUser = async () => {
     try {
       if (ApiService.isAuthenticated()) {
@@ -129,6 +150,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     login,
     signup,
     createAccount,
+    loginWithGoogle,
+    loginWithApple,
     logout,
     refreshUser,
   };
