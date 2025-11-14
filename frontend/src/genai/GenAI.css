@@ -1,0 +1,985 @@
+/* GenAI Container */
+.genai-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  background: rgba(0, 17, 0, 0.98);
+  overflow: hidden;
+}
+
+/* Sidebar */
+.genai-sidebar {
+  position: relative;
+  width: 280px;
+  height: 100vh;
+  background: rgba(0, 17, 0, 0.95);
+  border-right: 2px solid rgba(0, 255, 65, 0.3);
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s ease;
+  z-index: 20;
+  overflow: hidden;
+}
+
+.genai-sidebar.closed {
+  width: 60px;
+}
+
+.sidebar-header {
+  padding: 20px;
+  border-bottom: 1px solid rgba(0, 255, 65, 0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.new-chat-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px 20px;
+  background: rgba(0, 255, 65, 0.15);
+  border: 2px solid rgba(0, 255, 65, 0.4);
+  border-radius: 8px;
+  color: #00FF41;
+  font-family: 'Courier New', monospace;
+  font-size: 14px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-shadow: 0 0 5px rgba(0, 255, 65, 0.5);
+}
+
+.new-chat-button:hover {
+  background: rgba(0, 255, 65, 0.25);
+  border-color: #00FF41;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0, 255, 65, 0.3);
+}
+
+.genai-sidebar.closed .new-chat-button .new-chat-text {
+  display: none;
+}
+
+.new-chat-icon {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.sidebar-toggle {
+  padding: 8px;
+  background: rgba(0, 255, 65, 0.1);
+  border: 1px solid rgba(0, 255, 65, 0.3);
+  border-radius: 6px;
+  color: #00FF41;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  align-self: center;
+}
+
+.sidebar-toggle:hover {
+  background: rgba(0, 255, 65, 0.2);
+  border-color: #00FF41;
+}
+
+.sidebar-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 255, 65, 0.3) rgba(0, 17, 0, 0.5);
+}
+
+.sidebar-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sidebar-content::-webkit-scrollbar-track {
+  background: rgba(0, 17, 0, 0.5);
+}
+
+.sidebar-content::-webkit-scrollbar-thumb {
+  background: rgba(0, 255, 65, 0.3);
+  border-radius: 3px;
+}
+
+.genai-sidebar.closed .sidebar-content {
+  display: none;
+}
+
+.chat-history-section {
+  margin-bottom: 30px;
+}
+
+.section-title {
+  font-size: 12px;
+  color: rgba(0, 255, 65, 0.6);
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(0, 255, 65, 0.2);
+}
+
+.chat-history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.chat-history-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px;
+  background: rgba(0, 255, 65, 0.05);
+  border: 1px solid rgba(0, 255, 65, 0.2);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.chat-history-item:hover {
+  background: rgba(0, 255, 65, 0.1);
+  border-color: rgba(0, 255, 65, 0.4);
+  transform: translateX(5px);
+}
+
+.chat-history-item.active {
+  background: rgba(0, 255, 65, 0.15);
+  border-color: #00FF41;
+  box-shadow: 0 0 15px rgba(0, 255, 65, 0.2);
+}
+
+.chat-item-icon {
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.chat-item-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.chat-item-title {
+  font-size: 13px;
+  color: #00FF41;
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+  margin-bottom: 5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.chat-item-preview {
+  font-size: 11px;
+  color: rgba(0, 255, 65, 0.6);
+  font-family: 'Courier New', monospace;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Main Content Area */
+.genai-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+/* Background Effects */
+.genai-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.genai-bg-circuit {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 40px,
+      rgba(0, 255, 65, 0.02) 40px,
+      rgba(0, 255, 65, 0.02) 41px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 40px,
+      rgba(0, 255, 65, 0.02) 40px,
+      rgba(0, 255, 65, 0.02) 41px
+    );
+  animation: circuit-scroll 30s linear infinite;
+}
+
+.genai-bg-grid {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    linear-gradient(rgba(0, 255, 65, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 255, 65, 0.03) 1px, transparent 1px);
+  background-size: 80px 80px;
+}
+
+.genai-bg-glow {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(circle at 20% 20%, rgba(0, 255, 65, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(0, 255, 65, 0.06) 0%, transparent 50%);
+  animation: glow-pulse 5s ease-in-out infinite;
+}
+
+/* Header */
+.genai-header {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 30px;
+  background: rgba(0, 17, 0, 0.8);
+  border-bottom: 2px solid rgba(0, 255, 65, 0.3);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 20px rgba(0, 255, 65, 0.1);
+}
+
+.genai-header-left {
+  flex: 1;
+}
+
+.genai-header-right {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 20px;
+}
+
+.genai-back-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: rgba(0, 255, 65, 0.1);
+  border: 1px solid rgba(0, 255, 65, 0.4);
+  border-radius: 6px;
+  color: #00FF41;
+  font-family: 'Courier New', monospace;
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-shadow: 0 0 5px rgba(0, 255, 65, 0.5);
+}
+
+.genai-back-button:hover {
+  background: rgba(0, 255, 65, 0.2);
+  border-color: #00FF41;
+  transform: translateX(-3px);
+  box-shadow: 0 0 15px rgba(0, 255, 65, 0.3);
+}
+
+.back-arrow {
+  font-size: 16px;
+  transition: transform 0.3s ease;
+}
+
+.genai-back-button:hover .back-arrow {
+  transform: translateX(-3px);
+}
+
+.genai-logo {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.genai-logo-icon {
+  font-size: 40px;
+  filter: drop-shadow(0 0 15px rgba(0, 255, 65, 0.6));
+  animation: logo-float 3s ease-in-out infinite;
+}
+
+.genai-logo-text h1 {
+  font-size: 24px;
+  font-weight: bold;
+  color: #00FF41;
+  font-family: 'Courier New', monospace;
+  letter-spacing: 3px;
+  margin: 0;
+  text-shadow: 
+    0 0 10px rgba(0, 255, 65, 0.8),
+    0 0 20px rgba(0, 255, 65, 0.4);
+}
+
+.genai-logo-text p {
+  font-size: 11px;
+  color: rgba(0, 255, 65, 0.7);
+  font-family: 'Courier New', monospace;
+  letter-spacing: 1px;
+  margin: 5px 0 0 0;
+  text-transform: uppercase;
+}
+
+.genai-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: #00FF41;
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+.genai-status-dot {
+  width: 10px;
+  height: 10px;
+  background: #00FF41;
+  border-radius: 50%;
+  box-shadow: 0 0 15px rgba(0, 255, 65, 0.8);
+  animation: status-blink 2s ease-in-out infinite;
+}
+
+/* Chat Container */
+.genai-chat-container {
+  position: relative;
+  z-index: 10;
+  flex: 1;
+  overflow-y: auto;
+  padding: 30px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 255, 65, 0.3) rgba(0, 17, 0, 0.5);
+}
+
+.genai-chat-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.genai-chat-container::-webkit-scrollbar-track {
+  background: rgba(0, 17, 0, 0.5);
+}
+
+.genai-chat-container::-webkit-scrollbar-thumb {
+  background: rgba(0, 255, 65, 0.3);
+  border-radius: 4px;
+}
+
+.genai-chat-container::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 255, 65, 0.5);
+}
+
+.genai-messages {
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Messages */
+.genai-message {
+  display: flex;
+  gap: 15px;
+  animation: message-fade-in 0.3s ease-out;
+}
+
+.genai-message.user-message {
+  flex-direction: row-reverse;
+}
+
+.message-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  flex-shrink: 0;
+  background: rgba(0, 255, 65, 0.1);
+  border: 2px solid rgba(0, 255, 65, 0.3);
+  box-shadow: 0 0 15px rgba(0, 255, 65, 0.2);
+}
+
+.user-message .message-avatar {
+  background: rgba(0, 255, 65, 0.15);
+  border-color: rgba(0, 255, 65, 0.4);
+}
+
+.message-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.user-message .message-content {
+  align-items: flex-end;
+}
+
+.message-bubble {
+  max-width: 70%;
+  padding: 15px 20px;
+  border-radius: 12px;
+  font-family: 'Courier New', monospace;
+  font-size: 14px;
+  line-height: 1.6;
+  word-wrap: break-word;
+}
+
+.ai-message .message-bubble {
+  background: rgba(0, 255, 65, 0.1);
+  border: 1px solid rgba(0, 255, 65, 0.3);
+  color: rgba(0, 255, 65, 0.95);
+  box-shadow: 0 4px 15px rgba(0, 255, 65, 0.1);
+}
+
+.user-message .message-bubble {
+  background: rgba(0, 255, 65, 0.2);
+  border: 1px solid rgba(0, 255, 65, 0.4);
+  color: #FFFFFF;
+  box-shadow: 0 4px 15px rgba(0, 255, 65, 0.15);
+}
+
+.message-timestamp {
+  font-size: 11px;
+  color: rgba(0, 255, 65, 0.5);
+  font-family: 'Courier New', monospace;
+  padding: 0 5px;
+}
+
+/* Typing Indicator */
+.typing-indicator {
+  display: flex;
+  gap: 5px;
+  padding: 15px 20px;
+}
+
+.typing-indicator span {
+  width: 8px;
+  height: 8px;
+  background: rgba(0, 255, 65, 0.8);
+  border-radius: 50%;
+  animation: typing-bounce 1.4s infinite;
+}
+
+.typing-indicator span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.typing-indicator span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+/* Input Container */
+.genai-input-container {
+  position: relative;
+  z-index: 10;
+  padding: 20px 30px;
+  background: rgba(0, 17, 0, 0.9);
+  border-top: 2px solid rgba(0, 255, 65, 0.3);
+  backdrop-filter: blur(10px);
+}
+
+.genai-input-form {
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  gap: 15px;
+}
+
+.genai-input {
+  flex: 1;
+  padding: 15px 20px;
+  background: rgba(0, 255, 65, 0.05);
+  border: 2px solid rgba(0, 255, 65, 0.3);
+  border-radius: 8px;
+  color: #00FF41;
+  font-family: 'Courier New', monospace;
+  font-size: 14px;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.genai-input::placeholder {
+  color: rgba(0, 255, 65, 0.4);
+}
+
+.genai-input:focus {
+  border-color: #00FF41;
+  background: rgba(0, 255, 65, 0.1);
+  box-shadow: 0 0 20px rgba(0, 255, 65, 0.2);
+}
+
+.genai-send-button {
+  padding: 15px 25px;
+  background: rgba(0, 255, 65, 0.2);
+  border: 2px solid rgba(0, 255, 65, 0.4);
+  border-radius: 8px;
+  color: #00FF41;
+  font-size: 18px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.genai-send-button:hover:not(:disabled) {
+  background: rgba(0, 255, 65, 0.3);
+  border-color: #00FF41;
+  transform: scale(1.05);
+  box-shadow: 0 0 20px rgba(0, 255, 65, 0.4);
+}
+
+.genai-send-button:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.send-icon {
+  transition: transform 0.3s ease;
+}
+
+.genai-send-button:hover:not(:disabled) .send-icon {
+  transform: translateX(3px);
+}
+
+.genai-input-footer {
+  max-width: 900px;
+  margin: 10px auto 0;
+  text-align: center;
+}
+
+.genai-input-footer p {
+  font-size: 11px;
+  color: rgba(0, 255, 65, 0.4);
+  font-family: 'Courier New', monospace;
+  margin: 0;
+}
+
+/* Animations */
+@keyframes circuit-scroll {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(40px, 40px); }
+}
+
+@keyframes glow-pulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+@keyframes logo-float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-5px); }
+}
+
+@keyframes status-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+@keyframes message-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes typing-bounce {
+  0%, 60%, 100% { transform: translateY(0); }
+  30% { transform: translateY(-10px); }
+}
+
+/* Light Theme */
+.genai-container.light {
+  background: linear-gradient(135deg, 
+    rgba(240, 253, 249, 0.98),
+    rgba(232, 248, 245, 0.95)
+  );
+}
+
+.genai-container.light .genai-sidebar {
+  background: rgba(240, 253, 249, 0.95);
+  border-right-color: rgba(5, 150, 105, 0.3);
+}
+
+.genai-container.light .sidebar-header {
+  border-bottom-color: rgba(5, 150, 105, 0.2);
+}
+
+.genai-container.light .new-chat-button {
+  background: rgba(5, 150, 105, 0.1);
+  border-color: rgba(5, 150, 105, 0.4);
+  color: #047857;
+  text-shadow: none;
+}
+
+.genai-container.light .new-chat-button:hover {
+  background: rgba(5, 150, 105, 0.2);
+  border-color: #047857;
+  box-shadow: 0 4px 15px rgba(5, 150, 105, 0.2);
+}
+
+.genai-container.light .sidebar-toggle {
+  background: rgba(5, 150, 105, 0.1);
+  border-color: rgba(5, 150, 105, 0.3);
+  color: #047857;
+}
+
+.genai-container.light .sidebar-toggle:hover {
+  background: rgba(5, 150, 105, 0.2);
+  border-color: #047857;
+}
+
+.genai-container.light .sidebar-content {
+  scrollbar-color: rgba(5, 150, 105, 0.3) rgba(240, 253, 249, 0.5);
+}
+
+.genai-container.light .sidebar-content::-webkit-scrollbar-track {
+  background: rgba(240, 253, 249, 0.5);
+}
+
+.genai-container.light .sidebar-content::-webkit-scrollbar-thumb {
+  background: rgba(5, 150, 105, 0.3);
+}
+
+.genai-container.light .section-title {
+  color: rgba(5, 150, 105, 0.7);
+  border-bottom-color: rgba(5, 150, 105, 0.2);
+}
+
+.genai-container.light .chat-history-item {
+  background: rgba(5, 150, 105, 0.05);
+  border-color: rgba(5, 150, 105, 0.2);
+}
+
+.genai-container.light .chat-history-item:hover {
+  background: rgba(5, 150, 105, 0.1);
+  border-color: rgba(5, 150, 105, 0.4);
+}
+
+.genai-container.light .chat-history-item.active {
+  background: rgba(5, 150, 105, 0.15);
+  border-color: #047857;
+  box-shadow: 0 0 15px rgba(5, 150, 105, 0.15);
+}
+
+.genai-container.light .chat-item-title {
+  color: #047857;
+}
+
+.genai-container.light .chat-item-preview {
+  color: rgba(5, 150, 105, 0.7);
+}
+
+.genai-container.light .genai-bg-circuit {
+  background-image: 
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 40px,
+      rgba(5, 150, 105, 0.04) 40px,
+      rgba(5, 150, 105, 0.04) 41px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 40px,
+      rgba(5, 150, 105, 0.04) 40px,
+      rgba(5, 150, 105, 0.04) 41px
+    );
+}
+
+.genai-container.light .genai-bg-grid {
+  background-image: 
+    linear-gradient(rgba(5, 150, 105, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(5, 150, 105, 0.05) 1px, transparent 1px);
+}
+
+.genai-container.light .genai-bg-glow {
+  background: 
+    radial-gradient(circle at 20% 20%, rgba(5, 150, 105, 0.12) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(5, 150, 105, 0.08) 0%, transparent 50%);
+}
+
+.genai-container.light .genai-header {
+  background: rgba(240, 253, 249, 0.9);
+  border-bottom-color: rgba(5, 150, 105, 0.3);
+  box-shadow: 0 4px 20px rgba(5, 150, 105, 0.1);
+}
+
+.genai-container.light .genai-back-button {
+  background: rgba(5, 150, 105, 0.1);
+  border-color: rgba(5, 150, 105, 0.4);
+  color: #047857;
+  text-shadow: none;
+}
+
+.genai-container.light .genai-back-button:hover {
+  background: rgba(5, 150, 105, 0.2);
+  border-color: #047857;
+  box-shadow: 0 0 15px rgba(5, 150, 105, 0.2);
+}
+
+.genai-container.light .genai-logo-icon {
+  filter: drop-shadow(0 0 15px rgba(5, 150, 105, 0.4));
+}
+
+.genai-container.light .genai-logo-text h1 {
+  color: #047857;
+  text-shadow: 
+    0 0 10px rgba(5, 150, 105, 0.3),
+    0 0 20px rgba(5, 150, 105, 0.2);
+}
+
+.genai-container.light .genai-logo-text p {
+  color: rgba(5, 150, 105, 0.8);
+}
+
+.genai-container.light .genai-status {
+  color: #047857;
+}
+
+.genai-container.light .genai-status-dot {
+  background: #047857;
+  box-shadow: 0 0 15px rgba(5, 150, 105, 0.6);
+}
+
+.genai-container.light .genai-chat-container {
+  scrollbar-color: rgba(5, 150, 105, 0.3) rgba(240, 253, 249, 0.5);
+}
+
+.genai-container.light .genai-chat-container::-webkit-scrollbar-track {
+  background: rgba(240, 253, 249, 0.5);
+}
+
+.genai-container.light .genai-chat-container::-webkit-scrollbar-thumb {
+  background: rgba(5, 150, 105, 0.3);
+}
+
+.genai-container.light .genai-chat-container::-webkit-scrollbar-thumb:hover {
+  background: rgba(5, 150, 105, 0.5);
+}
+
+.genai-container.light .message-avatar {
+  background: rgba(5, 150, 105, 0.1);
+  border-color: rgba(5, 150, 105, 0.3);
+  box-shadow: 0 0 15px rgba(5, 150, 105, 0.15);
+}
+
+.genai-container.light .user-message .message-avatar {
+  background: rgba(5, 150, 105, 0.15);
+  border-color: rgba(5, 150, 105, 0.4);
+}
+
+.genai-container.light .ai-message .message-bubble {
+  background: rgba(5, 150, 105, 0.08);
+  border-color: rgba(5, 150, 105, 0.3);
+  color: #047857;
+  box-shadow: 0 4px 15px rgba(5, 150, 105, 0.1);
+}
+
+.genai-container.light .user-message .message-bubble {
+  background: rgba(5, 150, 105, 0.15);
+  border-color: rgba(5, 150, 105, 0.4);
+  color: #065f46;
+  box-shadow: 0 4px 15px rgba(5, 150, 105, 0.15);
+}
+
+.genai-container.light .message-timestamp {
+  color: rgba(5, 150, 105, 0.6);
+}
+
+.genai-container.light .typing-indicator span {
+  background: rgba(5, 150, 105, 0.8);
+}
+
+.genai-container.light .genai-input-container {
+  background: rgba(240, 253, 249, 0.95);
+  border-top-color: rgba(5, 150, 105, 0.3);
+}
+
+.genai-container.light .genai-input {
+  background: rgba(5, 150, 105, 0.05);
+  border-color: rgba(5, 150, 105, 0.3);
+  color: #047857;
+}
+
+.genai-container.light .genai-input::placeholder {
+  color: rgba(5, 150, 105, 0.5);
+}
+
+.genai-container.light .genai-input:focus {
+  border-color: #047857;
+  background: rgba(5, 150, 105, 0.1);
+  box-shadow: 0 0 20px rgba(5, 150, 105, 0.15);
+}
+
+.genai-container.light .genai-send-button {
+  background: rgba(5, 150, 105, 0.15);
+  border-color: rgba(5, 150, 105, 0.4);
+  color: #047857;
+}
+
+.genai-container.light .genai-send-button:hover:not(:disabled) {
+  background: rgba(5, 150, 105, 0.25);
+  border-color: #047857;
+  box-shadow: 0 0 20px rgba(5, 150, 105, 0.3);
+}
+
+.genai-container.light .genai-input-footer p {
+  color: rgba(5, 150, 105, 0.5);
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .genai-sidebar {
+    width: 240px;
+  }
+
+  .genai-sidebar.closed {
+    width: 50px;
+  }
+}
+
+@media (max-width: 768px) {
+  .genai-sidebar {
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 30;
+    width: 280px;
+    transform: translateX(0);
+  }
+
+  .genai-sidebar.closed {
+    transform: translateX(-100%);
+    width: 280px;
+  }
+
+  .genai-main {
+    width: 100%;
+  }
+
+  .genai-header {
+    padding: 15px 20px;
+  }
+
+  .genai-logo-text h1 {
+    font-size: 20px;
+  }
+
+  .genai-logo-text p {
+    font-size: 10px;
+  }
+
+  .genai-logo-icon {
+    font-size: 32px;
+  }
+
+  .genai-chat-container {
+    padding: 20px 15px;
+  }
+
+  .message-bubble {
+    max-width: 85%;
+    font-size: 13px;
+  }
+
+  .genai-input-container {
+    padding: 15px 20px;
+  }
+
+  .genai-input {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 480px) {
+  .genai-sidebar {
+    width: 100%;
+  }
+
+  .genai-header {
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 12px 15px;
+  }
+
+  .genai-header-left {
+    flex: 100%;
+    order: -1;
+  }
+
+  .genai-header-right {
+    flex: 100%;
+    justify-content: space-between;
+  }
+
+  .genai-logo-text h1 {
+    font-size: 18px;
+    letter-spacing: 2px;
+  }
+
+  .genai-logo-text p {
+    font-size: 9px;
+  }
+
+  .message-bubble {
+    max-width: 90%;
+    font-size: 12px;
+    padding: 12px 15px;
+  }
+
+  .genai-input {
+    font-size: 12px;
+    padding: 12px 15px;
+  }
+
+  .genai-send-button {
+    padding: 12px 20px;
+  }
+
+  .new-chat-button {
+    font-size: 12px;
+    padding: 10px 15px;
+  }
+
+  .chat-item-title {
+    font-size: 12px;
+  }
+
+  .chat-item-preview {
+    font-size: 10px;
+  }
+}

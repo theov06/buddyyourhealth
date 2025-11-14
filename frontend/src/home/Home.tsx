@@ -59,8 +59,7 @@ function Home() {
             className={`generative-ai-button ${theme}`}
             onClick={() => {
               console.log('Generative AI clicked!');
-              // Add your AI functionality here
-              alert('🤖 Generative AI: Ready to assist with your health questions and provide personalized insights!');
+              navigate('/loading/genai');
             }}
           >
             Generative AI
