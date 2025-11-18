@@ -14,6 +14,14 @@ This guide will help you configure Google and Apple OAuth authentication for Bud
 
 ## 🔵 Google Sign-In Setup
 
+### ⚠️ IMPORTANT: Required Redirect URI Configuration
+
+**You MUST add this redirect URI to your Google Cloud Console:**
+
+`http://localhost:3004/auth/google/callback`
+
+Without this, Google authentication will fail!
+
 ### Step 1: Create Google Cloud Project
 
 1. Go to [Google Cloud Console](https://console.cloud.google.com/)

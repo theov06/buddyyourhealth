@@ -7,8 +7,8 @@ import { useAuth } from '../contexts/AuthContext';
 import { useTheme } from '../contexts/ThemeContext';
 import OAuthService from '../services/oauthService';
 
-const GOOGLE_CLIENT_ID = ''; // Add your Google Client ID here
-const APPLE_CLIENT_ID = ''; // Add your Apple Client ID here
+const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID || '';
+const APPLE_CLIENT_ID = process.env.REACT_APP_APPLE_CLIENT_ID || '';
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
@@ -72,14 +72,31 @@ const Login: React.FC = () => {
     }
   };
 
-  const handleGoogleSignIn = () => {
+  const handleGoogleSignIn = async () => {
     if (!GOOGLE_CLIENT_ID) {
       setError('Google Sign-In is not configured. Please add your Google Client ID.');
       return;
     }
 
-    if (window.google) {
-      window.google.accounts.id.prompt();
+    setIsLoading(true);
+    setError('');
+
+    try {
+      // Get the Google OAuth URL from backend
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/oauth/google/url`);
+      const data = await response.json();
+
+      if (data.success && data.url) {
+        // Redirect to Google sign-in page
+        window.location.href = data.url;
+      } else {
+        setError('Failed to initiate Google sign-in');
+        setIsLoading(false);
+      }
+    } catch (error) {
+      console.error('Error initiating Google sign-in:', error);
+      setError('Failed to initiate Google sign-in');
+      setIsLoading(false);
     }
   };
 

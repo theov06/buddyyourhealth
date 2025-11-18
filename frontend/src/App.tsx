@@ -5,6 +5,7 @@ import About from './about/About';
 import Contact from './contact/Contact';
 import ThankYou from './contact/ThankYou';
 import { Login, Signup } from './login_signup';
+import GoogleCallback from './login_signup/GoogleCallback';
 import LoadingScreen from './loading/LoadingScreen';
 import NeuralRemindersLoading from './loading/NeuralRemindersLoading';
 import HomeLoading from './loading/HomeLoading';
@@ -32,6 +33,7 @@ function App() {
             <Route path="/loading/genai" element={<GenAILoading />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
+            <Route path="/auth/google/callback" element={<GoogleCallback />} />
             <Route path="/account" element={<ManageAccount />} />
             <Route path="/smart-reminders" element={<SmartReminders />} />
             <Route path="/genai" element={<GenAI />} />
