@@ -10,8 +10,8 @@ class AIService {
       }
     });
     
-    // Amazon Nova model ID
-    this.modelId = 'amazon.nova-micro-v1:0'; // or 'amazon.nova-lite-v1:0' for more advanced features
+    // Amazon Nova model ID - using Lite for tool use support
+    this.modelId = 'amazon.nova-lite-v1:0'; // Nova Lite supports tool use/function calling
   }
 
   async generateHealthInsights(userProfile, healthData) {
@@ -29,9 +29,11 @@ class AIService {
             ]
           }
         ],
-        max_tokens: 1000,
-        temperature: 0.7,
-        top_p: 0.9
+        inferenceConfig: {
+          maxTokens: 1000,
+          temperature: 0.7,
+          topP: 0.9
+        }
       };
 
       const command = new InvokeModelCommand({
@@ -44,7 +46,7 @@ class AIService {
       const response = await this.client.send(command);
       const responseBody = JSON.parse(new TextDecoder().decode(response.body));
       
-      return this.parseHealthInsights(responseBody.content[0].text);
+      return this.parseHealthInsights(responseBody.output.message.content[0].text);
     } catch (error) {
       console.error('Error generating health insights:', error);
       throw new Error('Failed to generate AI health insights');
@@ -144,9 +146,11 @@ Ensure recommendations are safe, general wellness advice and not medical diagnos
             ]
           }
         ],
-        max_tokens: 800,
-        temperature: 0.6,
-        top_p: 0.8
+        inferenceConfig: {
+          maxTokens: 800,
+          temperature: 0.6,
+          topP: 0.8
+        }
       };
 
       const command = new InvokeModelCommand({
@@ -159,7 +163,7 @@ Ensure recommendations are safe, general wellness advice and not medical diagnos
       const response = await this.client.send(command);
       const responseBody = JSON.parse(new TextDecoder().decode(response.body));
       
-      return this.parseReminders(responseBody.content[0].text);
+      return this.parseReminders(responseBody.output.message.content[0].text);
     } catch (error) {
       console.error('Error generating smart reminders:', error);
       throw new Error('Failed to generate smart reminders');

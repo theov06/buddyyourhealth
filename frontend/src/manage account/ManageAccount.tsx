@@ -28,7 +28,7 @@ interface UserProfile {
 
 function ManageAccount() {
   const navigate = useNavigate();
-  const { user, isAuthenticated, logout, refreshUser } = useAuth();
+  const { user, isAuthenticated, isLoading, logout, refreshUser } = useAuth();
   const { theme } = useTheme();
   const [activeTab, setActiveTab] = useState('profile');
   const [loading, setLoading] = useState(false);
@@ -52,12 +52,17 @@ function ManageAccount() {
   });
 
   useEffect(() => {
+    // Don't redirect while still loading auth state
+    if (isLoading) {
+      return;
+    }
+    
     // Redirect to login if not authenticated
     if (!isAuthenticated) {
       navigate('/login');
       return;
     }
-
+    
     // Initialize profile with user data
     if (user) {
       setProfile(prev => ({

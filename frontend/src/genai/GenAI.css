@@ -6,7 +6,7 @@
   width: 100vw;
   height: 100vh;
   display: flex;
-  background: rgba(0, 17, 0, 0.98);
+  background: #000000;
   overflow: hidden;
 }
 
@@ -15,8 +15,8 @@
   position: relative;
   width: 280px;
   height: 100vh;
-  background: rgba(0, 17, 0, 0.95);
-  border-right: 2px solid rgba(0, 255, 65, 0.3);
+  background: rgba(0, 0, 0, 0.95);
+  border-right: 2px solid rgba(52, 211, 153, 0.3);
   display: flex;
   flex-direction: column;
   transition: all 0.3s ease;
@@ -30,7 +30,8 @@
 
 .sidebar-header {
   padding: 20px;
-  border-bottom: 1px solid rgba(0, 255, 65, 0.2);
+  padding-top: 50px;
+  border-bottom: 1px solid rgba(52, 211, 153, 0.25);
   display: flex;
   flex-direction: column;
   gap: 15px;
@@ -42,24 +43,24 @@
   justify-content: center;
   gap: 10px;
   padding: 12px 20px;
-  background: rgba(0, 255, 65, 0.15);
-  border: 2px solid rgba(0, 255, 65, 0.4);
+  background: rgba(52, 211, 153, 0.15);
+  border: 2px solid rgba(52, 211, 153, 0.4);
   border-radius: 8px;
-  color: #00FF41;
+  color: #6EE7B7;
   font-family: 'Courier New', monospace;
   font-size: 14px;
   font-weight: bold;
   letter-spacing: 1px;
   cursor: pointer;
   transition: all 0.3s ease;
-  text-shadow: 0 0 5px rgba(0, 255, 65, 0.5);
+  text-shadow: none;
 }
 
 .new-chat-button:hover {
-  background: rgba(0, 255, 65, 0.25);
-  border-color: #00FF41;
+  background: rgba(52, 211, 153, 0.25);
+  border-color: #6EE7B7;
   transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(0, 255, 65, 0.3);
+  box-shadow: 0 4px 15px rgba(52, 211, 153, 0.3);
 }
 
 .genai-sidebar.closed .new-chat-button .new-chat-text {
@@ -72,20 +73,23 @@
 }
 
 .sidebar-toggle {
-  padding: 8px;
-  background: rgba(0, 255, 65, 0.1);
-  border: 1px solid rgba(0, 255, 65, 0.3);
-  border-radius: 6px;
-  color: #00FF41;
-  font-size: 14px;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 4px 8px;
+  background: rgba(52, 211, 153, 0.12);
+  border: 1px solid rgba(52, 211, 153, 0.35);
+  border-radius: 4px;
+  color: #6EE7B7;
+  font-size: 12px;
   cursor: pointer;
   transition: all 0.3s ease;
-  align-self: center;
+  z-index: 30;
 }
 
 .sidebar-toggle:hover {
-  background: rgba(0, 255, 65, 0.2);
-  border-color: #00FF41;
+  background: rgba(52, 211, 153, 0.22);
+  border-color: #6EE7B7;
 }
 
 .sidebar-content {
@@ -93,7 +97,7 @@
   overflow-y: auto;
   padding: 20px;
   scrollbar-width: thin;
-  scrollbar-color: rgba(0, 255, 65, 0.3) rgba(0, 17, 0, 0.5);
+  scrollbar-color: rgba(52, 211, 153, 0.35) rgba(0, 0, 0, 0.5);
 }
 
 .sidebar-content::-webkit-scrollbar {
@@ -101,11 +105,11 @@
 }
 
 .sidebar-content::-webkit-scrollbar-track {
-  background: rgba(0, 17, 0, 0.5);
+  background: rgba(0, 0, 0, 0.5);
 }
 
 .sidebar-content::-webkit-scrollbar-thumb {
-  background: rgba(0, 255, 65, 0.3);
+  background: rgba(52, 211, 153, 0.35);
   border-radius: 3px;
 }
 
@@ -119,14 +123,14 @@
 
 .section-title {
   font-size: 12px;
-  color: rgba(0, 255, 65, 0.6);
+  color: rgba(110, 231, 183, 0.8);
   font-family: 'Courier New', monospace;
   font-weight: bold;
   letter-spacing: 1px;
   text-transform: uppercase;
   margin-bottom: 15px;
   padding-bottom: 10px;
-  border-bottom: 1px solid rgba(0, 255, 65, 0.2);
+  border-bottom: 1px solid rgba(52, 211, 153, 0.25);
 }
 
 .chat-history-list {
@@ -140,23 +144,23 @@
   align-items: flex-start;
   gap: 12px;
   padding: 12px;
-  background: rgba(0, 255, 65, 0.05);
-  border: 1px solid rgba(0, 255, 65, 0.2);
+  background: rgba(52, 211, 153, 0.08);
+  border: 1px solid rgba(52, 211, 153, 0.25);
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
 .chat-history-item:hover {
-  background: rgba(0, 255, 65, 0.1);
-  border-color: rgba(0, 255, 65, 0.4);
+  background: rgba(52, 211, 153, 0.15);
+  border-color: rgba(52, 211, 153, 0.45);
   transform: translateX(5px);
 }
 
 .chat-history-item.active {
-  background: rgba(0, 255, 65, 0.15);
-  border-color: #00FF41;
-  box-shadow: 0 0 15px rgba(0, 255, 65, 0.2);
+  background: rgba(52, 211, 153, 0.2);
+  border-color: #6EE7B7;
+  box-shadow: 0 0 15px rgba(52, 211, 153, 0.25);
 }
 
 .chat-item-icon {
@@ -171,7 +175,7 @@
 
 .chat-item-title {
   font-size: 13px;
-  color: #00FF41;
+  color: #6EE7B7;
   font-family: 'Courier New', monospace;
   font-weight: bold;
   margin-bottom: 5px;
@@ -182,7 +186,7 @@
 
 .chat-item-preview {
   font-size: 11px;
-  color: rgba(0, 255, 65, 0.6);
+  color: rgba(110, 231, 183, 0.7);
   font-family: 'Courier New', monospace;
   white-space: nowrap;
   overflow: hidden;
@@ -219,15 +223,15 @@
       0deg,
       transparent,
       transparent 40px,
-      rgba(0, 255, 65, 0.02) 40px,
-      rgba(0, 255, 65, 0.02) 41px
+      rgba(52, 211, 153, 0.04) 40px,
+      rgba(52, 211, 153, 0.04) 41px
     ),
     repeating-linear-gradient(
       90deg,
       transparent,
       transparent 40px,
-      rgba(0, 255, 65, 0.02) 40px,
-      rgba(0, 255, 65, 0.02) 41px
+      rgba(52, 211, 153, 0.04) 40px,
+      rgba(52, 211, 153, 0.04) 41px
     );
   animation: circuit-scroll 30s linear infinite;
 }
@@ -237,8 +241,8 @@
   width: 100%;
   height: 100%;
   background-image: 
-    linear-gradient(rgba(0, 255, 65, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0, 255, 65, 0.03) 1px, transparent 1px);
+    linear-gradient(rgba(52, 211, 153, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(52, 211, 153, 0.05) 1px, transparent 1px);
   background-size: 80px 80px;
 }
 
@@ -247,8 +251,8 @@
   width: 100%;
   height: 100%;
   background: 
-    radial-gradient(circle at 20% 20%, rgba(0, 255, 65, 0.08) 0%, transparent 50%),
-    radial-gradient(circle at 80% 80%, rgba(0, 255, 65, 0.06) 0%, transparent 50%);
+    radial-gradient(circle at 20% 20%, rgba(52, 211, 153, 0.12) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(52, 211, 153, 0.08) 0%, transparent 50%);
   animation: glow-pulse 5s ease-in-out infinite;
 }
 
@@ -260,10 +264,10 @@
   align-items: center;
   justify-content: space-between;
   padding: 20px 30px;
-  background: rgba(0, 17, 0, 0.8);
-  border-bottom: 2px solid rgba(0, 255, 65, 0.3);
+  background: rgba(0, 0, 0, 0.85);
+  border-bottom: 2px solid rgba(52, 211, 153, 0.35);
   backdrop-filter: blur(10px);
-  box-shadow: 0 4px 20px rgba(0, 255, 65, 0.1);
+  box-shadow: 0 4px 20px rgba(52, 211, 153, 0.15);
 }
 
 .genai-header-left {
@@ -278,29 +282,74 @@
   gap: 20px;
 }
 
-.genai-back-button {
+.genai-reminders-button {
   display: flex;
   align-items: center;
-  gap: 8px;
+  justify-content: center;
   padding: 10px 20px;
-  background: rgba(0, 255, 65, 0.1);
-  border: 1px solid rgba(0, 255, 65, 0.4);
+  background: rgba(52, 211, 153, 0.12);
+  border: 1px solid rgba(52, 211, 153, 0.4);
   border-radius: 6px;
-  color: #00FF41;
+  color: #6EE7B7;
   font-family: 'Courier New', monospace;
   font-size: 12px;
   font-weight: bold;
   letter-spacing: 1px;
   cursor: pointer;
   transition: all 0.3s ease;
-  text-shadow: 0 0 5px rgba(0, 255, 65, 0.5);
+  text-shadow: none;
+}
+
+.genai-reminders-button:hover {
+  background: rgba(52, 211, 153, 0.22);
+  border-color: #6EE7B7;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(52, 211, 153, 0.3);
+}
+
+.genai-theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  background: rgba(52, 211, 153, 0.12);
+  border: 1px solid rgba(52, 211, 153, 0.35);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 18px;
+}
+
+.genai-theme-toggle:hover {
+  background: rgba(52, 211, 153, 0.22);
+  border-color: #6EE7B7;
+  transform: scale(1.1);
+  box-shadow: 0 0 15px rgba(52, 211, 153, 0.3);
+}
+
+.genai-back-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: rgba(52, 211, 153, 0.12);
+  border: 1px solid rgba(52, 211, 153, 0.4);
+  border-radius: 6px;
+  color: #6EE7B7;
+  font-family: 'Courier New', monospace;
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-shadow: none;
 }
 
 .genai-back-button:hover {
-  background: rgba(0, 255, 65, 0.2);
-  border-color: #00FF41;
+  background: rgba(52, 211, 153, 0.22);
+  border-color: #6EE7B7;
   transform: translateX(-3px);
-  box-shadow: 0 0 15px rgba(0, 255, 65, 0.3);
+  box-shadow: 0 0 15px rgba(52, 211, 153, 0.3);
 }
 
 .back-arrow {
@@ -318,27 +367,35 @@
   gap: 15px;
 }
 
+.genai-logo-image {
+  width: 70px;
+  height: 70px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 15px rgba(52, 211, 153, 0.5));
+  animation: logo-float 3s ease-in-out infinite;
+}
+
 .genai-logo-icon {
   font-size: 40px;
-  filter: drop-shadow(0 0 15px rgba(0, 255, 65, 0.6));
+  filter: drop-shadow(0 0 15px rgba(52, 211, 153, 0.5));
   animation: logo-float 3s ease-in-out infinite;
 }
 
 .genai-logo-text h1 {
   font-size: 24px;
   font-weight: bold;
-  color: #00FF41;
+  color: #00FA9A;
   font-family: 'Courier New', monospace;
   letter-spacing: 3px;
   margin: 0;
   text-shadow: 
-    0 0 10px rgba(0, 255, 65, 0.8),
-    0 0 20px rgba(0, 255, 65, 0.4);
+    0 0 10px rgba(0, 250, 154, 0.5),
+    0 0 20px rgba(0, 250, 154, 0.3);
 }
 
 .genai-logo-text p {
   font-size: 11px;
-  color: rgba(0, 255, 65, 0.7);
+  color: rgba(110, 231, 183, 0.85);
   font-family: 'Courier New', monospace;
   letter-spacing: 1px;
   margin: 5px 0 0 0;
@@ -350,7 +407,7 @@
   align-items: center;
   gap: 8px;
   font-size: 12px;
-  color: #00FF41;
+  color: #6EE7B7;
   font-family: 'Courier New', monospace;
   font-weight: bold;
   letter-spacing: 1px;
@@ -359,9 +416,9 @@
 .genai-status-dot {
   width: 10px;
   height: 10px;
-  background: #00FF41;
+  background: #6EE7B7;
   border-radius: 50%;
-  box-shadow: 0 0 15px rgba(0, 255, 65, 0.8);
+  box-shadow: 0 0 15px rgba(110, 231, 183, 0.7);
   animation: status-blink 2s ease-in-out infinite;
 }
 
@@ -373,7 +430,7 @@
   overflow-y: auto;
   padding: 30px;
   scrollbar-width: thin;
-  scrollbar-color: rgba(0, 255, 65, 0.3) rgba(0, 17, 0, 0.5);
+  scrollbar-color: rgba(52, 211, 153, 0.35) rgba(0, 0, 0, 0.5);
 }
 
 .genai-chat-container::-webkit-scrollbar {
@@ -381,16 +438,16 @@
 }
 
 .genai-chat-container::-webkit-scrollbar-track {
-  background: rgba(0, 17, 0, 0.5);
+  background: rgba(0, 0, 0, 0.5);
 }
 
 .genai-chat-container::-webkit-scrollbar-thumb {
-  background: rgba(0, 255, 65, 0.3);
+  background: rgba(52, 211, 153, 0.35);
   border-radius: 4px;
 }
 
 .genai-chat-container::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 255, 65, 0.5);
+  background: rgba(52, 211, 153, 0.5);
 }
 
 .genai-messages {
@@ -405,6 +462,7 @@
 .genai-message {
   display: flex;
   gap: 15px;
+  align-items: center;
   animation: message-fade-in 0.3s ease-out;
 }
 
@@ -421,14 +479,30 @@
   justify-content: center;
   font-size: 24px;
   flex-shrink: 0;
-  background: rgba(0, 255, 65, 0.1);
-  border: 2px solid rgba(0, 255, 65, 0.3);
-  box-shadow: 0 0 15px rgba(0, 255, 65, 0.2);
+  background: rgba(52, 211, 153, 0.12);
+  border: 2px solid rgba(52, 211, 153, 0.35);
+  box-shadow: 0 0 15px rgba(52, 211, 153, 0.25);
+}
+
+.ai-message .message-avatar {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  width: 55px;
+  height: 55px;
+  align-self: flex-start;
+}
+
+.avatar-logo {
+  width: 55px;
+  height: 55px;
+  object-fit: contain;
 }
 
 .user-message .message-avatar {
-  background: rgba(0, 255, 65, 0.15);
-  border-color: rgba(0, 255, 65, 0.4);
+  background: rgba(16, 185, 129, 0.15);
+  border-color: rgba(16, 185, 129, 0.4);
+  align-self: flex-start;
 }
 
 .message-content {
@@ -444,31 +518,38 @@
 
 .message-bubble {
   max-width: 70%;
-  padding: 15px 20px;
-  border-radius: 12px;
-  font-family: 'Courier New', monospace;
-  font-size: 14px;
-  line-height: 1.6;
+  padding: 18px 24px;
+  border-radius: 14px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  font-size: 15px;
+  line-height: 1.7;
   word-wrap: break-word;
-}
-
-.ai-message .message-bubble {
-  background: rgba(0, 255, 65, 0.1);
-  border: 1px solid rgba(0, 255, 65, 0.3);
-  color: rgba(0, 255, 65, 0.95);
-  box-shadow: 0 4px 15px rgba(0, 255, 65, 0.1);
+  letter-spacing: 0.3px;
+  display: flex;
+  align-items: center;
 }
 
 .user-message .message-bubble {
-  background: rgba(0, 255, 65, 0.2);
-  border: 1px solid rgba(0, 255, 65, 0.4);
-  color: #FFFFFF;
-  box-shadow: 0 4px 15px rgba(0, 255, 65, 0.15);
+  justify-content: center;
+}
+
+.ai-message .message-bubble {
+  background: rgba(52, 211, 153, 0.1);
+  border: 1px solid rgba(52, 211, 153, 0.3);
+  color: rgba(52, 211, 153, 0.95);
+  box-shadow: 0 4px 15px rgba(52, 211, 153, 0.12);
+}
+
+.user-message .message-bubble {
+  background: rgba(52, 211, 153, 0.18);
+  border: 1px solid rgba(52, 211, 153, 0.4);
+  color: rgba(52, 211, 153, 0.95);
+  box-shadow: 0 4px 15px rgba(52, 211, 153, 0.15);
 }
 
 .message-timestamp {
   font-size: 11px;
-  color: rgba(0, 255, 65, 0.5);
+  color: rgba(110, 231, 183, 0.6);
   font-family: 'Courier New', monospace;
   padding: 0 5px;
 }
@@ -483,7 +564,7 @@
 .typing-indicator span {
   width: 8px;
   height: 8px;
-  background: rgba(0, 255, 65, 0.8);
+  background: #34D399;
   border-radius: 50%;
   animation: typing-bounce 1.4s infinite;
 }
@@ -501,8 +582,8 @@
   position: relative;
   z-index: 10;
   padding: 20px 30px;
-  background: rgba(0, 17, 0, 0.9);
-  border-top: 2px solid rgba(0, 255, 65, 0.3);
+  background: rgba(0, 0, 0, 0.9);
+  border-top: 2px solid rgba(52, 211, 153, 0.35);
   backdrop-filter: blur(10px);
 }
 
@@ -516,10 +597,10 @@
 .genai-input {
   flex: 1;
   padding: 15px 20px;
-  background: rgba(0, 255, 65, 0.05);
-  border: 2px solid rgba(0, 255, 65, 0.3);
+  background: rgba(52, 211, 153, 0.08);
+  border: 2px solid rgba(52, 211, 153, 0.3);
   border-radius: 8px;
-  color: #00FF41;
+  color: #6EE7B7;
   font-family: 'Courier New', monospace;
   font-size: 14px;
   outline: none;
@@ -527,21 +608,21 @@
 }
 
 .genai-input::placeholder {
-  color: rgba(0, 255, 65, 0.4);
+  color: rgba(110, 231, 183, 0.6);
 }
 
 .genai-input:focus {
-  border-color: #00FF41;
-  background: rgba(0, 255, 65, 0.1);
-  box-shadow: 0 0 20px rgba(0, 255, 65, 0.2);
+  border-color: #6EE7B7;
+  background: rgba(52, 211, 153, 0.12);
+  box-shadow: 0 0 20px rgba(52, 211, 153, 0.2);
 }
 
 .genai-send-button {
   padding: 15px 25px;
-  background: rgba(0, 255, 65, 0.2);
-  border: 2px solid rgba(0, 255, 65, 0.4);
+  background: rgba(52, 211, 153, 0.18);
+  border: 2px solid rgba(52, 211, 153, 0.4);
   border-radius: 8px;
-  color: #00FF41;
+  color: #6EE7B7;
   font-size: 18px;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -551,10 +632,10 @@
 }
 
 .genai-send-button:hover:not(:disabled) {
-  background: rgba(0, 255, 65, 0.3);
-  border-color: #00FF41;
+  background: rgba(52, 211, 153, 0.28);
+  border-color: #6EE7B7;
   transform: scale(1.05);
-  box-shadow: 0 0 20px rgba(0, 255, 65, 0.4);
+  box-shadow: 0 0 20px rgba(52, 211, 153, 0.35);
 }
 
 .genai-send-button:disabled {
@@ -578,7 +659,7 @@
 
 .genai-input-footer p {
   font-size: 11px;
-  color: rgba(0, 255, 65, 0.4);
+  color: rgba(110, 231, 183, 0.5);
   font-family: 'Courier New', monospace;
   margin: 0;
 }
@@ -738,6 +819,19 @@
   box-shadow: 0 4px 20px rgba(5, 150, 105, 0.1);
 }
 
+.genai-container.light .genai-reminders-button {
+  background: rgba(5, 150, 105, 0.1);
+  border-color: rgba(5, 150, 105, 0.4);
+  color: #047857;
+  text-shadow: none;
+}
+
+.genai-container.light .genai-reminders-button:hover {
+  background: rgba(5, 150, 105, 0.2);
+  border-color: #047857;
+  box-shadow: 0 4px 15px rgba(5, 150, 105, 0.2);
+}
+
 .genai-container.light .genai-back-button {
   background: rgba(5, 150, 105, 0.1);
   border-color: rgba(5, 150, 105, 0.4);
@@ -749,6 +843,10 @@
   background: rgba(5, 150, 105, 0.2);
   border-color: #047857;
   box-shadow: 0 0 15px rgba(5, 150, 105, 0.2);
+}
+
+.genai-container.light .genai-logo-image {
+  filter: drop-shadow(0 0 15px rgba(5, 150, 105, 0.4));
 }
 
 .genai-container.light .genai-logo-icon {
@@ -901,6 +999,11 @@
 
   .genai-logo-text p {
     font-size: 10px;
+  }
+
+  .genai-logo-image {
+    width: 50px;
+    height: 50px;
   }
 
   .genai-logo-icon {

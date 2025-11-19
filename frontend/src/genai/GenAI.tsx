@@ -19,7 +19,7 @@ interface ChatHistory {
 
 export default function GenAI() {
   const navigate = useNavigate();
-  const { theme } = useTheme();
+  const { theme, toggleTheme } = useTheme();
   const [messages, setMessages] = useState<Message[]>([
     {
       id: 1,
@@ -77,6 +77,8 @@ export default function GenAI() {
     try {
       // Call the AI API with conversation history
       const token = localStorage.getItem('token');
+      console.log('🚀 Calling AI API with message:', currentInput);
+      console.log('🔑 Token:', token ? 'Present' : 'Missing');
       const response = await fetch('http://localhost:3001/api/ai/chat', {
         method: 'POST',
         headers: {
@@ -85,12 +87,13 @@ export default function GenAI() {
         },
         body: JSON.stringify({
           message: currentInput,
-          context: 'Health conversation with B.A.G.AI assistant',
+          context: 'Health conversation with Neural Guardian assistant',
           conversationHistory: messages.slice(-10) // Send last 10 messages for context
         })
       });
 
       const data = await response.json();
+      console.log('📥 API Response:', data);
 
       if (data.success) {
         const aiMessage: Message = {
@@ -117,10 +120,12 @@ export default function GenAI() {
           )
         );
       } else {
+        console.error('API Error Response:', data);
         throw new Error(data.message || 'Failed to get AI response');
       }
     } catch (error) {
       console.error('Error getting AI response:', error);
+      console.error('Full error details:', JSON.stringify(error, null, 2));
       const errorMessage: Message = {
         id: messages.length + 2,
         text: "I apologize, but I'm having trouble connecting right now. Please try again in a moment.",
@@ -189,16 +194,16 @@ export default function GenAI() {
 
       {/* Sidebar */}
       <div className={`genai-sidebar ${isSidebarOpen ? 'open' : 'closed'}`}>
+        <button 
+          className="sidebar-toggle" 
+          onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+        >
+          {isSidebarOpen ? '◀' : '▶'}
+        </button>
         <div className="sidebar-header">
           <button className="new-chat-button" onClick={handleNewChat}>
             <span className="new-chat-icon">+</span>
             <span className="new-chat-text">New Chat</span>
-          </button>
-          <button 
-            className="sidebar-toggle" 
-            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-          >
-            {isSidebarOpen ? '◀' : '▶'}
           </button>
         </div>
         
@@ -230,9 +235,9 @@ export default function GenAI() {
         <div className="genai-header">
           <div className="genai-header-left">
             <div className="genai-logo">
-              <span className="genai-logo-icon">🤖</span>
+              <img src="/logo/Neural Guardian.png" alt="Neural Guardian" className="genai-logo-image" />
               <div className="genai-logo-text">
-                <h1>B.A.G.AI</h1>
+                <h1>NEURAL GUARDIAN</h1>
                 <p>Your Personal Health AI Assistant</p>
               </div>
             </div>
@@ -242,6 +247,22 @@ export default function GenAI() {
               <div className="genai-status-dot"></div>
               <span>ONLINE</span>
             </div>
+            <button 
+              className="genai-reminders-button"
+              onClick={() => navigate('/smart-reminders')}
+              title="View Neural Reminders"
+            >
+              NEURAL REMINDERS
+            </button>
+            <button 
+              className="genai-theme-toggle"
+              onClick={toggleTheme}
+              title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+            >
+              <span className="theme-icon">
+                {theme === 'dark' ? '☀️' : '🌙'}
+              </span>
+            </button>
             <button onClick={handleBackClick} className="genai-back-button">
               <span className="back-arrow">←</span>
               <span className="back-text">BACK</span>
@@ -258,11 +279,20 @@ export default function GenAI() {
               className={`genai-message ${message.sender === 'user' ? 'user-message' : 'ai-message'}`}
             >
               <div className="message-avatar">
-                {message.sender === 'ai' ? '🤖' : '👤'}
+                {message.sender === 'ai' ? (
+                  <img src="/logo/Neural Guardian.png" alt="Neural Guardian" className="avatar-logo" />
+                ) : (
+                  '👤'
+                )}
               </div>
               <div className="message-content">
                 <div className="message-bubble">
-                  {message.text}
+                  {message.text.split('\n').map((line, index) => (
+                    <React.Fragment key={index}>
+                      {line}
+                      {index < message.text.split('\n').length - 1 && <br />}
+                    </React.Fragment>
+                  ))}
                 </div>
                 <div className="message-timestamp">
                   {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
@@ -273,7 +303,9 @@ export default function GenAI() {
           
           {isTyping && (
             <div className="genai-message ai-message">
-              <div className="message-avatar">🤖</div>
+              <div className="message-avatar">
+                <img src="/logo/Neural Guardian.png" alt="Neural Guardian" className="avatar-logo" />
+              </div>
               <div className="message-content">
                 <div className="message-bubble typing-indicator">
                   <span></span>
@@ -302,7 +334,7 @@ export default function GenAI() {
             </button>
           </form>
           <div className="genai-input-footer">
-            <p>B.A.G.AI can make mistakes. Consider checking important information.</p>
+            <p>Neural Guardian can make mistakes. Consider checking important information.</p>
           </div>
         </div>
       </div>

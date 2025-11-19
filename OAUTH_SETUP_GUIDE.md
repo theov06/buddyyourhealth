@@ -18,7 +18,7 @@ This guide will help you configure Google and Apple OAuth authentication for Bud
 
 **You MUST add this redirect URI to your Google Cloud Console:**
 
-`http://localhost:3004/auth/google/callback`
+`http://localhost:3000/auth/google/callback`
 
 Without this, Google authentication will fail!
 

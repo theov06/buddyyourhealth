@@ -225,19 +225,46 @@ export default function SmartReminders() {
   };
 
   // Sample AI-generated reminders
+  // Load reminders from API
   useEffect(() => {
     if (isAuthenticated) {
-      // Don't auto-load - let users initialize the system manually
-      // loadAIInsights();
-      // loadAIReminders();
-      // Don't load sample data automatically - let users initialize the system
-      // const sampleReminders: Reminder[] = [...];
-      // setReminders(sampleReminders);
-      
-      // Don't auto-load AI suggestions - they'll be loaded during initialization
-      // setAiSuggestions([...]);
+      loadUserReminders();
     }
   }, [isAuthenticated]);
+
+  const loadUserReminders = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch('http://localhost:3001/api/reminders', {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      
+      const data = await response.json();
+      
+      if (data.success && data.reminders) {
+        // Convert API reminders to component format
+        const loadedReminders: Reminder[] = data.reminders.map((r: any) => ({
+          id: r.id,
+          title: r.title,
+          description: r.description,
+          time: r.time,
+          frequency: r.frequency,
+          category: r.category,
+          isActive: r.isActive,
+          nextReminder: new Date(),
+          aiGenerated: r.aiGenerated,
+          priority: r.priority
+        }));
+        
+        setReminders(loadedReminders);
+        console.log('✅ Loaded reminders:', loadedReminders);
+      }
+    } catch (error) {
+      console.error('Error loading reminders:', error);
+    }
+  };
 
   const handleApplyInsight = (insight: any, index: number) => {
     // Check if already applied
@@ -325,21 +352,44 @@ export default function SmartReminders() {
     setSelectedInsightIndex(-1);
   };
 
-  const handleDeleteReminder = (reminderId: string, reminderTitle: string) => {
+  const handleDeleteReminder = async (reminderId: string, reminderTitle: string) => {
     // Set deleting state for animation
     setDeletingReminder(reminderId);
     
-    // Remove the reminder after a short delay for animation
-    setTimeout(() => {
-      setReminders(prev => prev.filter(reminder => reminder.id !== reminderId));
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`http://localhost:3001/api/reminders/${reminderId}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      
+      const data = await response.json();
+      
+      if (data.success) {
+        // Remove the reminder after a short delay for animation
+        setTimeout(() => {
+          setReminders(prev => prev.filter(reminder => reminder.id !== reminderId));
+          setDeletingReminder(null);
+        }, 300);
+        
+        // Show success message
+        setApplyMessage(`🗑️ "${reminderTitle}" has been deleted`);
+        setTimeout(() => setApplyMessage(''), 3000);
+        
+        console.log('Deleted reminder:', reminderTitle);
+      } else {
+        setDeletingReminder(null);
+        setApplyMessage(`❌ Failed to delete reminder`);
+        setTimeout(() => setApplyMessage(''), 3000);
+      }
+    } catch (error) {
+      console.error('Error deleting reminder:', error);
       setDeletingReminder(null);
-    }, 300);
-    
-    // Show success message
-    setApplyMessage(`🗑️ "${reminderTitle}" has been deleted`);
-    setTimeout(() => setApplyMessage(''), 3000);
-    
-    console.log('Deleted reminder:', reminderTitle);
+      setApplyMessage(`❌ Failed to delete reminder`);
+      setTimeout(() => setApplyMessage(''), 3000);
+    }
   };
 
   const handleInitializeSystem = async () => {
@@ -490,7 +540,7 @@ export default function SmartReminders() {
       <div className="reminders-header">
         <div className="header-content">
           <div className="title-section">
-            <div className="title-icon">⚡</div>
+            <img src="/logo/Neural Reminders.png" alt="Neural Reminders" className="title-icon-img" />
             <div className="title-text">
               <h1 className="page-title">
                 NEURAL REMINDERS
@@ -570,7 +620,7 @@ export default function SmartReminders() {
       {/* AI Health Insights Panel */}
       <div className="ai-suggestions-panel">
         <div className="panel-header">
-          <span className="panel-icon">🤖</span>
+          <span className="panel-icon">⚡</span>
           <h3>AI HEALTH INSIGHTS</h3>
           {isLoadingInsights && <span className="loading-indicator">Analyzing...</span>}
         </div>

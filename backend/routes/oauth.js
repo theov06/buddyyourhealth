@@ -4,17 +4,23 @@ const User = require('../models/User');
 const { OAuth2Client } = require('google-auth-library');
 
 const router = express.Router();
-const googleClient = new OAuth2Client(
-  process.env.GOOGLE_CLIENT_ID,
-  process.env.GOOGLE_CLIENT_SECRET,
-  `${process.env.FRONTEND_URL || 'http://localhost:3004'}/auth/google/callback`
-);
+
+// Create OAuth client dynamically to ensure fresh config
+const getGoogleClient = () => {
+  const redirectUri = `${process.env.FRONTEND_URL || 'http://localhost:3000'}/auth/google/callback`;
+  return new OAuth2Client(
+    process.env.GOOGLE_CLIENT_ID,
+    process.env.GOOGLE_CLIENT_SECRET,
+    redirectUri
+  );
+};
 
 // @route   GET /api/oauth/google/url
 // @desc    Get Google OAuth URL for redirect
 // @access  Public
 router.get('/google/url', (req, res) => {
   try {
+    const googleClient = getGoogleClient();
     const url = googleClient.generateAuthUrl({
       access_type: 'offline',
       scope: [
@@ -50,6 +56,7 @@ router.post('/google/callback', async (req, res) => {
     }
 
     // Exchange code for tokens
+    const googleClient = getGoogleClient();
     const { tokens } = await googleClient.getToken(code);
     googleClient.setCredentials(tokens);
 

@@ -38,16 +38,19 @@ const GoogleCallback: React.FC = () => {
 
         if (data.success && data.token) {
           // Store token and user data
+          localStorage.setItem('authToken', data.token);
           localStorage.setItem('token', data.token);
           localStorage.setItem('user', JSON.stringify(data.user));
 
-          // Redirect to account page - the AuthContext will pick up the user from localStorage
-          window.location.href = '/account';
+          // Redirect to account page
+          setTimeout(() => {
+            window.location.href = '/account';
+          }, 100);
         } else {
           setError(data.message || 'Authentication failed');
           setTimeout(() => navigate('/login'), 3000);
         }
-      } catch (error) {
+      } catch (error: any) {
         console.error('Error processing Google callback:', error);
         setError('Failed to complete sign-in');
         setTimeout(() => navigate('/login'), 3000);

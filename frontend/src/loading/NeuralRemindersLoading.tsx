@@ -66,7 +66,7 @@ export default function NeuralRemindersLoading() {
         {/* Logo and Title */}
         <div className="loading-header">
           <div className="loading-logo">
-            <div className="logo-pulse">⚡</div>
+            <img src="/logo/Neural Reminders.png" alt="Neural Reminders" className="loading-logo-image" />
           </div>
           <h1 className="loading-title">NEURAL REMINDERS</h1>
           <p className="loading-subtitle">AI-Powered Health Intelligence System</p>

@@ -73,7 +73,41 @@ const userSchema = new mongoose.Schema({
       enum: ['sedentary', 'light', 'moderate', 'active', 'very_active']
     },
     goals: [String]
-  }
+  },
+  // Neural Reminders
+  reminders: [{
+    id: String,
+    title: String,
+    description: String,
+    time: String,
+    frequency: {
+      type: String,
+      enum: ['daily', 'weekly', 'monthly', 'custom'],
+      default: 'daily'
+    },
+    category: {
+      type: String,
+      enum: ['medication', 'exercise', 'checkup', 'wellness', 'nutrition'],
+      default: 'wellness'
+    },
+    isActive: {
+      type: Boolean,
+      default: true
+    },
+    aiGenerated: {
+      type: Boolean,
+      default: false
+    },
+    priority: {
+      type: String,
+      enum: ['low', 'medium', 'high', 'critical'],
+      default: 'medium'
+    },
+    createdAt: {
+      type: Date,
+      default: Date.now
+    }
+  }]
 });
 
 // Hash password before saving

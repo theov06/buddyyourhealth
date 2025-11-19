@@ -45,10 +45,10 @@ export default function GenAILoading() {
         {/* Logo and Title */}
         <div className="genai-loading-header">
           <div className="genai-loading-logo">
-            <div className="genai-logo-icon">🤖</div>
+            <img src="/logo/Neural Guardian.png" alt="Neural Guardian" className="genai-loading-logo-image" />
             <div className="genai-logo-glow"></div>
           </div>
-          <h1 className="genai-loading-title">BOOTING UP<br />B.A.G.AI</h1>
+          <h1 className="genai-loading-title">NEURAL GUARDIAN</h1>
           <p className="genai-loading-subtitle">Your Personal Health AI Assistant</p>
         </div>
 
