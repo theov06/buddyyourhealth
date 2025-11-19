@@ -307,6 +307,16 @@
   color: #047857;
 }
 
+[data-theme="light"] .loading-circle,
+.loading-screen.light .loading-circle {
+  animation: fadeInScale 1s ease-out 0.5s forwards;
+}
+
+[data-theme="light"] .loading-circle-inner,
+.loading-screen.light .loading-circle-inner {
+  background: radial-gradient(circle, rgba(4, 120, 87, 0.1), transparent);
+}
+
 [data-theme="light"] .loading-pulse,
 .loading-screen.light .loading-pulse {
   background: #047857;
@@ -314,12 +324,29 @@
     0 0 20px #047857,
     0 0 40px #047857,
     0 0 60px #047857;
+  animation: pulse 2s ease-in-out infinite;
 }
 
 [data-theme="light"] .loading-dots span,
 .loading-screen.light .loading-dots span {
   background: #047857;
   box-shadow: 0 0 10px #047857;
+  animation: loadingDots 1.5s ease-in-out infinite;
+}
+
+[data-theme="light"] .loading-dots span:nth-child(1),
+.loading-screen.light .loading-dots span:nth-child(1) {
+  animation-delay: 0s;
+}
+
+[data-theme="light"] .loading-dots span:nth-child(2),
+.loading-screen.light .loading-dots span:nth-child(2) {
+  animation-delay: 0.3s;
+}
+
+[data-theme="light"] .loading-dots span:nth-child(3),
+.loading-screen.light .loading-dots span:nth-child(3) {
+  animation-delay: 0.6s;
 }
 
 [data-theme="light"] .loading-bar,
@@ -336,6 +363,7 @@
 [data-theme="light"] .loading-bar::before,
 .loading-screen.light .loading-bar::before {
   background: linear-gradient(90deg, transparent, rgba(4, 120, 87, 0.5), transparent);
+  animation: shimmer 2s linear infinite;
 }
 
 [data-theme="light"] .progress-circle,

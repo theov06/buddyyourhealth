@@ -26,3 +26,5 @@
 ✅ Reminder created and saved: {"id":"reminder-1763512524672","title":"Drink Water","description":"Created by Neural Guardian","time":"21:00","frequency":"daily","category":"wellness","isActive":true,"aiGenerated":true,"priority":"medium","createdAt":"2025-11-19T00:35:24.672Z"}
 🔵 AI Chat endpoint hit at 2025-11-19T00:36:23.304Z
 💬 User message: suggest a reminder 
+🔵 AI Chat endpoint hit at 2025-11-19T00:39:25.360Z
+💬 User message: what can you do

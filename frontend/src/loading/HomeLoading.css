@@ -3,13 +3,17 @@
    ======================================== */
 
 .home-loading-container {
-  min-height: 100vh;
-  position: relative;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  z-index: 10001;
 }
 
 /* Dark Mode (Default) */
@@ -96,6 +100,8 @@
   object-fit: contain;
   filter: brightness(1.2) drop-shadow(0 0 20px rgba(100, 200, 255, 0.5));
   animation: logo-float 3s ease-in-out infinite;
+  background: transparent;
+  mix-blend-mode: screen;
 }
 
 .logo-glow {
