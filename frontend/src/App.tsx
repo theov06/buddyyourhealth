@@ -31,6 +31,7 @@ function App() {
             <Route path="/loading/neural-reminders" element={<NeuralRemindersLoading />} />
             <Route path="/loading/home" element={<HomeLoading />} />
             <Route path="/loading/genai" element={<GenAILoading />} />
+            <Route path="/loading/account" element={<LoadingScreen destination="/account" loadingText="LOADING ACCOUNT SETTINGS" />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/auth/google/callback" element={<GoogleCallback />} />

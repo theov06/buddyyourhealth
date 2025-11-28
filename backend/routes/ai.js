@@ -419,4 +419,72 @@ Context: ${context || 'General health conversation'}
   }
 });
 
+// Save Chat Conversation
+router.post('/chat/save', auth, async (req, res) => {
+  try {
+    const { chatId, title, messages } = req.body;
+    const userId = req.user.id;
+
+    // In a real app, save to database
+    // For now, we'll return success and let frontend handle storage
+    res.json({
+      success: true,
+      chatId,
+      message: 'Chat saved successfully'
+    });
+  } catch (error) {
+    console.error('Save chat error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to save chat',
+      error: error.message
+    });
+  }
+});
+
+// Load Chat Conversation
+router.get('/chat/:chatId', auth, async (req, res) => {
+  try {
+    const { chatId } = req.params;
+    const userId = req.user.id;
+
+    // In a real app, load from database
+    // For now, return empty to let frontend handle
+    res.json({
+      success: true,
+      chatId,
+      messages: [],
+      title: 'Health Check-in'
+    });
+  } catch (error) {
+    console.error('Load chat error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to load chat',
+      error: error.message
+    });
+  }
+});
+
+// Get All User Chats
+router.get('/chats', auth, async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    // In a real app, load from database
+    // For now, return empty array
+    res.json({
+      success: true,
+      chats: []
+    });
+  } catch (error) {
+    console.error('Load chats error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to load chats',
+      error: error.message
+    });
+  }
+});
+
 module.exports = router;
