@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './Contact.css';
-import ParticleBackground from '../home/ParticleBackground';
-import LightBackground from '../home/LightBackground';
+import ParticleBackground from '../Home/ParticleBackground';
+import LightBackground from '../Home/LightBackground';
 import Navbar from '../navbar/Navbar';
 import { useTheme } from '../contexts/ThemeContext';
 

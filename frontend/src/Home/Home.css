@@ -1,0 +1,1751 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Navigation Bar Styles */
+.main-content {
+  position: relative;
+  z-index: 10;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.nav-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 40px;
+  background: transparent;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.logo-image {
+  height: 60px;
+  width: 60px;
+  object-fit: contain;
+  border-radius: 8px;
+}
+
+.logo-text {
+  font-size: 24px;
+  font-weight: bold;
+  color: white;
+  letter-spacing: 2px;
+}
+
+.nav-bar nav {
+  display: flex;
+  gap: 30px;
+}
+
+.nav-bar nav a {
+  color: white;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.nav-bar nav a:hover {
+  color: #00FFFF;
+  text-shadow: 
+    0 0 5px #00FFFF,
+    0 0 10px #00FFFF,
+    0 0 15px #00FFFF,
+    0 0 20px #00FFFF;
+  transition: all 0.3s ease;
+}
+
+.hero-text-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 0 40px;
+  margin-top: 10px;
+}
+
+.hero-text-container h1 {
+  font-size: 4rem;
+  color: var(--text-primary);
+  margin-bottom: 0px;
+  line-height: 1.2;
+  text-align: left;
+}
+
+.hero-text-container p {
+  font-size: 1.2rem;
+  color: var(--text-secondary);
+  margin-bottom: 30px;
+}
+
+/* Advanced Futuristic Button Animations */
+@keyframes cyber-pulse {
+  0%, 100% {
+    box-shadow: 
+      0 0 5px currentColor,
+      0 0 15px currentColor,
+      0 0 25px currentColor,
+      0 0 35px currentColor,
+      inset 0 0 15px rgba(0, 255, 255, 0.1);
+  }
+  50% {
+    box-shadow: 
+      0 0 15px currentColor,
+      0 0 30px currentColor,
+      0 0 45px currentColor,
+      0 0 60px currentColor,
+      inset 0 0 25px rgba(0, 255, 255, 0.2);
+  }
+}
+
+@keyframes hologram-flicker {
+  0%, 98%, 100% { opacity: 1; }
+  99% { opacity: 0.8; }
+  99.5% { opacity: 0.9; }
+}
+
+@keyframes data-stream {
+  0% {
+    transform: translateX(-100%) skewX(-15deg);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(100%) skewX(-15deg);
+    opacity: 0;
+  }
+}
+
+@keyframes circuit-lines {
+  0% {
+    background-position: 0% 0%, 0% 0%;
+  }
+  100% {
+    background-position: 100% 100%, -100% -100%;
+  }
+}
+
+@keyframes border-glow {
+  0%, 100% {
+    border-color: currentColor;
+    filter: brightness(1);
+  }
+  50% {
+    border-color: currentColor;
+    filter: brightness(1.5) saturate(1.2);
+  }
+}
+
+@keyframes text-glitch {
+  0%, 90%, 100% {
+    transform: translate(0);
+  }
+  20% {
+    transform: translate(-1px, 1px);
+  }
+  40% {
+    transform: translate(1px, -1px);
+  }
+  60% {
+    transform: translate(-1px, -1px);
+  }
+  80% {
+    transform: translate(1px, 1px);
+  }
+}
+
+@keyframes neon-gradient {
+  0%, 100% {
+    background-position: 0% 50%, 0% 0%, 50% 50%;
+    filter: brightness(1) saturate(1);
+  }
+  50% {
+    background-position: 100% 50%, 100% 100%, 50% 50%;
+    filter: brightness(1.3) saturate(1.5);
+  }
+}
+
+/* Button Container */
+.cta-buttons {
+  display: flex;
+  gap: 25px;
+  align-items: center;
+}
+
+.cta-button {
+  background: linear-gradient(145deg, #000000, #0d0d0d);
+  color: #00FFFF;
+  border: 2px solid #00FFFF;
+  padding: 18px 36px;
+  font-size: 16px;
+  font-weight: 700;
+  font-family: 'Courier New', monospace;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  border-radius: 0 !important;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
+  transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  text-decoration: none;
+  display: inline-block;
+  box-shadow: 
+    0 0 20px rgba(0, 255, 255, 0.4),
+    0 0 40px rgba(0, 255, 255, 0.2),
+    inset 0 0 20px rgba(0, 255, 255, 0.1),
+    0 8px 32px rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(15px) saturate(180%);
+  animation: border-glow 3s ease-in-out infinite, hologram-flicker 4s linear infinite;
+
+}
+
+/* Advanced Data Stream Effect */
+.cta-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -120%;
+  width: 120%;
+  height: 100%;
+  background: 
+    linear-gradient(
+      75deg,
+      transparent 20%,
+      rgba(0, 255, 255, 0.6) 50%,
+      transparent 80%
+    );
+  animation: data-stream 2s ease-in-out infinite;
+  z-index: 1;
+}
+
+[data-theme="light"] .cta-button::before {
+  background: 
+    linear-gradient(
+      75deg,
+      transparent 20%,
+      rgba(255, 255, 255, 0.6) 50%,
+      transparent 80%
+    );
+}
+
+
+
+/* Text Layer */
+.cta-button span,
+.cta-button {
+  position: relative;
+  z-index: 2;
+}
+
+/* Primary Button Styling */
+.cta-button.primary {
+  background: linear-gradient(45deg, var(--bg-secondary), var(--bg-tertiary)) !important;
+  color: var(--accent-primary) !important;
+  border: 2px solid var(--accent-primary) !important;
+  padding: 18px 40px !important;
+  font-size: 16px !important;
+  font-weight: bold !important;
+  font-family: 'Courier New', monospace !important;
+  letter-spacing: 2px !important;
+  text-transform: uppercase !important;
+  border-radius: 0 !important;
+  box-shadow: var(--shadow-secondary) !important;
+  backdrop-filter: blur(10px) !important;
+  text-shadow: none !important;
+  animation: none !important;
+}
+
+/* Secondary Button Styling */
+.cta-button.secondary {
+  background: transparent !important;
+  color: var(--accent-primary) !important;
+  border: 2px solid var(--border-primary) !important;
+  padding: 18px 50px !important;
+  font-size: 16px !important;
+  font-weight: bold !important;
+  font-family: 'Courier New', monospace !important;
+  letter-spacing: 2px !important;
+  text-transform: uppercase !important;
+  border-radius: 0 !important;
+  box-shadow: var(--shadow-secondary) !important;
+  backdrop-filter: blur(10px) !important;
+  text-shadow: none !important;
+  animation: none !important;
+}
+
+.cta-button.secondary::before {
+  background: 
+    linear-gradient(
+      75deg,
+      transparent 20%,
+      rgba(0, 255, 255, 0.6) 50%,
+      transparent 80%
+    );
+}
+
+[data-theme="light"] .cta-button.secondary::before {
+  background: 
+    linear-gradient(
+      75deg,
+      transparent 20%,
+      rgba(4, 120, 87, 0.6) 50%,
+      transparent 80%
+    );
+}
+
+
+
+/* Enhanced Hover Effects */
+.cta-button:hover {
+  transform: translateY(-6px) scale(1.05) perspective(1000px) rotateX(5deg);
+  animation: cyber-pulse 1s ease-in-out infinite, text-glitch 0.3s ease-in-out;
+  filter: brightness(1.2) saturate(1.3);
+}
+
+.cta-button:hover::before {
+  left: 120%;
+  animation-duration: 1s;
+}
+
+.cta-button.primary:hover {
+  transform: translateY(-2px) !important;
+  color: var(--text-primary) !important;
+  text-shadow: var(--glow-primary) !important;
+  box-shadow: var(--shadow-hover) !important;
+  border-color: var(--border-hover) !important;
+  animation: none !important;
+  filter: none !important;
+}
+
+.cta-button.secondary:hover {
+  transform: translateY(-2px) !important;
+  background: var(--bg-glass-hover) !important;
+  color: var(--accent-primary) !important;
+  border-color: var(--border-hover) !important;
+  text-shadow: var(--glow-primary) !important;
+  box-shadow: var(--shadow-hover) !important;
+  animation: none !important;
+  filter: none !important;
+}
+
+/* Active State with Glitch Effect */
+.cta-button:active {
+  transform: translateY(-3px) scale(1.03);
+  transition: all 0.1s ease;
+  animation: text-glitch 0.2s ease-in-out;
+  filter: brightness(1.5) contrast(1.2);
+}
+
+.cta-button:active::before {
+  animation-duration: 0.3s;
+}
+
+/* Enhanced Focus State */
+.cta-button:focus {
+  outline: none;
+  box-shadow: 
+    0 0 0 4px rgba(0, 255, 255, 0.6),
+    0 0 30px rgba(0, 255, 255, 0.8),
+    0 0 60px rgba(0, 255, 255, 0.4),
+    inset 0 0 20px rgba(0, 255, 255, 0.2);
+  animation: cyber-pulse 1s ease-in-out infinite;
+}
+
+.cta-button.secondary:focus {
+  box-shadow: 
+    0 0 0 4px rgba(0, 255, 255, 0.6),
+    0 0 30px rgba(0, 255, 255, 0.8),
+    0 0 60px rgba(0, 255, 255, 0.4),
+    inset 0 0 20px rgba(0, 255, 255, 0.2);
+}
+
+/* Disabled State */
+.cta-button:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+  animation: none;
+  transform: none;
+  filter: grayscale(1);
+}
+
+.cta-button:disabled:hover {
+  transform: none;
+  animation: none;
+  filter: grayscale(1);
+}
+
+/* Responsive Design for Buttons */
+@media (max-width: 768px) {
+  .cta-buttons {
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+  }
+  
+  .cta-button {
+    width: 100%;
+    text-align: center;
+    padding: 15px 30px;
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .cta-button {
+    padding: 12px 25px;
+    font-size: 14px;
+    letter-spacing: 1px;
+  }
+}
+
+@media (max-width: 480px) {
+  .robot-activate-btn {
+    padding: 10px 15px;
+  }
+  
+  .activate-icon {
+    font-size: 16px;
+  }
+  
+  .activate-text {
+    font-size: 9px;
+    letter-spacing: 0.5px;
+  }
+}
+
+/* Activate Button Container */
+.activate-button-container {
+  position: absolute;
+  top: 50%;
+  right: 8%;
+  transform: translateY(-50%);
+  z-index: 20;
+}
+
+/* ========================================
+   DARK MODE DESIGN - CYBERPUNK STYLE
+   ======================================== */
+
+.activate-button {
+  /* Cyberpunk Dark Theme Base */
+  background: linear-gradient(135deg, 
+    rgba(0, 0, 0, 0.9), 
+    rgba(17, 17, 34, 0.8), 
+    rgba(0, 0, 0, 0.9)
+  );
+  border: none;
+  border-radius: 0;
+  padding: 20px 35px;
+  color: #00FF41;
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+  font-size: 14px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  
+  /* Cyberpunk geometric border */
+  clip-path: polygon(
+    0 0, 
+    calc(100% - 15px) 0, 
+    100% 15px, 
+    100% 100%, 
+    15px 100%, 
+    0 calc(100% - 15px)
+  );
+  
+  /* Matrix-style glow */
+  box-shadow: 
+    0 0 20px rgba(0, 255, 65, 0.5),
+    inset 0 0 20px rgba(0, 255, 65, 0.1),
+    0 0 0 1px rgba(0, 255, 65, 0.8);
+  
+  /* Digital text effect */
+  text-shadow: 
+    0 0 5px rgba(0, 255, 65, 1),
+    0 0 10px rgba(0, 255, 65, 0.8),
+    0 0 15px rgba(0, 255, 65, 0.6),
+    2px 2px 0px rgba(0, 255, 65, 0.3);
+  
+  animation: matrix-pulse 2s ease-in-out infinite alternate;
+}
+
+/* Matrix rain effect */
+.activate-button::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: repeating-linear-gradient(
+    90deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 255, 65, 0.03) 2px,
+    rgba(0, 255, 65, 0.03) 4px
+  );
+  animation: matrix-rain 1s linear infinite;
+  z-index: -1;
+}
+
+/* Scanning line */
+.activate-button::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, 
+    transparent, 
+    rgba(0, 255, 65, 1), 
+    transparent
+  );
+  animation: scan-line 3s ease-in-out infinite;
+}
+
+.activate-button:hover {
+  transform: scale(1.05);
+  box-shadow: 
+    0 0 30px rgba(0, 255, 65, 0.8),
+    inset 0 0 30px rgba(0, 255, 65, 0.2),
+    0 0 0 2px rgba(0, 255, 65, 1);
+  
+  text-shadow: 
+    0 0 8px rgba(0, 255, 65, 1),
+    0 0 15px rgba(0, 255, 65, 1),
+    0 0 25px rgba(0, 255, 65, 0.8),
+    3px 3px 0px rgba(0, 255, 65, 0.5);
+}
+
+/* Dark Mode Activated State */
+.activate-button.activated {
+  background: linear-gradient(135deg, 
+    rgba(34, 0, 0, 0.9), 
+    rgba(68, 17, 17, 0.8), 
+    rgba(34, 0, 0, 0.9)
+  ) !important;
+  color: #FF0040 !important;
+  box-shadow: 
+    0 0 20px rgba(255, 0, 64, 0.5),
+    inset 0 0 20px rgba(255, 0, 64, 0.1),
+    0 0 0 1px rgba(255, 0, 64, 0.8) !important;
+  
+  text-shadow: 
+    0 0 5px rgba(255, 0, 64, 1),
+    0 0 10px rgba(255, 0, 64, 0.8),
+    0 0 15px rgba(255, 0, 64, 0.6),
+    2px 2px 0px rgba(255, 0, 64, 0.3) !important;
+  
+  animation: matrix-pulse-red 2s ease-in-out infinite alternate, glitch-effect 0.5s ease-in-out !important;
+}
+
+.activate-button.activated::before {
+  background: repeating-linear-gradient(
+    90deg,
+    transparent,
+    transparent 2px,
+    rgba(255, 0, 64, 0.03) 2px,
+    rgba(255, 0, 64, 0.03) 4px
+  );
+}
+
+.activate-button.activated::after {
+  background: linear-gradient(90deg, 
+    transparent, 
+    rgba(255, 0, 64, 1), 
+    transparent
+  );
+}
+
+.activate-button.activated:hover {
+  box-shadow: 
+    0 0 30px rgba(255, 0, 64, 0.8),
+    inset 0 0 30px rgba(255, 0, 64, 0.2),
+    0 0 0 2px rgba(255, 0, 64, 1) !important;
+  
+  text-shadow: 
+    0 0 8px rgba(255, 0, 64, 1),
+    0 0 15px rgba(255, 0, 64, 1),
+    0 0 25px rgba(255, 0, 64, 0.8),
+    3px 3px 0px rgba(255, 0, 64, 0.5) !important;
+}
+
+/* ========================================
+   LIGHT MODE DESIGN - NATURE-INSPIRED THEME
+   ======================================== */
+
+.activate-button.light {
+  /* Nature-inspired Light Theme Base */
+  background: linear-gradient(135deg, 
+    var(--bg-glass), 
+    var(--bg-glass-hover), 
+    var(--bg-glass)
+  );
+  border: 2px solid var(--border-primary);
+  border-radius: 25px;
+  padding: 18px 32px;
+  color: var(--accent-primary);
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+  font-size: 13px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(15px);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  
+  /* Nature-themed shadows */
+  box-shadow: 
+    var(--shadow-primary),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6),
+    inset 0 -1px 0 rgba(4, 120, 87, 0.1);
+  
+  /* Organic text glow */
+  text-shadow: var(--glow-secondary);
+  
+  animation: nature-breathe 4s ease-in-out infinite;
+}
+
+/* Organic growth pattern */
+.activate-button.light::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(45deg, 
+    var(--accent-primary), 
+    var(--accent-secondary), 
+    #10b981, 
+    var(--accent-secondary), 
+    var(--accent-primary)
+  );
+  background-size: 300% 300%;
+  border-radius: 27px;
+  z-index: -1;
+  animation: organic-flow 5s ease infinite;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+/* Leaf-like sweep effect */
+.activate-button.light::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, 
+    transparent, 
+    rgba(4, 120, 87, 0.2), 
+    rgba(16, 185, 129, 0.3),
+    rgba(4, 120, 87, 0.2), 
+    transparent
+  );
+  transition: left 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 25px;
+}
+
+.activate-button.light:hover {
+  transform: translateY(-3px) scale(1.05);
+  border-color: var(--border-hover);
+  box-shadow: 
+    var(--shadow-hover),
+    inset 0 2px 0 rgba(255, 255, 255, 0.8),
+    inset 0 -2px 0 rgba(4, 120, 87, 0.2);
+  
+  color: var(--text-primary);
+  text-shadow: var(--glow-primary);
+}
+
+.activate-button.light:hover::before {
+  opacity: 1;
+}
+
+.activate-button.light:hover::after {
+  left: 100%;
+}
+
+/* Light Mode Activated State */
+.activate-button.light.activated {
+  background: linear-gradient(135deg, 
+    rgba(254, 242, 242, 0.9), 
+    rgba(252, 231, 243, 0.85), 
+    rgba(254, 242, 242, 0.9)
+  );
+  border-color: rgba(220, 38, 38, 0.4);
+  color: var(--accent-danger);
+  box-shadow: 
+    0 0 25px rgba(220, 38, 38, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6),
+    inset 0 -1px 0 rgba(220, 38, 38, 0.1);
+  
+  text-shadow: 0 0 8px rgba(220, 38, 38, 0.3);
+  animation: nature-breathe 4s ease-in-out infinite, organic-pulse 0.6s ease-in-out;
+}
+
+.activate-button.light.activated::before {
+  background: linear-gradient(45deg, 
+    var(--accent-danger), 
+    #ef4444, 
+    #f87171, 
+    #ef4444, 
+    var(--accent-danger)
+  );
+}
+
+.activate-button.light.activated::after {
+  background: linear-gradient(90deg, 
+    transparent, 
+    rgba(220, 38, 38, 0.2), 
+    rgba(239, 68, 68, 0.3),
+    rgba(220, 38, 38, 0.2), 
+    transparent
+  );
+}
+
+.activate-button.light.activated:hover {
+  border-color: var(--accent-danger);
+  box-shadow: 
+    0 0 35px rgba(220, 38, 38, 0.35),
+    inset 0 2px 0 rgba(255, 255, 255, 0.8),
+    inset 0 -2px 0 rgba(220, 38, 38, 0.2);
+  
+  color: #b91c1c;
+  text-shadow: 0 0 15px rgba(220, 38, 38, 0.5);
+}
+
+/* ========================================
+   ANIMATIONS
+   ======================================== */
+
+/* Dark Mode Animations */
+@keyframes matrix-pulse {
+  0% { 
+    box-shadow: 
+      0 0 20px rgba(0, 255, 65, 0.5),
+      inset 0 0 20px rgba(0, 255, 65, 0.1),
+      0 0 0 1px rgba(0, 255, 65, 0.8);
+  }
+  100% { 
+    box-shadow: 
+      0 0 30px rgba(0, 255, 65, 0.8),
+      inset 0 0 30px rgba(0, 255, 65, 0.2),
+      0 0 0 2px rgba(0, 255, 65, 1);
+  }
+}
+
+@keyframes matrix-pulse-red {
+  0% { 
+    box-shadow: 
+      0 0 20px rgba(255, 0, 64, 0.5),
+      inset 0 0 20px rgba(255, 0, 64, 0.1),
+      0 0 0 1px rgba(255, 0, 64, 0.8) !important;
+  }
+  100% { 
+    box-shadow: 
+      0 0 30px rgba(255, 0, 64, 0.8),
+      inset 0 0 30px rgba(255, 0, 64, 0.2),
+      0 0 0 2px rgba(255, 0, 64, 1) !important;
+  }
+}
+
+@keyframes matrix-rain {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100%); }
+}
+
+@keyframes scan-line {
+  0%, 100% { left: -100%; }
+  50% { left: 100%; }
+}
+
+@keyframes glitch-effect {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-2px) skew(-2deg); }
+  40% { transform: translateX(2px) skew(2deg); }
+  60% { transform: translateX(-1px) skew(-1deg); }
+  80% { transform: translateX(1px) skew(1deg); }
+}
+
+/* Light Mode Animations - Nature Theme */
+@keyframes nature-breathe {
+  0%, 100% { 
+    transform: translateY(0) scale(1);
+    box-shadow: 
+      var(--shadow-primary),
+      inset 0 1px 0 rgba(255, 255, 255, 0.6),
+      inset 0 -1px 0 rgba(4, 120, 87, 0.1);
+  }
+  50% { 
+    transform: translateY(-2px) scale(1.01);
+    box-shadow: 
+      var(--shadow-secondary),
+      inset 0 1px 0 rgba(255, 255, 255, 0.7),
+      inset 0 -1px 0 rgba(4, 120, 87, 0.15);
+  }
+}
+
+@keyframes organic-flow {
+  0% { 
+    background-position: 0% 50%;
+    filter: hue-rotate(0deg);
+  }
+  33% { 
+    background-position: 50% 100%;
+    filter: hue-rotate(10deg);
+  }
+  66% { 
+    background-position: 100% 50%;
+    filter: hue-rotate(-10deg);
+  }
+  100% { 
+    background-position: 0% 50%;
+    filter: hue-rotate(0deg);
+  }
+}
+
+@keyframes organic-pulse {
+  0% { 
+    transform: scale(1);
+    filter: brightness(1);
+  }
+  25% { 
+    transform: scale(1.02);
+    filter: brightness(1.1);
+  }
+  50% { 
+    transform: scale(1.05);
+    filter: brightness(1.2);
+  }
+  75% { 
+    transform: scale(1.02);
+    filter: brightness(1.1);
+  }
+  100% { 
+    transform: scale(1);
+    filter: brightness(1);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .activate-button-container {
+    right: 5%;
+  }
+}
+
+@media (max-width: 768px) {
+  .activate-button-container {
+    right: 50%;
+    transform: translate(50%, -50%);
+    top: 65%;
+  }
+  
+  .activate-button {
+    padding: 15px 25px;
+    font-size: 12px;
+    letter-spacing: 1.5px;
+  }
+}
+
+@media (max-width: 480px) {
+  .activate-button {
+    padding: 12px 20px;
+    font-size: 11px;
+    letter-spacing: 1px;
+  }
+}/* =======
+=================================
+   GENERATIVE AI BUTTON
+   ======================================== */
+
+.generative-ai-container {
+  position: absolute;
+  top: 50%;
+  right: calc(55% - 160px);
+  transform: translateY(-50%);
+  z-index: 15;
+  animation: ai-button-appear 0.8s ease-out forwards;
+}
+
+/* Dark Mode - Generative AI Button */
+.generative-ai-button {
+  /* Cyberpunk AI Theme - Green */
+  background: linear-gradient(135deg, 
+    rgba(0, 17, 0, 0.9), 
+    rgba(17, 34, 17, 0.8), 
+    rgba(0, 17, 0, 0.9)
+  );
+  border: none;
+  border-radius: 0;
+  padding: 20px 35px;
+  color: #00FF41;
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  
+  /* Cyberpunk geometric border */
+  clip-path: polygon(
+    10px 0, 
+    100% 0, 
+    100% calc(100% - 10px), 
+    calc(100% - 10px) 100%, 
+    0 100%, 
+    0 10px
+  );
+  
+  /* Green AI glow */
+  box-shadow: 
+    0 0 20px rgba(0, 255, 65, 0.4),
+    inset 0 0 20px rgba(0, 255, 65, 0.1),
+    0 0 0 1px rgba(0, 255, 65, 0.6);
+  
+  /* Green text effect */
+  text-shadow: 
+    0 0 5px rgba(0, 255, 65, 0.8),
+    0 0 10px rgba(0, 255, 65, 0.6),
+    0 0 15px rgba(0, 255, 65, 0.4),
+    1px 1px 0px rgba(0, 255, 65, 0.3);
+  
+  animation: ai-pulse-green 3s ease-in-out infinite alternate;
+}
+
+/* AI circuit pattern */
+.generative-ai-button::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 3px,
+    rgba(0, 255, 65, 0.02) 3px,
+    rgba(0, 255, 65, 0.02) 6px
+  );
+  animation: ai-circuit 2s linear infinite;
+  z-index: -1;
+}
+
+/* AI data stream */
+.generative-ai-button::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, 
+    transparent, 
+    rgba(0, 255, 65, 0.8), 
+    rgba(0, 255, 65, 1),
+    rgba(0, 255, 65, 0.8), 
+    transparent
+  );
+  animation: ai-data-stream 4s ease-in-out infinite;
+}
+
+.generative-ai-button:hover {
+  transform: scale(1.05) translateY(-2px);
+  box-shadow: 
+    0 0 30px rgba(0, 255, 65, 0.6),
+    inset 0 0 30px rgba(0, 255, 65, 0.15),
+    0 0 0 2px rgba(0, 255, 65, 0.8);
+  
+  color: #FFFFFF;
+  text-shadow: 
+    0 0 8px rgba(0, 255, 65, 1),
+    0 0 15px rgba(0, 255, 65, 0.8),
+    0 0 25px rgba(0, 255, 65, 0.6),
+    2px 2px 0px rgba(0, 255, 65, 0.4);
+}
+
+/* Light Mode - Generative AI Button */
+.generative-ai-button.light {
+  /* Nature-inspired AI Theme */
+  background: linear-gradient(135deg, 
+    var(--bg-glass), 
+    var(--bg-glass-hover), 
+    var(--bg-glass)
+  );
+  border: 2px solid var(--border-primary);
+  border-radius: 25px;
+  padding: 18px 32px;
+  color: var(--accent-secondary);
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(15px);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  
+  /* Remove clip-path for light mode */
+  clip-path: none;
+  
+  /* Nature-themed shadows */
+  box-shadow: 
+    var(--shadow-primary),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6),
+    inset 0 -1px 0 rgba(5, 150, 105, 0.1);
+  
+  /* Organic text glow */
+  text-shadow: var(--glow-secondary);
+  
+  animation: nature-breathe 4s ease-in-out infinite;
+}
+
+.generative-ai-button.light::before {
+  background: linear-gradient(45deg, 
+    var(--accent-secondary), 
+    #10b981, 
+    #34d399, 
+    #10b981, 
+    var(--accent-secondary)
+  );
+  background-size: 300% 300%;
+  border-radius: 27px;
+  z-index: -1;
+  animation: organic-flow 5s ease infinite;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.generative-ai-button.light::after {
+  background: linear-gradient(90deg, 
+    transparent, 
+    rgba(5, 150, 105, 0.2), 
+    rgba(52, 211, 153, 0.3),
+    rgba(5, 150, 105, 0.2), 
+    transparent
+  );
+  transition: left 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 25px;
+  height: 100%;
+}
+
+.generative-ai-button.light:hover {
+  transform: translateY(-3px) scale(1.05);
+  border-color: var(--border-hover);
+  box-shadow: 
+    var(--shadow-hover),
+    inset 0 2px 0 rgba(255, 255, 255, 0.8),
+    inset 0 -2px 0 rgba(5, 150, 105, 0.2);
+  
+  color: var(--text-primary);
+  text-shadow: var(--glow-primary);
+}
+
+.generative-ai-button.light:hover::before {
+  opacity: 1;
+}
+
+.generative-ai-button.light:hover::after {
+  left: 100%;
+}
+
+/* ========================================
+   GENERATIVE AI ANIMATIONS
+   ======================================== */
+
+@keyframes ai-button-appear {
+  0% {
+    opacity: 0;
+    transform: translateY(-50%) translateX(-30px) scale(0.8);
+  }
+  60% {
+    transform: translateY(-50%) translateX(5px) scale(1.05);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(-50%) translateX(0) scale(1);
+  }
+}
+
+@keyframes ai-pulse {
+  0% { 
+    box-shadow: 
+      0 0 20px rgba(157, 78, 221, 0.4),
+      inset 0 0 20px rgba(157, 78, 221, 0.1),
+      0 0 0 1px rgba(157, 78, 221, 0.6);
+  }
+  100% { 
+    box-shadow: 
+      0 0 25px rgba(157, 78, 221, 0.6),
+      inset 0 0 25px rgba(157, 78, 221, 0.15),
+      0 0 0 1px rgba(157, 78, 221, 0.8);
+  }
+}
+
+@keyframes ai-circuit {
+  0% { transform: rotate(0deg) scale(1); }
+  100% { transform: rotate(360deg) scale(1.1); }
+}
+
+@keyframes ai-data-stream {
+  0%, 100% { left: -100%; }
+  25% { left: 100%; }
+  50% { left: -100%; }
+  75% { left: 100%; }
+}
+
+@keyframes ai-breathe {
+  0%, 100% { 
+    transform: scale(1);
+    box-shadow: 
+      0 0 20px rgba(139, 69, 19, 0.2),
+      inset 0 1px 0 rgba(255, 255, 255, 0.6),
+      inset 0 -1px 0 rgba(139, 69, 19, 0.1);
+  }
+  50% { 
+    transform: scale(1.02);
+    box-shadow: 
+      0 0 25px rgba(139, 69, 19, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.7),
+      inset 0 -1px 0 rgba(139, 69, 19, 0.15);
+  }
+}
+
+/* Responsive Design for Generative AI Button */
+@media (max-width: 1200px) {
+  .generative-ai-container {
+    right: calc(52% - 160px);
+  }
+}
+
+@media (max-width: 768px) {
+  .generative-ai-container {
+    right: 50%;
+    transform: translate(50%, -50%);
+    top: 40%;
+  }
+  
+  .generative-ai-button {
+    padding: 12px 20px;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+  }
+  
+  .generative-ai-button.light {
+    padding: 10px 18px;
+    font-size: 11px;
+    letter-spacing: 1px;
+  }
+}
+
+@media (max-width: 480px) {
+  .generative-ai-button {
+    padding: 10px 16px;
+    font-size: 10px;
+    letter-spacing: 1px;
+  }
+  
+  .generative-ai-button.light {
+    padding: 8px 14px;
+    font-size: 10px;
+  }
+}/* =
+=======================================
+   REMINDER BUTTON
+   ======================================== */
+
+.reminder-container {
+  position: absolute;
+  top: calc(50% + 80px);
+  right: calc(55% - 160px);
+  transform: translateY(-50%);
+  z-index: 15;
+  animation: ai-button-appear 1s ease-out forwards;
+  animation-delay: 0.2s;
+  opacity: 0;
+}
+
+/* Dark Mode - Reminder Button */
+.reminder-button {
+  /* Cyberpunk Reminder Theme - Orange */
+  background: linear-gradient(135deg, 
+    rgba(34, 17, 0, 0.9), 
+    rgba(68, 34, 0, 0.8), 
+    rgba(34, 17, 0, 0.9)
+  );
+  border: none;
+  border-radius: 0;
+  padding: 20px 35px;
+  color: #FFA500;
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  
+  /* Cyberpunk geometric border */
+  clip-path: polygon(
+    10px 0, 
+    100% 0, 
+    100% calc(100% - 10px), 
+    calc(100% - 10px) 100%, 
+    0 100%, 
+    0 10px
+  );
+  
+  /* Orange reminder glow */
+  box-shadow: 
+    0 0 20px rgba(255, 165, 0, 0.4),
+    inset 0 0 20px rgba(255, 165, 0, 0.1),
+    0 0 0 1px rgba(255, 165, 0, 0.6);
+  
+  /* Orange text effect */
+  text-shadow: 
+    0 0 5px rgba(255, 165, 0, 0.8),
+    0 0 10px rgba(255, 165, 0, 0.6),
+    0 0 15px rgba(255, 165, 0, 0.4),
+    1px 1px 0px rgba(255, 165, 0, 0.3);
+  
+  animation: reminder-pulse 3s ease-in-out infinite alternate;
+}
+
+/* Reminder circuit pattern */
+.reminder-button::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 3px,
+    rgba(255, 165, 0, 0.02) 3px,
+    rgba(255, 165, 0, 0.02) 6px
+  );
+  animation: ai-circuit 2s linear infinite;
+  z-index: -1;
+}
+
+/* Reminder data stream */
+.reminder-button::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, 
+    transparent, 
+    rgba(255, 165, 0, 0.8), 
+    rgba(255, 165, 0, 1),
+    rgba(255, 165, 0, 0.8), 
+    transparent
+  );
+  animation: ai-data-stream 4s ease-in-out infinite;
+}
+
+.reminder-button:hover {
+  transform: scale(1.05) translateY(-2px);
+  box-shadow: 
+    0 0 30px rgba(255, 165, 0, 0.6),
+    inset 0 0 30px rgba(255, 165, 0, 0.15),
+    0 0 0 2px rgba(255, 165, 0, 0.8);
+  
+  color: #FFFFFF;
+  text-shadow: 
+    0 0 8px rgba(255, 165, 0, 1),
+    0 0 15px rgba(255, 165, 0, 0.8),
+    0 0 25px rgba(255, 165, 0, 0.6),
+    2px 2px 0px rgba(255, 165, 0, 0.4);
+}
+
+/* Light Mode - Reminder Button */
+.reminder-button.light {
+  /* Yellow Reminder Theme */
+  background: linear-gradient(135deg, 
+    var(--bg-glass), 
+    var(--bg-glass-hover), 
+    var(--bg-glass)
+  );
+  border: 2px solid rgba(234, 179, 8, 0.4);
+  border-radius: 25px;
+  padding: 18px 32px;
+  color: #ca8a04;
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(15px);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  
+  /* Remove clip-path for light mode */
+  clip-path: none;
+  
+  /* Yellow-themed shadows */
+  box-shadow: 
+    0 0 25px rgba(234, 179, 8, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6),
+    inset 0 -1px 0 rgba(234, 179, 8, 0.1);
+  
+  /* Yellow text glow */
+  text-shadow: 0 0 8px rgba(234, 179, 8, 0.3);
+  
+  animation: nature-breathe 4s ease-in-out infinite;
+}
+
+.reminder-button.light::before {
+  background: linear-gradient(45deg, 
+    #ca8a04, 
+    #eab308, 
+    #fbbf24, 
+    #eab308, 
+    #ca8a04
+  );
+  background-size: 300% 300%;
+  border-radius: 27px;
+  z-index: -1;
+  animation: organic-flow 5s ease infinite;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.reminder-button.light::after {
+  background: linear-gradient(90deg, 
+    transparent, 
+    rgba(234, 179, 8, 0.2), 
+    rgba(251, 191, 36, 0.3),
+    rgba(234, 179, 8, 0.2), 
+    transparent
+  );
+  transition: left 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 25px;
+  height: 100%;
+}
+
+.reminder-button.light:hover {
+  transform: translateY(-3px) scale(1.05);
+  border-color: #eab308;
+  box-shadow: 
+    0 0 35px rgba(234, 179, 8, 0.35),
+    inset 0 2px 0 rgba(255, 255, 255, 0.8),
+    inset 0 -2px 0 rgba(234, 179, 8, 0.2);
+  
+  color: #92400e;
+  text-shadow: 0 0 15px rgba(234, 179, 8, 0.5);
+}
+
+.reminder-button.light:hover::before {
+  opacity: 1;
+}
+
+.reminder-button.light:hover::after {
+  left: 100%;
+}
+
+/* Responsive Design for Reminder Button */
+@media (max-width: 1200px) {
+  .reminder-container {
+    right: calc(52% - 160px);
+  }
+}
+
+@media (max-width: 768px) {
+  .reminder-container {
+    right: 50%;
+    transform: translate(50%, -50%);
+    top: calc(40% + 80px);
+  }
+  
+  .reminder-button {
+    padding: 12px 20px;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+  }
+  
+  .reminder-button.light {
+    padding: 10px 18px;
+    font-size: 11px;
+    letter-spacing: 1px;
+  }
+}
+
+@media (max-width: 480px) {
+  .reminder-button {
+    padding: 10px 16px;
+    font-size: 10px;
+    letter-spacing: 1px;
+  }
+  
+  .reminder-button.light {
+    padding: 8px 14px;
+    font-size: 10px;
+  }
+}
+
+/* ========================================
+   HEALTH MONITORING BUTTON
+   ======================================== */
+
+.health-monitoring-container {
+  position: absolute;
+  top: calc(50% - 80px);
+  right: calc(55% - 160px);
+  transform: translateY(-50%);
+  z-index: 15;
+  animation: ai-button-appear 0.6s ease-out forwards;
+  opacity: 0;
+}
+
+/* Dark Mode - Health Monitoring Button */
+.health-monitoring-button {
+  /* Cyberpunk Health Theme - Pink */
+  background: linear-gradient(135deg, 
+    rgba(34, 0, 34, 0.9), 
+    rgba(68, 17, 68, 0.8), 
+    rgba(34, 0, 34, 0.9)
+  );
+  border: none;
+  border-radius: 0;
+  padding: 20px 35px;
+  color: #FF69B4;
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  
+  /* Cyberpunk geometric border */
+  clip-path: polygon(
+    10px 0, 
+    100% 0, 
+    100% calc(100% - 10px), 
+    calc(100% - 10px) 100%, 
+    0 100%, 
+    0 10px
+  );
+  
+  /* Pink health glow */
+  box-shadow: 
+    0 0 20px rgba(255, 105, 180, 0.4),
+    inset 0 0 20px rgba(255, 105, 180, 0.1),
+    0 0 0 1px rgba(255, 105, 180, 0.6);
+  
+  /* Pink text effect */
+  text-shadow: 
+    0 0 5px rgba(255, 105, 180, 0.8),
+    0 0 10px rgba(255, 105, 180, 0.6),
+    0 0 15px rgba(255, 105, 180, 0.4),
+    1px 1px 0px rgba(255, 105, 180, 0.3);
+  
+  animation: health-pulse-pink 3s ease-in-out infinite alternate;
+}
+
+/* Health circuit pattern */
+.health-monitoring-button::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 3px,
+    rgba(255, 105, 180, 0.02) 3px,
+    rgba(255, 105, 180, 0.02) 6px
+  );
+  animation: ai-circuit 2s linear infinite;
+  z-index: -1;
+}
+
+/* Health data stream */
+.health-monitoring-button::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, 
+    transparent, 
+    rgba(255, 105, 180, 0.8), 
+    rgba(255, 105, 180, 1),
+    rgba(255, 105, 180, 0.8), 
+    transparent
+  );
+  animation: ai-data-stream 4s ease-in-out infinite;
+}
+
+.health-monitoring-button:hover {
+  transform: scale(1.05) translateY(-2px);
+  box-shadow: 
+    0 0 30px rgba(255, 105, 180, 0.6),
+    inset 0 0 30px rgba(255, 105, 180, 0.15),
+    0 0 0 2px rgba(255, 105, 180, 0.8);
+  
+  color: #FFFFFF;
+  text-shadow: 
+    0 0 8px rgba(255, 105, 180, 1),
+    0 0 15px rgba(255, 105, 180, 0.8),
+    0 0 25px rgba(255, 105, 180, 0.6),
+    2px 2px 0px rgba(255, 105, 180, 0.4);
+}
+
+/* Light Mode - Health Monitoring Button */
+.health-monitoring-button.light {
+  /* Pink Health Theme */
+  background: linear-gradient(135deg, 
+    var(--bg-glass), 
+    var(--bg-glass-hover), 
+    var(--bg-glass)
+  );
+  border: 2px solid rgba(236, 72, 153, 0.4);
+  border-radius: 25px;
+  padding: 18px 32px;
+  color: #be185d;
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(15px);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  
+  /* Remove clip-path for light mode */
+  clip-path: none;
+  
+  /* Pink-themed shadows */
+  box-shadow: 
+    0 0 25px rgba(236, 72, 153, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6),
+    inset 0 -1px 0 rgba(236, 72, 153, 0.1);
+  
+  /* Pink text glow */
+  text-shadow: 0 0 8px rgba(236, 72, 153, 0.3);
+  
+  animation: nature-breathe 4s ease-in-out infinite;
+}
+
+.health-monitoring-button.light::before {
+  background: linear-gradient(45deg, 
+    #be185d, 
+    #ec4899, 
+    #f9a8d4, 
+    #ec4899, 
+    #be185d
+  );
+  background-size: 300% 300%;
+  border-radius: 27px;
+  z-index: -1;
+  animation: organic-flow 5s ease infinite;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.health-monitoring-button.light::after {
+  background: linear-gradient(90deg, 
+    transparent, 
+    rgba(236, 72, 153, 0.2), 
+    rgba(249, 168, 212, 0.3),
+    rgba(236, 72, 153, 0.2), 
+    transparent
+  );
+  transition: left 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 25px;
+  height: 100%;
+}
+
+.health-monitoring-button.light:hover {
+  transform: translateY(-3px) scale(1.05);
+  border-color: #ec4899;
+  box-shadow: 
+    0 0 35px rgba(236, 72, 153, 0.35),
+    inset 0 2px 0 rgba(255, 255, 255, 0.8),
+    inset 0 -2px 0 rgba(236, 72, 153, 0.2);
+  
+  color: #9d174d;
+  text-shadow: 0 0 15px rgba(236, 72, 153, 0.5);
+}
+
+.health-monitoring-button.light:hover::before {
+  opacity: 1;
+}
+
+.health-monitoring-button.light:hover::after {
+  left: 100%;
+}
+
+/* Responsive Design for Health Monitoring Button */
+@media (max-width: 1200px) {
+  .health-monitoring-container {
+    right: calc(52% - 160px);
+  }
+}
+
+@media (max-width: 768px) {
+  .health-monitoring-container {
+    right: 50%;
+    transform: translate(50%, -50%);
+    top: calc(40% - 80px);
+  }
+  
+  .health-monitoring-button {
+    padding: 12px 20px;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+  }
+  
+  .health-monitoring-button.light {
+    padding: 10px 18px;
+    font-size: 11px;
+    letter-spacing: 1px;
+  }
+}
+
+@media (max-width: 480px) {
+  .health-monitoring-button {
+    padding: 10px 16px;
+    font-size: 10px;
+    letter-spacing: 1px;
+  }
+  
+  .health-monitoring-button.light {
+    padding: 8px 14px;
+    font-size: 10px;
+  }
+}/* Addi
+tional Animations for Different Button Colors */
+
+@keyframes health-pulse-pink {
+  0% { 
+    box-shadow: 
+      0 0 20px rgba(255, 105, 180, 0.4),
+      inset 0 0 20px rgba(255, 105, 180, 0.1),
+      0 0 0 1px rgba(255, 105, 180, 0.6);
+  }
+  100% { 
+    box-shadow: 
+      0 0 25px rgba(255, 105, 180, 0.6),
+      inset 0 0 25px rgba(255, 105, 180, 0.15),
+      0 0 0 1px rgba(255, 105, 180, 0.8);
+  }
+}
+
+@keyframes ai-pulse-green {
+  0% { 
+    box-shadow: 
+      0 0 20px rgba(0, 255, 65, 0.4),
+      inset 0 0 20px rgba(0, 255, 65, 0.1),
+      0 0 0 1px rgba(0, 255, 65, 0.6);
+  }
+  100% { 
+    box-shadow: 
+      0 0 25px rgba(0, 255, 65, 0.6),
+      inset 0 0 25px rgba(0, 255, 65, 0.15),
+      0 0 0 1px rgba(0, 255, 65, 0.8);
+  }
+}
+
+@keyframes reminder-pulse {
+  0% { 
+    box-shadow: 
+      0 0 20px rgba(255, 165, 0, 0.4),
+      inset 0 0 20px rgba(255, 165, 0, 0.1),
+      0 0 0 1px rgba(255, 165, 0, 0.6);
+  }
+  100% { 
+    box-shadow: 
+      0 0 25px rgba(255, 165, 0, 0.6),
+      inset 0 0 25px rgba(255, 165, 0, 0.15),
+      0 0 0 1px rgba(255, 165, 0, 0.8);
+  }
+}
