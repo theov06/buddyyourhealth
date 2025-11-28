@@ -1,8 +1,8 @@
 
 import { Link } from 'react-router-dom';
 import './About.css';
-import ParticleBackground from '../Home/ParticleBackground';
-import LightBackground from '../Home/LightBackground';
+import ParticleBackground from '../home/ParticleBackground';
+import LightBackground from '../home/LightBackground';
 import Navbar from '../navbar/Navbar';
 import { useTheme } from '../contexts/ThemeContext'; 
 
