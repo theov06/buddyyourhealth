@@ -39,12 +39,11 @@ const GoogleCallback: React.FC = () => {
         if (data.success && data.token) {
           // Store token and user data
           localStorage.setItem('authToken', data.token);
-          localStorage.setItem('token', data.token);
           localStorage.setItem('user', JSON.stringify(data.user));
 
-          // Redirect to account page
+          // Redirect to home page
           setTimeout(() => {
-            window.location.href = '/account';
+            window.location.href = '/loading/home';
           }, 100);
         } else {
           setError(data.message || 'Authentication failed');

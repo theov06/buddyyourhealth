@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './LoadingScreen.css';
-import ParticleBackground from '../home/ParticleBackground';
-import LightBackground from '../home/LightBackground';
+import ParticleBackground from '../Home/ParticleBackground';
+import LightBackground from '../Home/LightBackground';
 import { useTheme } from '../contexts/ThemeContext';
 
 interface LoadingScreenProps {

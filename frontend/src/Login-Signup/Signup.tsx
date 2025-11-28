@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './Auth.css';
-import ParticleBackground from '../home/ParticleBackground';
-import LightBackground from '../home/LightBackground';
+import ParticleBackground from '../Home/ParticleBackground';
+import LightBackground from '../Home/LightBackground';
 import { useAuth } from '../contexts/AuthContext';
 import { useTheme } from '../contexts/ThemeContext';
 import OAuthService from '../services/oauthService';
@@ -49,7 +49,7 @@ const Signup: React.FC = () => {
 
     try {
       await loginWithGoogle(response.credential, GOOGLE_CLIENT_ID);
-      navigate('/account');
+      navigate('/loading/home');
     } catch (error: any) {
       setError(error.message || 'Google sign-in failed. Please try again.');
       console.error('Google sign-in error:', error);
@@ -99,7 +99,7 @@ const Signup: React.FC = () => {
       if (window.AppleID) {
         const data = await window.AppleID.auth.signIn();
         await loginWithApple(data.authorization.id_token, data.user);
-        navigate('/account');
+        navigate('/loading/home');
       }
     } catch (error: any) {
       if (error.error !== 'popup_closed_by_user') {

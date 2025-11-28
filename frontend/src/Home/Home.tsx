@@ -43,7 +43,7 @@ function Home() {
             className={`health-monitoring-button ${theme}`}
             onClick={() => {
               console.log('Health monitoring clicked!');
-              navigate('/health/dashboard');
+              navigate('/loading/neural-health');
             }}
           >
             Health monitoring

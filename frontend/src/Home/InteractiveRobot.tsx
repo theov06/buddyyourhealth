@@ -71,7 +71,6 @@ function FeatureButton({ label, description, position, delay, onClick, theme }: 
         animationDelay: `${delay}ms`
       }}
       onClick={(e) => {
-        console.log('FeatureButton clicked:', label);
         e.stopPropagation();
         onClick();
       }}
@@ -92,29 +91,19 @@ export default function InteractiveRobot() {
   const [isActivated, setIsActivated] = useState(false);
   const [showFeatures, setShowFeatures] = useState(false);
 
-  // Debug: Check localStorage for any stale auth data
+  // Check localStorage for any stale auth data
   useEffect(() => {
     const token = localStorage.getItem('authToken');
     const storedUser = localStorage.getItem('user');
-    console.log('localStorage check:', { 
-      hasToken: !!token, 
-      hasStoredUser: !!storedUser,
-      token: token ? 'EXISTS' : 'NULL',
-      storedUser: storedUser ? 'EXISTS' : 'NULL',
-      authContextState: { isAuthenticated, user: !!user, isLoading }
-    });
     
     // If there's no user in context but there's localStorage data, it might be stale
     if (!user && !isLoading && (token || storedUser)) {
-      console.warn('Potential stale auth data detected - clearing...');
       localStorage.removeItem('authToken');
       localStorage.removeItem('user');
     }
   }, [user, isAuthenticated, isLoading]);
 
   const handleRobotClick = () => {
-    console.log('Robot clicked! isAuthenticated:', isAuthenticated, 'isActivated:', isActivated);
-    
     // Only allow activation if user is authenticated
     if (!isAuthenticated) {
       alert('Please sign in to activate the AI assistant and access health features.');
@@ -122,28 +111,22 @@ export default function InteractiveRobot() {
     }
     
     if (!isActivated) {
-      console.log('Activating robot...');
       setIsActivated(true);
       setTimeout(() => {
-        console.log('Showing features...');
         setShowFeatures(true);
       }, 800);
     } else {
-      console.log('Deactivating robot...');
       setShowFeatures(false);
       setTimeout(() => setIsActivated(false), 300);
     }
   };
 
   const handleCloseClick = () => {
-    console.log('Close button clicked!');
     setShowFeatures(false);
     setTimeout(() => setIsActivated(false), 300);
   };
 
   const handleFeatureClick = (feature: string) => {
-    console.log(`Feature clicked: ${feature}`);
-    // Add navigation or modal logic here
     switch (feature) {
       case 'ai-staff':
         // Open AI chat interface or navigate to AI consultation page
@@ -183,24 +166,6 @@ export default function InteractiveRobot() {
       id: 'smart-reminders'
     }
   ];
-
-  // Debug logging
-  console.log('InteractiveRobot render:', { 
-    isAuthenticated, 
-    isLoading,
-    isActivated, 
-    showFeatures, 
-    user: user ? 'User exists' : 'No user',
-    userEmail: user?.email || 'No email',
-    shouldShowButton: !isActivated && !isLoading && isAuthenticated && user && user.id,
-    buttonConditions: {
-      notActivated: !isActivated,
-      notLoading: !isLoading,
-      authenticated: isAuthenticated,
-      hasUser: !!user,
-      hasUserId: !!(user && user.id)
-    }
-  });
 
   return (
     <div className="interactive-robot-container">
@@ -246,7 +211,6 @@ export default function InteractiveRobot() {
           className={`robot-activation-button ${theme}`} 
           onClick={(e) => {
             e.stopPropagation();
-            console.log('Activation button clicked!');
             handleRobotClick();
           }}
           style={{ 

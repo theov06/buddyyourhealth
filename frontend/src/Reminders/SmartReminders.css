@@ -643,6 +643,11 @@
   display: flex;
   flex-direction: column;
   gap: 25px;
+  min-height: 250px;
+}
+
+.suggestions-list:empty {
+  display: none;
 }
 
 .suggestion-item {
@@ -739,6 +744,17 @@
 .ai-actions {
   margin-top: 20px;
   text-align: center;
+}
+
+/* Center the refresh button when there are no insights */
+.ai-suggestions-panel:has(.suggestions-list:empty) .ai-actions,
+.ai-suggestions-panel:has(.suggestions-list:not(:has(.suggestion-item))) .ai-actions {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 250px;
+  margin-top: 0;
 }
 
 .refresh-insights-btn {
@@ -1257,6 +1273,163 @@
   font-size: 12px;
   letter-spacing: 1px;
   color: rgba(255, 165, 0, 0.7);
+}
+
+/* Sharing Actions */
+.sharing-actions {
+  display: flex;
+  gap: 15px;
+  margin-top: 25px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 165, 0, 0.2);
+}
+
+.share-button,
+.export-button {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 20px;
+  background: rgba(255, 165, 0, 0.1);
+  border: 2px solid rgba(255, 165, 0, 0.3);
+  border-radius: 8px;
+  color: #FFA500;
+  font-family: 'Courier New', monospace;
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.share-button:hover,
+.export-button:hover {
+  background: rgba(255, 165, 0, 0.2);
+  border-color: #FFA500;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(255, 165, 0, 0.3);
+}
+
+.share-icon,
+.export-icon {
+  font-size: 16px;
+}
+
+/* Share Modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  backdrop-filter: blur(5px);
+}
+
+.share-modal {
+  background: rgba(0, 0, 0, 0.95);
+  border: 2px solid rgba(255, 165, 0, 0.5);
+  border-radius: 15px;
+  padding: 30px;
+  max-width: 500px;
+  width: 90%;
+  animation: modal-appear 0.3s ease-out;
+}
+
+.share-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid rgba(255, 165, 0, 0.3);
+}
+
+.share-modal-header h3 {
+  color: #FFA500;
+  font-size: 20px;
+  font-family: 'Courier New', monospace;
+  letter-spacing: 2px;
+  margin: 0;
+}
+
+.close-modal-btn {
+  background: none;
+  border: none;
+  color: #FFA500;
+  font-size: 32px;
+  cursor: pointer;
+  line-height: 1;
+  transition: all 0.3s ease;
+}
+
+.close-modal-btn:hover {
+  color: #FFD700;
+  transform: rotate(90deg);
+}
+
+.share-options {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+}
+
+.share-option-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 20px;
+  background: rgba(255, 165, 0, 0.1);
+  border: 2px solid rgba(255, 165, 0, 0.3);
+  border-radius: 10px;
+  color: #FFA500;
+  font-family: 'Courier New', monospace;
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.share-option-btn:hover {
+  background: rgba(255, 165, 0, 0.2);
+  border-color: #FFA500;
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(255, 165, 0, 0.3);
+}
+
+.share-option-icon {
+  font-size: 28px;
+}
+
+.share-option-logo {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+}
+
+.share-option-btn.facebook .share-option-logo {
+  width: 28px;
+  height: 28px;
+}
+
+@keyframes modal-appear {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
 }
 
 /* Auth Required State */
@@ -1970,6 +2143,57 @@
 
 .smart-reminders-container.light .stat-label {
   color: rgba(146, 64, 14, 0.7);
+}
+
+.smart-reminders-container.light .sharing-actions {
+  border-top-color: rgba(146, 64, 14, 0.2);
+}
+
+.smart-reminders-container.light .share-button,
+.smart-reminders-container.light .export-button {
+  background: rgba(251, 191, 36, 0.1);
+  border-color: rgba(146, 64, 14, 0.3);
+  color: #92400e;
+}
+
+.smart-reminders-container.light .share-button:hover,
+.smart-reminders-container.light .export-button:hover {
+  background: rgba(251, 191, 36, 0.2);
+  border-color: #f59e0b;
+  box-shadow: 0 5px 15px rgba(245, 158, 11, 0.3);
+}
+
+.smart-reminders-container.light .share-modal {
+  background: rgba(255, 255, 255, 0.98);
+  border-color: rgba(146, 64, 14, 0.4);
+}
+
+.smart-reminders-container.light .share-modal-header {
+  border-bottom-color: rgba(146, 64, 14, 0.3);
+}
+
+.smart-reminders-container.light .share-modal-header h3 {
+  color: #92400e;
+}
+
+.smart-reminders-container.light .close-modal-btn {
+  color: #92400e;
+}
+
+.smart-reminders-container.light .close-modal-btn:hover {
+  color: #f59e0b;
+}
+
+.smart-reminders-container.light .share-option-btn {
+  background: rgba(251, 191, 36, 0.1);
+  border-color: rgba(146, 64, 14, 0.3);
+  color: #92400e;
+}
+
+.smart-reminders-container.light .share-option-btn:hover {
+  background: rgba(251, 191, 36, 0.2);
+  border-color: #f59e0b;
+  box-shadow: 0 5px 15px rgba(245, 158, 11, 0.3);
 }
 
 /* Light Mode Empty State */

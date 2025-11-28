@@ -22,7 +22,7 @@ export default function GenAILoading() {
 
     // Navigate after loading completes
     const timer = setTimeout(() => {
-      navigate('/genai');
+      navigate('/genai', { replace: true });
     }, 3000);
 
     return () => {

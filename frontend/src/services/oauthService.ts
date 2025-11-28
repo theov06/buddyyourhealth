@@ -28,7 +28,7 @@ class OAuthService {
 
       if (data.success && data.token) {
         // Store token
-        localStorage.setItem('token', data.token);
+        localStorage.setItem('authToken', data.token);
         if (data.user) {
           localStorage.setItem('user', JSON.stringify(data.user));
         }
@@ -59,7 +59,7 @@ class OAuthService {
 
       if (data.success && data.token) {
         // Store token
-        localStorage.setItem('token', data.token);
+        localStorage.setItem('authToken', data.token);
         if (data.user) {
           localStorage.setItem('user', JSON.stringify(data.user));
         }

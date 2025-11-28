@@ -76,7 +76,7 @@ export default function GenAI() {
 
     try {
       // Call the AI API with conversation history
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem('authToken');
       console.log('🚀 Calling AI API with message:', currentInput);
       console.log('🔑 Token:', token ? 'Present' : 'Missing');
       const response = await fetch('http://localhost:3001/api/ai/chat', {

@@ -4,7 +4,7 @@ import './NewReminderModal.css';
 interface NewReminderModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (reminder: NewReminderData) => void;
+  onSubmit: (reminder: NewReminderData) => void | Promise<void>;
 }
 
 export interface NewReminderData {

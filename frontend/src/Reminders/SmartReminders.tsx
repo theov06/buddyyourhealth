@@ -7,6 +7,7 @@ import calendarService from '../services/calendarService';
 import TimePickerModal from './TimePickerModal';
 import NewReminderModal, { NewReminderData } from './NewReminderModal';
 import DailyTrackerModal from './DailyTrackerModal';
+import jsPDF from 'jspdf';
 import './SmartReminders.css';
 
 interface Reminder {
@@ -41,6 +42,7 @@ export default function SmartReminders() {
   const [selectedInsight, setSelectedInsight] = useState<any>(null);
   const [selectedInsightIndex, setSelectedInsightIndex] = useState<number>(-1);
   const [showDailyTracker, setShowDailyTracker] = useState(false);
+  const [showShareModal, setShowShareModal] = useState(false);
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -183,21 +185,57 @@ export default function SmartReminders() {
       // For now, use mock data. Replace with real AI call when AWS credentials are configured
       const mockReminders = aiService.getMockSmartReminders();
       
-      // Convert AI reminders to our Reminder format
-      const aiReminders: Reminder[] = mockReminders.reminders.map((reminder: any, index: number) => ({
-        id: `ai-${index + 1}`,
-        title: reminder.title,
-        description: reminder.description,
-        time: reminder.time,
-        frequency: reminder.frequency as 'daily' | 'weekly' | 'monthly' | 'custom',
-        category: reminder.category as 'medication' | 'exercise' | 'checkup' | 'wellness' | 'nutrition',
-        isActive: true,
-        nextReminder: new Date(Date.now() + Math.random() * 24 * 60 * 60 * 1000),
-        aiGenerated: true,
-        priority: reminder.priority as 'low' | 'medium' | 'high' | 'critical'
-      }));
+      const token = localStorage.getItem('authToken');
+      const savedReminders: Reminder[] = [];
+
+      // Save each reminder to backend
+      for (const reminder of mockReminders.reminders) {
+        try {
+          console.log('📤 Sending reminder to backend:', reminder);
+          
+          const response = await fetch('http://localhost:3001/api/reminders', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({
+              title: reminder.title,
+              description: reminder.description,
+              time: reminder.time,
+              frequency: reminder.frequency,
+              category: reminder.category,
+              priority: reminder.priority
+            })
+          });
+
+          console.log('📡 Response status:', response.status);
+          const data = await response.json();
+          console.log('📦 Response data:', data);
+
+          if (data.success && data.reminder) {
+            savedReminders.push({
+              id: data.reminder.id,
+              title: data.reminder.title,
+              description: data.reminder.description,
+              time: data.reminder.time,
+              frequency: data.reminder.frequency as 'daily' | 'weekly' | 'monthly' | 'custom',
+              category: data.reminder.category as 'medication' | 'exercise' | 'checkup' | 'wellness' | 'nutrition',
+              isActive: true,
+              nextReminder: new Date(Date.now() + Math.random() * 24 * 60 * 60 * 1000),
+              aiGenerated: true,
+              priority: data.reminder.priority as 'low' | 'medium' | 'high' | 'critical'
+            });
+            console.log('✅ Reminder saved successfully');
+          } else {
+            console.error('❌ Failed to save reminder:', data.message);
+          }
+        } catch (error) {
+          console.error('❌ Error saving reminder:', error);
+        }
+      }
       
-      setReminders(aiReminders);
+      setReminders(savedReminders);
       
       // Uncomment below when AWS credentials are configured:
       // const response = await aiService.generateSmartReminders({
@@ -234,14 +272,19 @@ export default function SmartReminders() {
 
   const loadUserReminders = async () => {
     try {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem('authToken');
+      console.log('📥 Loading reminders... Token exists:', !!token);
+      
       const response = await fetch('http://localhost:3001/api/reminders', {
         headers: {
           'Authorization': `Bearer ${token}`
         }
       });
       
+      console.log('📡 Load reminders response status:', response.status);
+      
       const data = await response.json();
+      console.log('📦 Load reminders response data:', data);
       
       if (data.success && data.reminders) {
         // Convert API reminders to component format
@@ -259,10 +302,12 @@ export default function SmartReminders() {
         }));
         
         setReminders(loadedReminders);
-        console.log('✅ Loaded reminders:', loadedReminders);
+        console.log('✅ Loaded reminders:', loadedReminders.map(r => ({ id: r.id, title: r.title })));
+      } else {
+        console.error('❌ Failed to load reminders:', data.message);
       }
     } catch (error) {
-      console.error('Error loading reminders:', error);
+      console.error('❌ Error loading reminders:', error);
     }
   };
 
@@ -280,37 +325,72 @@ export default function SmartReminders() {
     setShowTimePicker(true);
   };
 
-  const handleTimePickerConfirm = (time: string, addToCalendar: boolean, calendarType?: string) => {
+  const handleTimePickerConfirm = async (time: string, addToCalendar: boolean, calendarType?: string) => {
     if (!selectedInsight || selectedInsightIndex === -1) return;
 
     const insight = selectedInsight;
     const index = selectedInsightIndex;
 
-    // Convert insight to a reminder
-    const newReminder: Reminder = {
-      id: `insight-${Date.now()}-${index}`,
-      title: `💡 ${insight.title}`,
-      description: `AI Insight: ${insight.description}`,
-      time: time,
-      frequency: 'daily',
-      category: insight.category === 'hydration' ? 'wellness' : 
-                insight.category === 'general' ? 'wellness' : 
-                insight.category === 'stress' ? 'wellness' :
-                insight.category as 'medication' | 'exercise' | 'checkup' | 'wellness' | 'nutrition',
-      isActive: true,
-      nextReminder: new Date(Date.now() + 24 * 60 * 60 * 1000),
-      aiGenerated: true,
-      priority: insight.priority as 'low' | 'medium' | 'high' | 'critical'
-    };
+    // Save reminder to backend first
+    let newReminder: Reminder | null = null;
+    
+    try {
+      const token = localStorage.getItem('authToken');
+      const reminderData = {
+        title: `💡 ${insight.title}`,
+        description: `AI Insight: ${insight.description}`,
+        time: time,
+        frequency: 'daily',
+        category: insight.category === 'hydration' ? 'wellness' : 
+                  insight.category === 'general' ? 'wellness' : 
+                  insight.category === 'stress' ? 'wellness' :
+                  insight.category,
+        priority: insight.priority
+      };
 
-    // Add to reminders
-    setReminders(prev => [...prev, newReminder]);
+      const response = await fetch('http://localhost:3001/api/reminders', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(reminderData)
+      });
+
+      const data = await response.json();
+
+      if (!data.success) {
+        throw new Error(data.message || 'Failed to save reminder');
+      }
+
+      // Convert backend reminder to frontend format
+      newReminder = {
+        id: data.reminder.id,
+        title: data.reminder.title,
+        description: data.reminder.description,
+        time: data.reminder.time,
+        frequency: data.reminder.frequency as 'daily' | 'weekly' | 'monthly' | 'custom',
+        category: data.reminder.category as 'medication' | 'exercise' | 'checkup' | 'wellness' | 'nutrition',
+        isActive: true,
+        nextReminder: new Date(Date.now() + 24 * 60 * 60 * 1000),
+        aiGenerated: true,
+        priority: data.reminder.priority as 'low' | 'medium' | 'high' | 'critical'
+      };
+
+      // Add to reminders
+      setReminders(prev => [...prev, newReminder!]);
+    } catch (error) {
+      console.error('Error saving reminder:', error);
+      setApplyMessage(`❌ Failed to save reminder: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      setTimeout(() => setApplyMessage(''), 3000);
+      return;
+    }
     
     // Mark as applied
     setAppliedInsights(prev => new Set(Array.from(prev).concat(index)));
 
     // Handle calendar integration
-    if (addToCalendar && calendarType) {
+    if (addToCalendar && calendarType && newReminder) {
       const calendarEvent = calendarService.createEventFromReminder(
         newReminder.title,
         newReminder.description,
@@ -357,7 +437,9 @@ export default function SmartReminders() {
     setDeletingReminder(reminderId);
     
     try {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem('authToken');
+      console.log('🗑️ Attempting to delete reminder:', { reminderId, reminderTitle, hasToken: !!token });
+      
       const response = await fetch(`http://localhost:3001/api/reminders/${reminderId}`, {
         method: 'DELETE',
         headers: {
@@ -365,7 +447,10 @@ export default function SmartReminders() {
         }
       });
       
+      console.log('📡 Delete response status:', response.status);
+      
       const data = await response.json();
+      console.log('📦 Delete response data:', data);
       
       if (data.success) {
         // Remove the reminder after a short delay for animation
@@ -378,16 +463,17 @@ export default function SmartReminders() {
         setApplyMessage(`🗑️ "${reminderTitle}" has been deleted`);
         setTimeout(() => setApplyMessage(''), 3000);
         
-        console.log('Deleted reminder:', reminderTitle);
+        console.log('✅ Deleted reminder:', reminderTitle);
       } else {
+        console.error('❌ Delete failed:', data.message);
         setDeletingReminder(null);
-        setApplyMessage(`❌ Failed to delete reminder`);
+        setApplyMessage(`❌ Failed to delete reminder: ${data.message || 'Unknown error'}`);
         setTimeout(() => setApplyMessage(''), 3000);
       }
     } catch (error) {
-      console.error('Error deleting reminder:', error);
+      console.error('❌ Error deleting reminder:', error);
       setDeletingReminder(null);
-      setApplyMessage(`❌ Failed to delete reminder`);
+      setApplyMessage(`❌ Failed to delete reminder: ${error instanceof Error ? error.message : 'Network error'}`);
       setTimeout(() => setApplyMessage(''), 3000);
     }
   };
@@ -397,23 +483,17 @@ export default function SmartReminders() {
     setApplyMessage('🚀 Initializing Neural Health System...');
     
     try {
-      // Step 1: Generate AI insights (with delay for effect)
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      setApplyMessage('🧠 Analyzing your health profile...');
+      // Only load insights if they don't exist yet
+      if (aiInsights.length === 0) {
+        await loadAIInsights();
+      }
       
-      await loadAIInsights();
-      
-      // Step 2: Generate initial reminders
-      await new Promise(resolve => setTimeout(resolve, 800));
-      setApplyMessage('⚡ Creating personalized reminders...');
-      
+      // Generate initial reminders
       await loadAIReminders();
       
-      // Step 3: Complete initialization
-      await new Promise(resolve => setTimeout(resolve, 500));
-      setApplyMessage('✅ Neural Health System initialized successfully!');
-      
-      setTimeout(() => setApplyMessage(''), 4000);
+      // Show success message
+      setApplyMessage('✅ System initialized successfully!');
+      setTimeout(() => setApplyMessage(''), 3000);
       
     } catch (error) {
       console.error('Initialization error:', error);
@@ -428,26 +508,155 @@ export default function SmartReminders() {
     setShowDailyTracker(true);
   };
 
-  const handleNewReminderSubmit = (data: NewReminderData) => {
-    // Create new reminder
-    const newReminder: Reminder = {
-      id: `custom-${Date.now()}`,
-      title: data.title,
-      description: data.description,
-      time: data.time,
-      frequency: data.frequency,
-      category: data.category,
-      isActive: true,
-      nextReminder: new Date(Date.now() + 24 * 60 * 60 * 1000),
-      aiGenerated: false,
-      priority: data.priority
-    };
+  const handleShareProgress = () => {
+    setShowShareModal(true);
+  };
 
-    // Add to reminders
-    setReminders(prev => [...prev, newReminder]);
+  const handleShareTo = (platform: string) => {
+    const categories = Array.from(new Set(reminders.map(r => r.category))).join(', ');
+    const summary = `Neural Reminders Progress Report\n\nTotal Active Reminders: ${reminders.length}\nCategories: ${categories}\nAI-Generated: ${reminders.filter(r => r.aiGenerated).length}`;
+    const url = window.location.origin;
+    
+    let shareUrl = '';
+    
+    switch(platform) {
+      case 'twitter':
+        shareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(summary)}&url=${encodeURIComponent(url)}`;
+        break;
+      case 'facebook':
+        shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}&quote=${encodeURIComponent(summary)}`;
+        break;
+      case 'whatsapp':
+        shareUrl = `https://wa.me/?text=${encodeURIComponent(summary + '\n' + url)}`;
+        break;
+      case 'sms':
+        shareUrl = `sms:?body=${encodeURIComponent(summary)}`;
+        break;
+      case 'email':
+        shareUrl = `mailto:?subject=${encodeURIComponent('Neural Reminders Progress')}&body=${encodeURIComponent(summary)}`;
+        break;
+      case 'copy':
+        navigator.clipboard.writeText(summary).then(() => {
+          setApplyMessage('✅ Copied to clipboard!');
+          setTimeout(() => setApplyMessage(''), 3000);
+        });
+        setShowShareModal(false);
+        return;
+    }
+    
+    if (shareUrl) {
+      window.open(shareUrl, '_blank');
+      setShowShareModal(false);
+    }
+  };
+
+  const handleExportData = () => {
+    const doc = new jsPDF();
+    const pageWidth = doc.internal.pageSize.getWidth();
+    
+    // Title
+    doc.setFontSize(20);
+    doc.setTextColor(255, 165, 0);
+    doc.text('Neural Reminders Report', pageWidth / 2, 20, { align: 'center' });
+    
+    // Date
+    doc.setFontSize(10);
+    doc.setTextColor(100, 100, 100);
+    doc.text(`Generated: ${new Date().toLocaleDateString()}`, pageWidth / 2, 28, { align: 'center' });
+    
+    // Summary
+    doc.setFontSize(12);
+    doc.setTextColor(0, 0, 0);
+    doc.text(`Total Active Reminders: ${reminders.length}`, 20, 45);
+    doc.text(`AI-Generated: ${reminders.filter(r => r.aiGenerated).length}`, 20, 52);
+    
+    // Reminders List
+    doc.setFontSize(14);
+    doc.setTextColor(255, 165, 0);
+    doc.text('Reminders:', 20, 65);
+    
+    let yPos = 75;
+    doc.setFontSize(10);
+    doc.setTextColor(0, 0, 0);
+    
+    reminders.forEach((reminder, index) => {
+      if (yPos > 270) {
+        doc.addPage();
+        yPos = 20;
+      }
+      
+      doc.text(`${index + 1}. ${reminder.title}`, 20, yPos);
+      yPos += 6;
+      doc.setFontSize(9);
+      doc.setTextColor(100, 100, 100);
+      doc.text(`   Time: ${reminder.time} | Frequency: ${reminder.frequency} | Category: ${reminder.category}`, 20, yPos);
+      yPos += 6;
+      doc.text(`   Priority: ${reminder.priority} | ${reminder.aiGenerated ? 'AI-Generated' : 'User-Created'}`, 20, yPos);
+      yPos += 10;
+      doc.setFontSize(10);
+      doc.setTextColor(0, 0, 0);
+    });
+    
+    // Save PDF
+    doc.save(`neural-reminders-${new Date().toISOString().split('T')[0]}.pdf`);
+    
+    setApplyMessage('💾 PDF exported successfully!');
+    setTimeout(() => setApplyMessage(''), 3000);
+  };
+
+  const handleNewReminderSubmit = async (data: NewReminderData) => {
+    // Save reminder to backend first
+    let newReminder: Reminder | null = null;
+    
+    try {
+      const token = localStorage.getItem('authToken');
+      const response = await fetch('http://localhost:3001/api/reminders', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          title: data.title,
+          description: data.description,
+          time: data.time,
+          frequency: data.frequency,
+          category: data.category,
+          priority: data.priority
+        })
+      });
+
+      const responseData = await response.json();
+
+      if (!responseData.success) {
+        throw new Error(responseData.message || 'Failed to save reminder');
+      }
+
+      // Create reminder with backend ID
+      newReminder = {
+        id: responseData.reminder.id,
+        title: responseData.reminder.title,
+        description: responseData.reminder.description,
+        time: responseData.reminder.time,
+        frequency: responseData.reminder.frequency,
+        category: responseData.reminder.category,
+        isActive: true,
+        nextReminder: new Date(Date.now() + 24 * 60 * 60 * 1000),
+        aiGenerated: false,
+        priority: responseData.reminder.priority
+      };
+
+      // Add to reminders
+      setReminders(prev => [...prev, newReminder!]);
+    } catch (error) {
+      console.error('Error saving reminder:', error);
+      setApplyMessage(`❌ Failed to save reminder: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      setTimeout(() => setApplyMessage(''), 3000);
+      return;
+    }
 
     // Handle calendar integration
-    if (data.addToCalendar && data.calendarType) {
+    if (data.addToCalendar && data.calendarType && newReminder) {
       const calendarEvent = calendarService.createEventFromReminder(
         newReminder.title,
         newReminder.description,
@@ -799,25 +1008,41 @@ export default function SmartReminders() {
         )}
       </div>
 
-      {/* AI Stats Panel */}
+      {/* Social/Sharing Stats Panel */}
       <div className="ai-stats-panel">
         <div className="stats-header">
-          <span className="stats-icon">📊</span>
-          <h3>SYSTEM METRICS</h3>
+          <span className="stats-icon">⚡</span>
+          <h3>SOCIAL & SHARING</h3>
         </div>
         <div className="stats-grid">
           <div className="stat-item">
-            <span className="stat-value">95%</span>
-            <span className="stat-label">ADHERENCE</span>
+            <span className="stat-value">0</span>
+            <span className="stat-label">SHARED WITH</span>
           </div>
           <div className="stat-item">
             <span className="stat-value">{reminders.length}</span>
-            <span className="stat-label">ACTIVE</span>
+            <span className="stat-label">TRACKABLE</span>
           </div>
           <div className="stat-item">
-            <span className="stat-value">3.2x</span>
-            <span className="stat-label">EFFICIENCY</span>
+            <span className="stat-value">Private</span>
+            <span className="stat-label">STATUS</span>
           </div>
+        </div>
+        <div className="sharing-actions">
+          <button 
+            className="share-button" 
+            title="Share progress with family or healthcare provider"
+            onClick={handleShareProgress}
+          >
+            Share Progress
+          </button>
+          <button 
+            className="export-button" 
+            title="Export reminders data"
+            onClick={handleExportData}
+          >
+            Export Data
+          </button>
         </div>
       </div>
 
@@ -850,6 +1075,44 @@ export default function SmartReminders() {
         isOpen={showDailyTracker}
         onClose={() => setShowDailyTracker(false)}
       />
+
+      {/* Share Modal */}
+      {showShareModal && (
+        <div className="modal-overlay" onClick={() => setShowShareModal(false)}>
+          <div className="share-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="share-modal-header">
+              <h3>Share Your Progress</h3>
+              <button className="close-modal-btn" onClick={() => setShowShareModal(false)}>×</button>
+            </div>
+            <div className="share-options">
+              <button className="share-option-btn twitter" onClick={() => handleShareTo('twitter')}>
+                <img src="/social_media_logo/X logo.png" alt="X" className="share-option-logo" />
+                <span>X</span>
+              </button>
+              <button className="share-option-btn facebook" onClick={() => handleShareTo('facebook')}>
+                <img src="/social_media_logo/Facebook Logo.png" alt="Facebook" className="share-option-logo" />
+                <span>Facebook</span>
+              </button>
+              <button className="share-option-btn whatsapp" onClick={() => handleShareTo('whatsapp')}>
+                <img src="/social_media_logo/WhatsApp logo.webp" alt="WhatsApp" className="share-option-logo" />
+                <span>WhatsApp</span>
+              </button>
+              <button className="share-option-btn sms" onClick={() => handleShareTo('sms')}>
+                <img src="/social_media_logo/SMS logo.png" alt="SMS" className="share-option-logo" />
+                <span>SMS</span>
+              </button>
+              <button className="share-option-btn email" onClick={() => handleShareTo('email')}>
+                <img src="/social_media_logo/email logo.webp" alt="Email" className="share-option-logo" />
+                <span>Email</span>
+              </button>
+              <button className="share-option-btn copy" onClick={() => handleShareTo('copy')}>
+                <span className="share-option-icon">📋</span>
+                <span>Copy Text</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

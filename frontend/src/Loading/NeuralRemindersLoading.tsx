@@ -42,7 +42,7 @@ export default function NeuralRemindersLoading() {
 
     // Navigate after loading completes
     const timer = setTimeout(() => {
-      navigate('/smart-reminders');
+      navigate('/smart-reminders', { replace: true });
     }, 3000);
 
     return () => {
