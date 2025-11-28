@@ -27,34 +27,13 @@ const getInitialData = (userId: string | undefined) => {
     timestamp: new Date()
   };
   
-  // If no user ID, return default data
-  if (!userId) {
-    const initialChatHistory: ChatHistory = {
-      id: 1,
-      title: 'Health Check-in',
-      lastMessage: new Date().toLocaleString('en-US', { 
-        month: 'short', 
-        day: 'numeric', 
-        year: 'numeric',
-        hour: 'numeric',
-        minute: '2-digit',
-        hour12: true
-      }),
-      timestamp: new Date()
-    };
-    
-    return {
-      chatsData: { 1: [initialMessage] },
-      chatHistory: [initialChatHistory],
-      currentChatId: 1,
-      messages: [initialMessage],
-      showWelcome: true
-    };
-  }
-  
   try {
-    const savedChats = localStorage.getItem(`genai_chats_${userId}`);
-    const savedHistory = localStorage.getItem(`genai_chat_history_${userId}`);
+    // Use user-specific or guest storage key
+    const chatsKey = userId ? `genai_chats_${userId}` : 'genai_chats_guest';
+    const historyKey = userId ? `genai_chat_history_${userId}` : 'genai_chat_history_guest';
+    
+    const savedChats = localStorage.getItem(chatsKey);
+    const savedHistory = localStorage.getItem(historyKey);
     
     if (savedChats && savedHistory) {
       const parsedChats = JSON.parse(savedChats);
@@ -73,40 +52,16 @@ const getInitialData = (userId: string | undefined) => {
         timestamp: new Date(chat.timestamp)
       }));
       
-      // Find the maximum existing chat ID and create a new chat
-      const maxId = Math.max(...Object.keys(parsedChats).map(id => parseInt(id)), 0);
-      const newChatId = maxId + 1;
-      
-      // Create new chat with initial message for welcome screen
-      const now = new Date();
-      const newChat: ChatHistory = {
-        id: newChatId,
-        title: 'Health Check-in',
-        lastMessage: now.toLocaleString('en-US', { 
-          month: 'short', 
-          day: 'numeric', 
-          year: 'numeric',
-          hour: 'numeric',
-          minute: '2-digit',
-          hour12: true
-        }),
-        timestamp: now
-      };
-      
-      const newInitialMessage: Message = {
-        ...initialMessage,
-        timestamp: now
-      };
-      
-      // Add new chat to the data
-      parsedChats[newChatId] = [newInitialMessage];
+      // Load the most recent chat (first in history)
+      const mostRecentChat = historyWithDates[0];
+      const mostRecentMessages = parsedChats[mostRecentChat.id] || [];
       
       return {
         chatsData: parsedChats,
-        chatHistory: [newChat, ...historyWithDates],
-        currentChatId: newChatId,
-        messages: [newInitialMessage],
-        showWelcome: true
+        chatHistory: historyWithDates,
+        currentChatId: mostRecentChat.id,
+        messages: mostRecentMessages,
+        showWelcome: mostRecentMessages.length <= 1
       };
     }
   } catch (error) {
@@ -153,7 +108,6 @@ export default function GenAI() {
   const [currentChatId, setCurrentChatId] = useState(initialData.currentChatId);
   const [sidebarState, setSidebarState] = useState<'minimized' | 'maximized'>('minimized');
   const [showWelcomeScreen, setShowWelcomeScreen] = useState(initialData.showWelcome);
-  const [showSearch, setShowSearch] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [chatsData, setChatsData] = useState<{ [key: number]: Message[] }>(initialData.chatsData);
@@ -167,7 +121,15 @@ export default function GenAI() {
     scrollToBottom();
   }, [messages]);
 
-  // Data is now loaded during initialization, no need for this useEffect
+  // Reload data when userId changes (e.g., after login/logout)
+  useEffect(() => {
+    const reloadedData = getInitialData(userId);
+    setMessages(reloadedData.messages);
+    setChatHistory(reloadedData.chatHistory);
+    setCurrentChatId(reloadedData.currentChatId);
+    setChatsData(reloadedData.chatsData);
+    setShowWelcomeScreen(reloadedData.showWelcome);
+  }, [userId]);
   
   // Close menu when clicking outside
   useEffect(() => {
@@ -188,10 +150,10 @@ export default function GenAI() {
 
   // Save chats to localStorage whenever they change
   useEffect(() => {
-    if (!userId) return;
     try {
       if (Object.keys(chatsData).length > 0) {
-        localStorage.setItem(`genai_chats_${userId}`, JSON.stringify(chatsData));
+        const storageKey = userId ? `genai_chats_${userId}` : 'genai_chats_guest';
+        localStorage.setItem(storageKey, JSON.stringify(chatsData));
       }
     } catch (error) {
       console.error('Error saving chats:', error);
@@ -200,10 +162,10 @@ export default function GenAI() {
 
   // Save chat history to localStorage
   useEffect(() => {
-    if (!userId) return;
     try {
       if (chatHistory.length > 0) {
-        localStorage.setItem(`genai_chat_history_${userId}`, JSON.stringify(chatHistory));
+        const storageKey = userId ? `genai_chat_history_${userId}` : 'genai_chat_history_guest';
+        localStorage.setItem(storageKey, JSON.stringify(chatHistory));
       }
     } catch (error) {
       console.error('Error saving chat history:', error);
@@ -212,9 +174,9 @@ export default function GenAI() {
 
   // Save current chat ID
   useEffect(() => {
-    if (!userId) return;
     try {
-      localStorage.setItem(`genai_current_chat_id_${userId}`, currentChatId.toString());
+      const storageKey = userId ? `genai_current_chat_id_${userId}` : 'genai_current_chat_id_guest';
+      localStorage.setItem(storageKey, currentChatId.toString());
     } catch (error) {
       console.error('Error saving current chat ID:', error);
     }
@@ -494,19 +456,8 @@ export default function GenAI() {
         {/* Sidebar */}
         <div className={`genai-sidebar ${sidebarState}`}>
           <div className="sidebar-header">
-            <button className="new-chat-button" onClick={handleNewChat}>
-              <span className="new-chat-icon">+</span>
-              {sidebarState === 'maximized' && <span className="new-chat-text">New Chat</span>}
-            </button>
-            {sidebarState === 'maximized' && (
-              <div className="sidebar-header-actions">
-                <button 
-                  className="search-toggle-button" 
-                  onClick={() => setShowSearch(!showSearch)}
-                  title="Search chats"
-                >
-                  <span className="search-icon">🔍</span>
-                </button>
+            {sidebarState === 'maximized' ? (
+              <>
                 <button 
                   className="sidebar-toggle" 
                   onClick={toggleSidebar}
@@ -514,34 +465,38 @@ export default function GenAI() {
                 >
                   ◀
                 </button>
-              </div>
-            )}
-            {sidebarState === 'minimized' && (
-              <button 
-                className="sidebar-toggle" 
-                onClick={toggleSidebar}
-                title="Expand sidebar"
-              >
-                ▶
-              </button>
+                <button className="new-chat-button" onClick={handleNewChat}>
+                  <span className="new-chat-icon">+</span>
+                  <span className="new-chat-text">New Chat</span>
+                </button>
+              </>
+            ) : (
+              <>
+                <button 
+                  className="sidebar-toggle" 
+                  onClick={toggleSidebar}
+                  title="Expand sidebar"
+                >
+                  ▶
+                </button>
+                <button className="new-chat-button" onClick={handleNewChat}>
+                  <span className="new-chat-icon">+</span>
+                </button>
+              </>
             )}
           </div>
           
           {sidebarState === 'maximized' && (
             <div className="sidebar-content">
-              {/* Search Input */}
-              {showSearch && (
-                <div className="sidebar-search">
-                  <input 
-                    type="text" 
-                    placeholder="Search chats..." 
-                    className="search-input"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    autoFocus
-                  />
-                </div>
-              )}
+              <div className="sidebar-search">
+                <input 
+                  type="text" 
+                  placeholder="Search chats..." 
+                  className="search-input"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+              </div>
 
               <div className="chat-history-section">
                 <h3 className="section-title">Chat History</h3>
@@ -659,19 +614,8 @@ export default function GenAI() {
       {/* Sidebar */}
       <div className={`genai-sidebar ${sidebarState}`}>
         <div className="sidebar-header">
-          <button className="new-chat-button" onClick={handleNewChat}>
-            <span className="new-chat-icon">+</span>
-            {sidebarState === 'maximized' && <span className="new-chat-text">New Chat</span>}
-          </button>
-          {sidebarState === 'maximized' && (
-            <div className="sidebar-header-actions">
-              <button 
-                className="search-toggle-button" 
-                onClick={() => setShowSearch(!showSearch)}
-                title="Search chats"
-              >
-                <span className="search-icon">🔍</span>
-              </button>
+          {sidebarState === 'maximized' ? (
+            <>
               <button 
                 className="sidebar-toggle" 
                 onClick={toggleSidebar}
@@ -679,34 +623,38 @@ export default function GenAI() {
               >
                 ◀
               </button>
-            </div>
-          )}
-          {sidebarState === 'minimized' && (
-            <button 
-              className="sidebar-toggle" 
-              onClick={toggleSidebar}
-              title="Expand sidebar"
-            >
-              ▶
-            </button>
+              <button className="new-chat-button" onClick={handleNewChat}>
+                <span className="new-chat-icon">+</span>
+                <span className="new-chat-text">New Chat</span>
+              </button>
+            </>
+          ) : (
+            <>
+              <button 
+                className="sidebar-toggle" 
+                onClick={toggleSidebar}
+                title="Expand sidebar"
+              >
+                ▶
+              </button>
+              <button className="new-chat-button" onClick={handleNewChat}>
+                <span className="new-chat-icon">+</span>
+              </button>
+            </>
           )}
         </div>
         
         {sidebarState === 'maximized' && (
           <div className="sidebar-content">
-            {/* Search Input */}
-            {showSearch && (
-              <div className="sidebar-search">
-                <input 
-                  type="text" 
-                  placeholder="Search chats..." 
-                  className="search-input"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  autoFocus
-                />
-              </div>
-            )}
+            <div className="sidebar-search">
+              <input 
+                type="text" 
+                placeholder="Search chats..." 
+                className="search-input"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </div>
 
             <div className="chat-history-section">
               <h3 className="section-title">Chat History</h3>

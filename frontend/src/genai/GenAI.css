@@ -286,12 +286,11 @@
   align-items: center;
 }
 
-.sidebar-header-actions {
-  display: flex;
-  gap: 10px;
-  justify-content: center;
-  width: 100%;
+.genai-sidebar.maximized .sidebar-toggle {
+  align-self: flex-end;
 }
+
+
 
 .new-chat-button {
   display: flex;
@@ -310,6 +309,8 @@
   cursor: pointer;
   transition: all 0.3s ease;
   text-shadow: 0 0 5px rgba(52, 211, 153, 0.5);
+  height: 50px;
+  width: 100%;
 }
 
 .new-chat-button:hover {
@@ -364,7 +365,9 @@
 }
 
 .genai-sidebar.maximized .sidebar-toggle {
-  font-size: 20px;
+  width: 35px;
+  height: 35px;
+  font-size: 16px;
 }
 
 .sidebar-content {
@@ -388,37 +391,12 @@
   border-radius: 3px;
 }
 
-.search-toggle-button {
-  width: 50px;
-  height: 50px;
-  padding: 0;
-  background: rgba(52, 211, 153, 0.1);
-  border: 2px solid rgba(52, 211, 153, 0.3);
-  border-radius: 8px;
-  color: #00FA9A;
-  font-size: 24px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
 
-.search-toggle-button:hover {
-  background: rgba(52, 211, 153, 0.2);
-  border-color: #00FA9A;
-  transform: scale(1.05);
-  box-shadow: 0 0 15px rgba(52, 211, 153, 0.3);
-}
-
-.search-icon {
-  font-size: 20px;
-}
 
 /* Sidebar Search Input */
 .sidebar-search {
-  padding: 0 0 15px;
-  animation: search-slide-down 0.3s ease-out;
+  width: 100%;
+  padding: 0 0 15px 0;
 }
 
 @keyframes search-slide-down {
