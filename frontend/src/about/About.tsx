@@ -47,7 +47,6 @@ function About() {
             <section className="problem-solution-section">
               <div className="ps-grid">
                 <div className="ps-card problem">
-                  <div className="ps-icon">⚠️</div>
                   <h3>The Challenge</h3>
                   <p>
                     Today's health landscape is overwhelming. Generic advice floods the internet, 
@@ -58,7 +57,6 @@ function About() {
                 </div>
                 
                 <div className="ps-card solution">
-                  <div className="ps-icon">✨</div>
                   <h3>Our Solution</h3>
                   <p>
                     Buddy Your Health goes beyond tracking. Our AI analyzes your health data, 
@@ -78,7 +76,7 @@ function About() {
               
               <div className="features-grid">
                 <div className="feature-card">
-                  <div className="feature-icon">🧠</div>
+                  <img src="/logo/Neural Guardian.png" alt="Neural Guardian Logo" className="feature-logo" />
                   <h3>Neural Guardian</h3>
                   <p className="feature-description">
                     Your intelligent health assistant powered by advanced AI. Get instant answers 
@@ -93,7 +91,7 @@ function About() {
                 </div>
                 
                 <div className="feature-card">
-                  <div className="feature-icon">📊</div>
+                  <div className="dna-icon">🧬</div>
                   <h3>Neural Health</h3>
                   <p className="feature-description">
                     Comprehensive health analytics that turn your Apple Health data into actionable 
@@ -108,7 +106,7 @@ function About() {
                 </div>
                 
                 <div className="feature-card">
-                  <div className="feature-icon">⏰</div>
+                  <img src="/logo/Neural Reminders.png" alt="Neural Reminders Logo" className="feature-logo" />
                   <h3>Neural Reminders</h3>
                   <p className="feature-description">
                     Never miss important health tasks. Intelligent reminders for medications, 
@@ -171,7 +169,6 @@ function About() {
               <h2>Our Commitment to You</h2>
               <div className="commitment-grid">
                 <div className="commitment-card">
-                  <div className="commitment-icon">🔒</div>
                   <h3>Privacy & Security</h3>
                   <p>
                     Your health data is protected with bank-level encryption. We comply with 
@@ -181,7 +178,6 @@ function About() {
                 </div>
                 
                 <div className="commitment-card">
-                  <div className="commitment-icon">🎯</div>
                   <h3>Accuracy & Reliability</h3>
                   <p>
                     Our AI is trained on millions of clinical data points and continuously 
@@ -191,7 +187,6 @@ function About() {
                 </div>
                 
                 <div className="commitment-card">
-                  <div className="commitment-icon">💡</div>
                   <h3>Transparency</h3>
                   <p>
                     We believe in clear communication. Our AI explains its reasoning, cites 
