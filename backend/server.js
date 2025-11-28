@@ -19,6 +19,7 @@ app.use('/api/oauth', require('./routes/oauth'));
 app.use('/api/users', require('./routes/users'));
 app.use('/api/ai', require('./routes/ai'));
 app.use('/api/reminders', require('./routes/reminders'));
+app.use('/api/health', require('./routes/health'));
 
 // Basic route
 app.get('/', (req, res) => {

@@ -107,6 +107,36 @@ const userSchema = new mongoose.Schema({
       type: Date,
       default: Date.now
     }
+  }],
+  // Apple Health Data
+  healthData: [{
+    dataType: {
+      type: String,
+      required: true
+    },
+    value: {
+      type: mongoose.Schema.Types.Mixed,
+      required: true
+    },
+    unit: {
+      type: String,
+      required: true
+    },
+    timestamp: {
+      type: Date,
+      required: true
+    },
+    source: {
+      type: String,
+      default: 'Apple Health'
+    },
+    metadata: {
+      type: mongoose.Schema.Types.Mixed
+    },
+    createdAt: {
+      type: Date,
+      default: Date.now
+    }
   }]
 });
 
