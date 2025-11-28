@@ -36,17 +36,28 @@ router.get('/', auth, async (req, res) => {
 // @access  Private
 router.post('/', auth, async (req, res) => {
   try {
-    const userId = req.user.userId;
+    console.log('📥 Create reminder request:', req.body);
+    console.log('👤 User ID:', req.user.userId);
+    
     const { title, description, time, frequency, category, priority } = req.body;
 
     if (!title || !time) {
+      console.log('❌ Validation failed: missing title or time');
       return res.status(400).json({
         success: false,
         message: 'Title and time are required'
       });
     }
 
-    const userReminders = remindersStore.get(userId) || [];
+    const user = await User.findById(req.user.userId);
+    
+    if (!user) {
+      console.log('❌ User not found:', req.user.userId);
+      return res.status(404).json({
+        success: false,
+        message: 'User not found'
+      });
+    }
     
     const newReminder = {
       id: `reminder-${Date.now()}`,
@@ -56,14 +67,15 @@ router.post('/', auth, async (req, res) => {
       frequency: frequency || 'daily',
       category: category || 'wellness',
       isActive: true,
-      nextReminder: new Date(),
       aiGenerated: true,
       priority: priority || 'medium',
       createdAt: new Date()
     };
 
-    userReminders.push(newReminder);
-    remindersStore.set(userId, userReminders);
+    console.log('💾 Saving reminder:', newReminder);
+    user.reminders.push(newReminder);
+    await user.save();
+    console.log('✅ Reminder saved successfully');
 
     res.json({
       success: true,
@@ -71,10 +83,12 @@ router.post('/', auth, async (req, res) => {
       message: 'Reminder created successfully'
     });
   } catch (error) {
-    console.error('Create reminder error:', error);
+    console.error('❌ Create reminder error:', error);
+    console.error('Error stack:', error.stack);
     res.status(500).json({
       success: false,
-      message: 'Failed to create reminder'
+      message: 'Failed to create reminder',
+      error: error.message
     });
   }
 });
@@ -84,12 +98,19 @@ router.post('/', auth, async (req, res) => {
 // @access  Private
 router.put('/:id', auth, async (req, res) => {
   try {
-    const userId = req.user.userId;
     const { id } = req.params;
     const updates = req.body;
 
-    const userReminders = remindersStore.get(userId) || [];
-    const reminderIndex = userReminders.findIndex(r => r.id === id);
+    const user = await User.findById(req.user.userId);
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: 'User not found'
+      });
+    }
+
+    const reminderIndex = user.reminders.findIndex(r => r.id === id);
 
     if (reminderIndex === -1) {
       return res.status(404).json({
@@ -98,17 +119,17 @@ router.put('/:id', auth, async (req, res) => {
       });
     }
 
-    userReminders[reminderIndex] = {
-      ...userReminders[reminderIndex],
+    user.reminders[reminderIndex] = {
+      ...user.reminders[reminderIndex].toObject(),
       ...updates,
       updatedAt: new Date()
     };
 
-    remindersStore.set(userId, userReminders);
+    await user.save();
 
     res.json({
       success: true,
-      reminder: userReminders[reminderIndex],
+      reminder: user.reminders[reminderIndex],
       message: 'Reminder updated successfully'
     });
   } catch (error) {
@@ -126,19 +147,31 @@ router.put('/:id', auth, async (req, res) => {
 router.delete('/:id', auth, async (req, res) => {
   try {
     const { id } = req.params;
+    console.log('🗑️ Delete request for reminder ID:', id);
+    
     const user = await User.findById(req.user.userId);
 
     if (!user) {
+      console.log('❌ User not found:', req.user.userId);
       return res.status(404).json({
         success: false,
         message: 'User not found'
       });
     }
 
+    console.log('📋 Current reminders:', user.reminders.map(r => ({ id: r.id, title: r.title })));
+    
     const initialLength = user.reminders.length;
-    user.reminders = user.reminders.filter(r => r.id !== id);
+    user.reminders = user.reminders.filter(r => {
+      const match = r.id === id;
+      console.log(`Comparing: "${r.id}" === "${id}" => ${match}`);
+      return !match;
+    });
+
+    console.log('📊 Reminders after filter:', user.reminders.length, 'Initial:', initialLength);
 
     if (user.reminders.length === initialLength) {
+      console.log('❌ Reminder not found with ID:', id);
       return res.status(404).json({
         success: false,
         message: 'Reminder not found'
@@ -146,6 +179,7 @@ router.delete('/:id', auth, async (req, res) => {
     }
 
     await user.save();
+    console.log('✅ Reminder deleted successfully');
 
     res.json({
       success: true,
@@ -155,7 +189,8 @@ router.delete('/:id', auth, async (req, res) => {
     console.error('Delete reminder error:', error);
     res.status(500).json({
       success: false,
-      message: 'Failed to delete reminder'
+      message: 'Failed to delete reminder',
+      error: error.message
     });
   }
 });

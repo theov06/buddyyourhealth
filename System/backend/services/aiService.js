@@ -170,7 +170,7 @@ Ensure recommendations are safe, general wellness advice and not medical diagnos
     }
   }
 
-  buildRemindersPrompt(userProfile, preferences) {
+  buildRemindersPrompt(_userProfile, preferences) {
     return `
 Generate personalized health reminders for a user based on their profile and preferences.
 

@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const aiService = require('../services/aiService');
 const auth = require('../middleware/auth');
+const tools = require('../config/aiTools');
+const toolExecutor = require('../services/toolExecutor');
 
 // Generate AI Health Insights
 router.post('/health-insights', auth, async (req, res) => {
@@ -58,13 +60,12 @@ router.post('/smart-reminders', auth, async (req, res) => {
   }
 });
 
-// Get AI Chat Response
+// Get AI Chat Response with Function Calling
 router.post('/chat', auth, async (req, res) => {
-  const fs = require('fs');
-  fs.appendFileSync('debug.log', `🔵 AI Chat endpoint hit at ${new Date().toISOString()}\n`);
   try {
     const { message, context, conversationHistory } = req.body;
-    fs.appendFileSync('debug.log', `💬 User message: ${message}\n`);
+    console.log('🔵 AI Chat endpoint hit at', new Date().toISOString());
+    console.log('💬 User message:', message);
     
     // Build chat prompt for health-related queries with user context
     const userContext = `
@@ -77,6 +78,11 @@ User Profile:
     const systemPrompt = `You are Neural Guardian, a friendly health AI assistant.
 
 When users ask you to set reminders, simply acknowledge their request. The system automatically creates reminders for them.
+
+When showing reminders:
+- If the user has NO reminders (empty list), say something like "You don't have any reminders set up yet. Would you like me to create some for you?"
+- NEVER show placeholder text like "[Date and Time]" or "[Description of the reminder]"
+- Only show actual reminder data that exists
 
 Response Style:
 - Use line breaks between points
@@ -112,8 +118,67 @@ Context: ${context || 'General health conversation'}
       content: [{ text: message }]
     });
 
+    // Check if USER is asking to VIEW reminders BEFORE calling AI
+    // More comprehensive pattern matching
+    const lowerMessage = message.toLowerCase();
+    const isViewRemindersRequest = 
+      lowerMessage.includes('show') && lowerMessage.includes('reminder') ||
+      lowerMessage.includes('list') && lowerMessage.includes('reminder') ||
+      lowerMessage.includes('view') && lowerMessage.includes('reminder') ||
+      lowerMessage.includes('see') && lowerMessage.includes('reminder') ||
+      lowerMessage.includes('what') && lowerMessage.includes('reminder') ||
+      lowerMessage.includes('my reminder') ||
+      lowerMessage.includes('current reminder') ||
+      lowerMessage.includes('all reminder') ||
+      lowerMessage.includes('display reminder') ||
+      lowerMessage.includes('get reminder') ||
+      lowerMessage.includes('tell me') && lowerMessage.includes('reminder');
+    
+    console.log(`🔍 Checking message: "${message}"`);
+    console.log(`🔍 Is view reminders request: ${isViewRemindersRequest}`);
+    
+    if (isViewRemindersRequest) {
+      console.log('📋 View reminders request detected!');
+      try {
+        const User = require('../models/User');
+        const user = await User.findById(req.user.userId);
+        
+        if (!user) {
+          throw new Error('User not found');
+        }
+        
+        const reminders = user.reminders || [];
+        console.log(`📊 Found ${reminders.length} reminders`);
+        
+        let aiResponse;
+        if (reminders.length === 0) {
+          aiResponse = "You don't have any reminders set up yet. Would you like me to create some health reminders for you? I can help you set up reminders for things like:\n\n• Drinking water\n• Taking medication\n• Exercise routines\n• Meal times\n• Sleep schedule\n\nJust let me know what you'd like to be reminded about!";
+        } else {
+          let reminderList = "Here are your current reminders:\n\n";
+          reminders.forEach(r => {
+            reminderList += `• ${r.title} - ${r.time} (${r.frequency})\n`;
+          });
+          reminderList += "\nLet me know if you'd like to add, modify, or remove any reminders!";
+          aiResponse = reminderList;
+        }
+        
+        return res.json({
+          success: true,
+          response: aiResponse,
+          reminders: reminders,
+          timestamp: new Date().toISOString()
+        });
+      } catch (error) {
+        console.error('Error fetching reminders:', error);
+        // Fall through to normal AI response
+      }
+    }
+
     const payload = {
       messages: messages,
+      toolConfig: {
+        tools: tools
+      },
       inferenceConfig: {
         maxTokens: 800,
         temperature: 0.7,
@@ -207,8 +272,7 @@ Context: ${context || 'General health conversation'}
         user.reminders.push(newReminder);
         await user.save();
         
-        const fs = require('fs');
-        fs.appendFileSync('debug.log', `✅ Reminder created and saved: ${JSON.stringify(newReminder)}\n`);
+        console.log('✅ Reminder created and saved:', JSON.stringify(newReminder));
         
         // Override AI response with clean confirmation
         aiResponse = `Perfect! I've created your "${title}" reminder for ${time}. 🎯\n\nYour reminder has been added to Neural Reminders. You can view and manage all your reminders there. Staying consistent with healthy habits is key to long-term wellness!`;
@@ -262,7 +326,7 @@ Context: ${context || 'General health conversation'}
             priority: prioMatch ? prioMatch[1].trim() : 'medium'
           };
           
-          console.log('📤 Creating reminder:', reminderPayload);
+          console.log('Creating reminder:', reminderPayload);
           
           const reminderResponse = await axios.post(
             `http://localhost:${process.env.PORT || 3001}/api/reminders`,
@@ -287,7 +351,7 @@ Context: ${context || 'General health conversation'}
             timestamp: new Date().toISOString()
           });
         } catch (error) {
-          console.error('❌ Error creating reminder:', error.message);
+          console.error('Error creating reminder:', error.message);
           const errorResponse = aiResponse.replace(/\[CREATE_REMINDER\][\s\S]*?\[\/CREATE_REMINDER\]\s*/, '') + '\n\nSorry, I encountered an error creating the reminder. Please try again.';
           return res.json({
             success: true,
@@ -317,7 +381,7 @@ Context: ${context || 'General health conversation'}
           try {
             const axios = require('axios');
             const reminderResponse = await axios.post(
-              `http://localhost:${process.env.PORT || 3001}/api/reminders`,
+              `http://localhost:${process.env.PORT || 3001}/api/reminders`, //backend server
               toolInput,
               {
                 headers: {
@@ -346,9 +410,12 @@ Context: ${context || 'General health conversation'}
                 }
               }
             );
+            const reminders = remindersResponse.data.reminders || [];
             toolResult = {
               success: true,
-              reminders: remindersResponse.data.reminders
+              count: reminders.length,
+              reminders: reminders,
+              message: reminders.length === 0 ? 'No reminders found. The user has not created any reminders yet.' : `Found ${reminders.length} reminder(s).`
             };
           } catch (error) {
             toolResult = {
@@ -400,6 +467,39 @@ Context: ${context || 'General health conversation'}
           toolResult: toolResult,
           timestamp: new Date().toISOString()
         });
+      }
+    }
+    
+    // POST-PROCESSING: Check if AI generated fake reminders with placeholder text
+    const hasFakePlaceholders = aiResponse.includes('[Time]') || 
+                                aiResponse.includes('[Date and Time]') || 
+                                aiResponse.includes('[Description of the reminder]');
+    
+    if (hasFakePlaceholders) {
+      console.log('⚠️ Detected fake placeholder reminders in AI response! Fetching real data...');
+      try {
+        const User = require('../models/User');
+        const user = await User.findById(req.user.userId);
+        
+        if (user) {
+          const reminders = user.reminders || [];
+          console.log(`📊 Found ${reminders.length} actual reminders`);
+          
+          if (reminders.length === 0) {
+            aiResponse = "You don't have any reminders set up yet. Would you like me to create some health reminders for you? I can help you set up reminders for things like:\n\n• Drinking water\n• Taking medication\n• Exercise routines\n• Meal times\n• Sleep schedule\n\nJust let me know what you'd like to be reminded about!";
+          } else {
+            let reminderList = "Here are your current reminders:\n\n";
+            reminders.forEach(r => {
+              reminderList += `• ${r.title} - ${r.time} (${r.frequency})\n`;
+            });
+            reminderList += "\nLet me know if you'd like to add, modify, or remove any reminders!";
+            aiResponse = reminderList;
+          }
+        }
+      } catch (error) {
+        console.error('Error in post-processing:', error);
+        // If we can't fetch real data, at least tell the truth
+        aiResponse = "I apologize, but I'm having trouble accessing your reminders right now. Please try again or check the Neural Reminders page directly.";
       }
     }
     
