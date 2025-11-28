@@ -90,14 +90,17 @@ export default function NeuralHealth() {
       });
       
       if (response.success && response.data && response.data.length > 0) {
+        console.log('Raw health data from API:', response.data);
         const transformedData = response.data.map((item: any) => ({
           type: formatDataType(item.dataType),
           value: item.value,
           unit: item.unit,
           timestamp: item.timestamp
         }));
+        console.log('Transformed health data:', transformedData);
         setHealthData(transformedData);
       } else {
+        console.log('No health data received from API');
         setHealthData([]);
       }
     } catch (error) {
@@ -133,21 +136,21 @@ export default function NeuralHealth() {
         description: 'Your heart rate patterns show healthy variability. Continue regular cardiovascular exercise.',
         priority: 'high',
         category: 'cardiovascular',
-        icon: '❤️'
+        icon: ''
       },
       {
         title: 'Sleep Quality Analysis',
         description: 'Average sleep duration is optimal. Maintain consistent sleep schedule for best results.',
         priority: 'medium',
         category: 'sleep',
-        icon: '😴'
+        icon: ''
       },
       {
         title: 'Activity Level Trend',
         description: 'Daily step count is above recommended levels. Great job staying active!',
         priority: 'low',
         category: 'activity',
-        icon: '🏃'
+        icon: ''
       }
     ];
     setInsights(mockInsights);
@@ -219,35 +222,23 @@ export default function NeuralHealth() {
     setUploadMessage('📊 Loading sample health data...');
     try {
       const sampleData = getSampleHealthData();
+      console.log('Sample data generated:', sampleData.length, 'records');
       await healthApi.addBulkHealthData(sampleData as any);
       setUploadMessage('✅ Sample data loaded successfully!');
       setTimeout(() => {
         setShowUploadModal(false);
         loadHealthData();
       }, 1500);
-    } catch (error) {
-      setUploadMessage('❌ Error loading sample data');
+    } catch (error: any) {
+      console.error('Error loading sample data:', error);
+      setUploadMessage(`❌ Error: ${error.message || 'Failed to load sample data'}`);
     } finally {
       setUploading(false);
     }
   };
 
   const getCategoryIcon = (type: string) => {
-    const icons: { [key: string]: string } = {
-      'Steps': '👣',
-      'Heart Rate': '❤️',
-      'Sleep': '😴',
-      'Weight': '⚖️',
-      'Distance': '🏃',
-      'Calories': '🔥',
-      'Blood Pressure (Systolic)': '🩺',
-      'Blood Pressure (Diastolic)': '🩺',
-      'Blood Glucose': '🩸',
-      'HbA1c': '🩸',
-      'BMI': '📊',
-      'Oxygen Saturation': '🫁',
-    };
-    return icons[type] || '📊';
+    return '';
   };
 
   const getPriorityColor = (priority: string) => {
@@ -262,10 +253,14 @@ export default function NeuralHealth() {
 
   const getLatestMetrics = () => {
     const metricTypes = Array.from(new Set(healthData.map(d => d.type)));
-    return metricTypes.map(type => {
+    console.log('Unique metric types:', metricTypes);
+    console.log('Total health data records:', healthData.length);
+    const latestMetrics = metricTypes.map(type => {
       const metrics = healthData.filter(d => d.type === type);
       return metrics[metrics.length - 1];
     }).filter(Boolean);
+    console.log('Latest metrics to display:', latestMetrics);
+    return latestMetrics;
   };
 
   if (!isAuthenticated) {
@@ -366,7 +361,6 @@ export default function NeuralHealth() {
             className="nh-action-btn upload-btn"
             onClick={() => setShowUploadModal(true)}
           >
-            <span className="nh-btn-icon">📤</span>
             IMPORT DATA
           </button>
           
@@ -402,13 +396,13 @@ export default function NeuralHealth() {
               className={`nh-view-btn ${viewMode === 'overview' ? 'active' : ''}`}
               onClick={() => setViewMode('overview')}
             >
-              📊 Overview
+              Overview
             </button>
             <button 
               className={`nh-view-btn ${viewMode === 'detailed' ? 'active' : ''}`}
               onClick={() => setViewMode('detailed')}
             >
-              📈 Detailed
+              Detailed
             </button>
           </div>
         </div>
@@ -442,13 +436,11 @@ export default function NeuralHealth() {
             {/* AI Insights Panel */}
             <div className="insights-panel">
               <div className="nh-panel-header">
-                <div className="nh-panel-icon">🤖</div>
                 <h3>AI Health Insights</h3>
               </div>
               <div className="insights-grid">
                 {insights.map((insight, index) => (
                   <div key={index} className="insight-card" style={{ borderLeftColor: getPriorityColor(insight.priority) }}>
-                    <div className="insight-icon">{insight.icon}</div>
                     <div className="insight-content">
                       <h4>{insight.title}</h4>
                       <p>{insight.description}</p>
@@ -526,7 +518,6 @@ export default function NeuralHealth() {
                   className="file-input"
                 />
                 <label htmlFor="health-file-input" className="file-button">
-                  <span className="button-icon">📁</span>
                   <span className="button-text">{file ? file.name : 'Choose File'}</span>
                 </label>
                 
