@@ -46,7 +46,10 @@ function Navbar({ activeLink }: NavbarProps) {
         <Link to="/about" className={activeLink === 'about' ? 'active' : ''}>About</Link>
         <Link to="/contact" className={activeLink === 'contact' ? 'active' : ''}>Contact</Link>
         {isAuthenticated && (
-          <Link to="/account" className={activeLink === 'account' ? 'active' : ''}>Account</Link>
+          <>
+            <Link to="/health/dashboard" className={activeLink === 'health' ? 'active' : ''}>Health Data</Link>
+            <Link to="/account" className={activeLink === 'account' ? 'active' : ''}>Account</Link>
+          </>
         )}
         <button 
           className="theme-toggle-btn"
@@ -72,6 +75,14 @@ function Navbar({ activeLink }: NavbarProps) {
                 <div className="menu-user-info">
                   <span className="user-greeting">Hello, {user?.firstName}!</span>
                 </div>
+                <Link 
+                  to="/health/dashboard" 
+                  className="menu-item"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  <span className="menu-item-icon">📊</span>
+                  Health Data
+                </Link>
                 <Link 
                   to="/account" 
                   className="menu-item"

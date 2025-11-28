@@ -13,6 +13,8 @@ import GenAILoading from './loading/GenAILoading';
 import ManageAccount from './manage account/ManageAccount';
 import SmartReminders from './smart-reminders/SmartReminders';
 import GenAI from './genai/GenAI';
+import HealthDashboard from './health-dashboard/HealthDashboard';
+import HealthDataUpload from './health-dashboard/HealthDataUpload';
 import { AuthProvider } from './contexts/AuthContext';
 import { ThemeProvider } from './contexts/ThemeContext';
 
@@ -37,6 +39,8 @@ function App() {
             <Route path="/account" element={<ManageAccount />} />
             <Route path="/smart-reminders" element={<SmartReminders />} />
             <Route path="/genai" element={<GenAI />} />
+            <Route path="/health/dashboard" element={<HealthDashboard />} />
+            <Route path="/health/upload" element={<HealthDataUpload />} />
           </Routes>
         </Router>
       </AuthProvider>
