@@ -469,11 +469,11 @@
 }
 
 .steps-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 15px;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  max-width: 600px;
+  margin: 0 auto;
 }
 
 .step {
@@ -543,9 +543,7 @@
 }
 
 .step-arrow {
-  font-size: 1.5rem;
-  color: #00FFFF;
-  font-weight: 700;
+  display: none;
 }
 
 /* CTA Section */
@@ -673,14 +671,6 @@
   .commitment-grid {
     grid-template-columns: repeat(2, 1fr);
   }
-  
-  .steps-container {
-    flex-direction: column;
-  }
-  
-  .step-arrow {
-    transform: rotate(90deg);
-  }
 }
 
 @media (max-width: 768px) {
@@ -736,8 +726,8 @@
     max-width: 250px;
   }
   
-  .step-arrow {
-    display: none;
+  .steps-container {
+    grid-template-columns: 1fr;
   }
 }
 

@@ -24,9 +24,6 @@ function About() {
           
           <div className="about-hero">
             <h1>About Buddy Your Health</h1>
-            <p className="about-subtitle">
-              Your AI-powered health companion for personalized wellness insights
-            </p>
           </div>
           
           <div className="about-content">
