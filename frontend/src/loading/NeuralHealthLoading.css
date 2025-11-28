@@ -1,0 +1,648 @@
+/* ========================================
+   NEURAL HEALTH LOADING - PINK THEME
+   ======================================== */
+
+.neural-health-loading-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, 
+    #0a0a0a 0%, 
+    #1a0510 25%, 
+    #2a0a20 50%, 
+    #1a0510 75%, 
+    #0a0a0a 100%
+  ) !important;
+  color: #FF69B4 !important;
+  font-family: 'Courier New', monospace;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Animated Neural Background */
+.neural-health-loading-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.neural-health-loading-grid {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    linear-gradient(rgba(255, 105, 180, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 105, 180, 0.1) 1px, transparent 1px);
+  background-size: 60px 60px;
+  animation: nhl-neural-grid-pulse 4s ease-in-out infinite;
+}
+
+.neural-health-loading-particles {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(circle at 15% 25%, rgba(255, 105, 180, 0.15) 2px, transparent 2px),
+    radial-gradient(circle at 85% 75%, rgba(255, 182, 193, 0.12) 1px, transparent 1px),
+    radial-gradient(circle at 45% 15%, rgba(255, 20, 147, 0.1) 1px, transparent 1px),
+    radial-gradient(circle at 75% 45%, rgba(255, 192, 203, 0.08) 2px, transparent 2px);
+  background-size: 200px 200px, 150px 150px, 180px 180px, 220px 220px;
+  animation: nhl-particles-float 8s linear infinite;
+}
+
+.neural-health-loading-waves {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 800px;
+  height: 800px;
+  transform: translate(-50%, -50%);
+  border: 2px solid rgba(255, 105, 180, 0.1);
+  border-radius: 50%;
+  animation: nhl-energy-expand 6s ease-in-out infinite;
+}
+
+.neural-health-loading-waves::before,
+.neural-health-loading-waves::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border: 1px solid rgba(255, 105, 180, 0.08);
+  border-radius: 50%;
+  animation: nhl-energy-expand 6s ease-in-out infinite;
+}
+
+.neural-health-loading-waves::before {
+  width: 600px;
+  height: 600px;
+  transform: translate(-50%, -50%);
+  animation-delay: -2s;
+}
+
+.neural-health-loading-waves::after {
+  width: 400px;
+  height: 400px;
+  transform: translate(-50%, -50%);
+  animation-delay: -4s;
+}
+
+/* Main Loading Content */
+.nhl-loading-content {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  max-width: 600px;
+  width: 100%;
+  padding: 40px;
+}
+
+/* Header Section */
+.nhl-loading-header {
+  margin-bottom: 60px;
+}
+
+.nhl-loading-logo {
+  margin-bottom: 20px;
+  position: relative;
+  display: inline-block;
+}
+
+.nhl-loading-logo-image {
+  width: 180px;
+  height: 180px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 40px rgba(255, 105, 180, 0.9)) 
+          drop-shadow(0 0 20px rgba(255, 105, 180, 0.6)) !important;
+  animation: nhl-logo-mega-pulse 2s ease-in-out infinite;
+}
+
+.nhl-loading-logo-icon {
+  font-size: 120px;
+  animation: nhl-logo-mega-pulse 2s ease-in-out infinite;
+  filter: drop-shadow(0 0 40px #FF69B4) 
+          drop-shadow(0 0 20px #FF1493) !important;
+  display: inline-block;
+}
+
+.nhl-logo-pulse {
+  font-size: 120px;
+  animation: nhl-logo-mega-pulse 2s ease-in-out infinite;
+  filter: drop-shadow(0 0 30px #FF69B4);
+  display: inline-block;
+}
+
+.nhl-loading-title {
+  font-size: 48px;
+  font-weight: bold;
+  letter-spacing: 6px;
+  margin: 20px 0 10px 0;
+  text-shadow: 0 0 30px rgba(255, 105, 180, 0.8);
+  background: linear-gradient(45deg, #FF69B4, #FFB6C1, #FF1493, #FF69B4);
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: nhl-title-shimmer 3s ease-in-out infinite;
+}
+
+.nhl-loading-subtitle {
+  font-size: 16px;
+  color: rgba(255, 105, 180, 0.7);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+/* Progress Section */
+.nhl-progress-section {
+  margin-bottom: 50px;
+}
+
+.nhl-progress-container {
+  margin-bottom: 40px;
+  position: relative;
+}
+
+.nhl-progress-bar {
+  width: 100%;
+  height: 8px;
+  background: rgba(255, 105, 180, 0.2);
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 
+    0 0 20px rgba(255, 105, 180, 0.3),
+    inset 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.nhl-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, 
+    #FF1493, 
+    #FF69B4, 
+    #FFB6C1, 
+    #FF69B4
+  );
+  background-size: 200% 100%;
+  border-radius: 4px;
+  transition: width 0.3s ease;
+  animation: nhl-progress-glow 2s ease-in-out infinite;
+  box-shadow: 0 0 15px rgba(255, 105, 180, 0.6);
+}
+
+.nhl-progress-text {
+  position: absolute;
+  top: -30px;
+  right: 0;
+  font-size: 14px;
+  font-weight: bold;
+  color: #FF69B4;
+  text-shadow: 0 0 10px rgba(255, 105, 180, 0.5);
+}
+
+/* Loading Steps */
+.nhl-loading-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  align-items: flex-start;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.nhl-loading-step {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 10px 15px;
+  border-radius: 8px;
+  transition: all 0.5s ease;
+  width: 100%;
+  opacity: 0.4;
+}
+
+.nhl-loading-step.nhl-active {
+  opacity: 1;
+  background: rgba(255, 105, 180, 0.1);
+  transform: translateX(10px);
+}
+
+.nhl-loading-step.nhl-completed {
+  opacity: 0.7;
+  background: rgba(255, 105, 180, 0.05);
+}
+
+.nhl-step-indicator {
+  font-size: 16px;
+  width: 24px;
+  text-align: center;
+  color: #FF69B4;
+  animation: nhl-step-pulse 1.5s ease-in-out infinite;
+}
+
+.nhl-loading-step.nhl-completed .nhl-step-indicator {
+  color: #00FF88;
+  animation: none;
+}
+
+.nhl-step-text {
+  font-size: 12px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: rgba(255, 105, 180, 0.9);
+}
+
+/* Neural Activity Visualization */
+.neural-health-loading-activity {
+  position: relative;
+  width: 300px;
+  height: 200px;
+  margin: 0 auto 40px auto;
+}
+
+.nhl-activity-nodes {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.nhl-activity-node {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #FF69B4;
+  box-shadow: 0 0 15px rgba(255, 105, 180, 0.6);
+}
+
+.nhl-node-pulse {
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(255, 105, 180, 0.4);
+  border-radius: 50%;
+  animation: nhl-node-expand 2s ease-in-out infinite;
+}
+
+/* Node Positions */
+.nhl-node-0 { top: 20%; left: 10%; animation-delay: 0s; }
+.nhl-node-1 { top: 10%; left: 40%; animation-delay: 0.2s; }
+.nhl-node-2 { top: 30%; left: 70%; animation-delay: 0.4s; }
+.nhl-node-3 { top: 60%; left: 80%; animation-delay: 0.6s; }
+.nhl-node-4 { top: 80%; left: 50%; animation-delay: 0.8s; }
+.nhl-node-5 { top: 70%; left: 20%; animation-delay: 1s; }
+.nhl-node-6 { top: 40%; left: 30%; animation-delay: 1.2s; }
+.nhl-node-7 { top: 50%; left: 60%; animation-delay: 1.4s; }
+
+.nhl-activity-connections {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.nhl-connection {
+  position: absolute;
+  height: 2px;
+  background: linear-gradient(90deg, 
+    transparent, 
+    rgba(255, 105, 180, 0.6), 
+    transparent
+  );
+  animation: nhl-connection-pulse 3s ease-in-out infinite;
+}
+
+/* Connection Positions and Rotations */
+.nhl-connection-0 { top: 22%; left: 15%; width: 25%; transform: rotate(15deg); animation-delay: 0s; }
+.nhl-connection-1 { top: 15%; left: 45%; width: 20%; transform: rotate(45deg); animation-delay: 0.3s; }
+.nhl-connection-2 { top: 35%; left: 65%; width: 15%; transform: rotate(-30deg); animation-delay: 0.6s; }
+.nhl-connection-3 { top: 65%; left: 75%; width: 25%; transform: rotate(-60deg); animation-delay: 0.9s; }
+.nhl-connection-4 { top: 75%; left: 45%; width: 30%; transform: rotate(180deg); animation-delay: 1.2s; }
+.nhl-connection-5 { top: 65%; left: 25%; width: 20%; transform: rotate(120deg); animation-delay: 1.5s; }
+
+/* Status Display */
+.nhl-status-display {
+  margin-top: 30px;
+}
+
+.nhl-status-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 15px 25px;
+  background: rgba(255, 105, 180, 0.1);
+  border: 1px solid rgba(255, 105, 180, 0.3);
+  border-radius: 25px;
+  backdrop-filter: blur(10px);
+}
+
+.nhl-status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #FF69B4;
+  animation: nhl-status-pulse 1s ease-in-out infinite;
+  box-shadow: 0 0 10px rgba(255, 105, 180, 0.6);
+}
+
+.nhl-status-text {
+  font-size: 12px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #FF69B4;
+}
+
+/* Scanning Lines Effect */
+.nhl-scan-lines {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.nhl-scan-line {
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, 
+    transparent, 
+    rgba(255, 105, 180, 0.8), 
+    transparent
+  );
+  animation: nhl-scan-sweep 4s linear infinite;
+}
+
+.nhl-scan-1 { animation-delay: 0s; }
+.nhl-scan-2 { animation-delay: 1.3s; }
+.nhl-scan-3 { animation-delay: 2.6s; }
+
+/* Animations */
+@keyframes nhl-neural-grid-pulse {
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(1.02); }
+}
+
+@keyframes nhl-particles-float {
+  0% { transform: translateY(0) rotate(0deg); }
+  100% { transform: translateY(-20px) rotate(360deg); }
+}
+
+@keyframes nhl-energy-expand {
+  0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0.8; }
+  50% { transform: translate(-50%, -50%) scale(1); opacity: 0.4; }
+  100% { transform: translate(-50%, -50%) scale(1.2); opacity: 0; }
+}
+
+@keyframes nhl-logo-mega-pulse {
+  0%, 100% { 
+    transform: scale(1);
+    filter: drop-shadow(0 0 40px rgba(255, 105, 180, 0.9)) 
+            drop-shadow(0 0 20px rgba(255, 215, 0, 0.6));
+  }
+  50% { 
+    transform: scale(1.08);
+    filter: drop-shadow(0 0 60px rgba(255, 105, 180, 1)) 
+            drop-shadow(0 0 30px rgba(255, 215, 0, 0.8));
+  }
+}
+
+@keyframes nhl-glow-pulse {
+  0%, 100% { 
+    opacity: 0.5; 
+    transform: translate(-50%, -50%) scale(1); 
+  }
+  50% { 
+    opacity: 1; 
+    transform: translate(-50%, -50%) scale(1.2); 
+  }
+}
+
+@keyframes nhl-title-shimmer {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes nhl-progress-glow {
+  0%, 100% { 
+    background-position: 0% 50%;
+    box-shadow: 0 0 15px rgba(255, 105, 180, 0.6);
+  }
+  50% { 
+    background-position: 100% 50%;
+    box-shadow: 0 0 25px rgba(255, 105, 180, 0.8);
+  }
+}
+
+@keyframes nhl-step-pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.2); opacity: 0.8; }
+}
+
+@keyframes nhl-node-expand {
+  0% { transform: scale(1); opacity: 0.8; }
+  100% { transform: scale(2); opacity: 0; }
+}
+
+@keyframes nhl-connection-pulse {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.8; }
+}
+
+@keyframes nhl-status-pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.3); opacity: 0.7; }
+}
+
+@keyframes nhl-scan-sweep {
+  0% { top: -2px; opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { top: 100%; opacity: 0; }
+}
+
+/* Light Mode Overrides */
+.neural-health-loading-container.light {
+  background: linear-gradient(135deg, 
+    #ffffff 0%, 
+    #fff0f7 20%, 
+    #ffe4f1 40%, 
+    #ffd6eb 60%, 
+    #ffe4f1 80%, 
+    #fff0f7 100%
+  ) !important;
+  color: #C71585 !important;
+}
+
+.neural-health-loading-container.light .neural-health-loading-grid {
+  background-image: 
+    linear-gradient(rgba(255, 20, 147, 0.15) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 20, 147, 0.15) 1px, transparent 1px) !important;
+}
+
+.neural-health-loading-container.light .neural-health-loading-particles {
+  background: 
+    radial-gradient(circle at 15% 25%, rgba(255, 105, 180, 0.15) 2px, transparent 2px),
+    radial-gradient(circle at 85% 75%, rgba(255, 182, 193, 0.12) 1px, transparent 1px),
+    radial-gradient(circle at 45% 15%, rgba(255, 20, 147, 0.1) 1px, transparent 1px),
+    radial-gradient(circle at 75% 45%, rgba(255, 105, 180, 0.08) 2px, transparent 2px);
+}
+
+.neural-health-loading-container.light .neural-health-loading-waves {
+  border-color: rgba(199, 21, 133, 0.1);
+}
+
+.neural-health-loading-container.light .neural-health-loading-waves::before,
+.neural-health-loading-container.light .neural-health-loading-waves::after {
+  border-color: rgba(199, 21, 133, 0.08);
+}
+
+.neural-health-loading-container.light .nhl-loading-logo-image {
+  filter: drop-shadow(0 0 40px rgba(255, 105, 180, 0.8)) 
+          drop-shadow(0 0 20px rgba(255, 182, 193, 0.6));
+}
+
+.neural-health-loading-container.light .nhl-logo-glow {
+  background: radial-gradient(
+    circle, 
+    rgba(255, 105, 180, 0.5) 0%, 
+    rgba(255, 182, 193, 0.3) 30%,
+    rgba(255, 20, 147, 0.2) 50%, 
+    transparent 70%
+  );
+}
+
+.neural-health-loading-container.light .nhl-logo-pulse {
+  filter: drop-shadow(0 0 30px #FF69B4);
+}
+
+.neural-health-loading-container.light .nhl-loading-title {
+  background: linear-gradient(45deg, #C71585, #FF1493, #FF69B4, #FFB6C1) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
+  text-shadow: 0 0 20px rgba(255, 20, 147, 0.5) !important;
+}
+
+.neural-health-loading-container.light .nhl-loading-subtitle {
+  color: rgba(199, 21, 133, 0.7);
+}
+
+.neural-health-loading-container.light .nhl-progress-bar {
+  background: rgba(199, 21, 133, 0.2);
+  box-shadow: 
+    0 0 20px rgba(199, 21, 133, 0.2),
+    inset 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.neural-health-loading-container.light .nhl-progress-fill {
+  background: linear-gradient(90deg, 
+    #FF1493, 
+    #FF69B4, 
+    #FFB6C1, 
+    #FF69B4
+  ) !important;
+  box-shadow: 0 0 25px rgba(255, 20, 147, 0.8) !important;
+}
+
+.neural-health-loading-container.light .nhl-progress-text {
+  color: #C71585;
+  text-shadow: 0 0 10px rgba(199, 21, 133, 0.3);
+}
+
+.neural-health-loading-container.light .nhl-loading-step.nhl-active {
+  background: rgba(255, 182, 193, 0.15);
+}
+
+.neural-health-loading-container.light .nhl-step-indicator {
+  color: #FF69B4;
+}
+
+.neural-health-loading-container.light .nhl-step-text {
+  color: rgba(199, 21, 133, 0.9);
+}
+
+.neural-health-loading-container.light .nhl-activity-node {
+  background: #FF69B4;
+  box-shadow: 0 0 15px rgba(255, 105, 180, 0.4);
+}
+
+.neural-health-loading-container.light .nhl-node-pulse {
+  border-color: rgba(255, 105, 180, 0.4);
+}
+
+.neural-health-loading-container.light .nhl-connection {
+  background: linear-gradient(90deg, 
+    transparent, 
+    rgba(255, 105, 180, 0.6), 
+    transparent
+  );
+}
+
+.neural-health-loading-container.light .nhl-status-indicator {
+  background: rgba(255, 182, 193, 0.15);
+  border-color: rgba(199, 21, 133, 0.3);
+}
+
+.neural-health-loading-container.light .nhl-status-dot {
+  background: #FF69B4;
+  box-shadow: 0 0 10px rgba(255, 105, 180, 0.4);
+}
+
+.neural-health-loading-container.light .nhl-status-text {
+  color: #C71585;
+}
+
+.neural-health-loading-container.light .nhl-scan-line {
+  background: linear-gradient(90deg, 
+    transparent, 
+    rgba(255, 105, 180, 0.6), 
+    transparent
+  );
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .nhl-loading-content {
+    padding: 20px;
+  }
+  
+  .nhl-loading-title {
+    font-size: 32px;
+    letter-spacing: 4px;
+  }
+  
+  .nhl-logo-pulse {
+    font-size: 60px;
+  }
+  
+  .neural-health-loading-activity {
+    width: 250px;
+    height: 150px;
+  }
+  
+  .nhl-loading-steps {
+    max-width: 300px;
+  }
+  
+  .nhl-step-text {
+    font-size: 10px;
+  }
+}
