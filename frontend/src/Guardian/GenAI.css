@@ -829,6 +829,33 @@
   text-shadow: 
     0 0 15px rgba(0, 250, 154, 0.9),
     0 0 30px rgba(52, 211, 153, 0.7);
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.genai-powered-by-inline {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  margin-left: -20px;
+}
+
+.genai-powered-by-inline .genai-powered-by-text {
+  font-size: 12px;
+  color: #ffffff;
+  letter-spacing: 1px;
+  font-style: italic;
+  font-family: 'Courier New', monospace;
+  font-weight: normal;
+}
+
+.genai-powered-by-inline .genai-company-logo {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  filter: brightness(1) opacity(1);
 }
 
 .genai-logo-text p {
@@ -1363,6 +1390,10 @@
   text-shadow: 
     0 0 10px rgba(5, 150, 105, 0.3),
     0 0 20px rgba(5, 150, 105, 0.2);
+}
+
+.genai-container.light .genai-powered-by-inline .genai-powered-by-text {
+  color: #047857;
 }
 
 .genai-container.light .genai-logo-text p {

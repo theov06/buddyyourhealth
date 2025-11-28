@@ -719,7 +719,13 @@ export default function GenAI() {
                 <img src="/logo/Neural Guardian.png" alt="Neural Guardian" className="genai-logo-image" />
               </div>
               <div className="genai-logo-text">
-                <h1>NEURAL GUARDIAN</h1>
+                <h1>
+                  NEURAL GUARDIAN
+                  <div className="genai-powered-by-inline">
+                    <span className="genai-powered-by-text">powered by</span>
+                    <img src="/logo/logo.png" alt="Buddy Your Health Logo" className="genai-company-logo" />
+                  </div>
+                </h1>
                 <p>Your Personal Health AI Assistant</p>
               </div>
             </div>
