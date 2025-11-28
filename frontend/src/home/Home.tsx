@@ -43,8 +43,7 @@ function Home() {
             className={`health-monitoring-button ${theme}`}
             onClick={() => {
               console.log('Health monitoring clicked!');
-              // Add your health monitoring functionality here
-              alert('💓 Health Monitoring: Access real-time monitoring of your vital signs, heart rate, and health metrics!');
+              navigate('/health/dashboard');
             }}
           >
             Health monitoring

@@ -1,0 +1,52 @@
+.health-chart-container {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 15px;
+  padding: 2rem;
+  transition: all 0.3s ease;
+}
+
+.health-chart-container:hover {
+  border-color: #00d4ff;
+  box-shadow: 0 10px 30px rgba(0, 212, 255, 0.2);
+}
+
+.chart-title {
+  font-size: 1.5rem;
+  color: #00d4ff;
+  margin: 0 0 1.5rem 0;
+  text-align: center;
+}
+
+.custom-tooltip {
+  background: rgba(20, 20, 30, 0.95);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  padding: 1rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.tooltip-date {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.9rem;
+  margin: 0 0 0.5rem 0;
+}
+
+.tooltip-value {
+  color: #00d4ff;
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .health-chart-container {
+    padding: 1rem;
+  }
+
+  .chart-title {
+    font-size: 1.2rem;
+  }
+}

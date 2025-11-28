@@ -1,8 +1,8 @@
 
 import { Link } from 'react-router-dom';
 import './About.css';
-import ParticleBackground from '../home/ParticleBackground';
-import LightBackground from '../home/LightBackground';
+import ParticleBackground from '../Home/ParticleBackground';
+import LightBackground from '../Home/LightBackground';
 import Navbar from '../navbar/Navbar';
 import { useTheme } from '../contexts/ThemeContext'; 
 
@@ -16,196 +16,231 @@ function About() {
       
       <div className="main-content">
         
-        {/* 네비게이션 바 */}
+        {/* Navigation Bar */}
         <Navbar activeLink="about" />
         
-        {/* About 페이지 본문 컨테이너 */}
+        {/* About Page Container */}
         <div className="about-container">
           
           <div className="about-hero">
             <h1>About Buddy Your Health</h1>
             <p className="about-subtitle">
-              Revolutionizing healthcare through AI-powered personalized health solutions
+              Your AI-powered health companion for personalized wellness insights
             </p>
           </div>
           
           <div className="about-content">
             
-            {/* Vision Section */}
-            <section className="features-section">
-              <h2>Our Vision: Why Buddy Your Health?</h2>
-              <p className="section-intro">
-                Health information is overflowing today, but finding personalized, accurate information remains challenging.
-              </p>
-              
-              <div className="features-grid">
-                <div className="feature-card">
-                  <div className="feature-header">
-                    <h3>The Challenge</h3>
-                  </div>
-                  <div className="feature-content">
-                    <ul>
-                      <li>Overwhelming amount of generic health information available</li>
-                      <li>Difficulty finding personalized recommendations</li>
-                      <li>Most apps only track data without providing actionable insights</li>
-                      <li>Lack of AI-powered analysis for individual health profiles</li>
-                    </ul>
-                  </div>
+            {/* Mission Statement */}
+            <section className="mission-statement">
+              <div className="mission-card">
+                <h2>Our Mission</h2>
+                <p>
+                  We believe everyone deserves personalized health guidance. Buddy Your Health combines 
+                  cutting-edge AI technology with medical expertise to transform complex health data into 
+                  simple, actionable insights—making professional-grade health management accessible to all.
+                </p>
+              </div>
+            </section>
+
+            {/* The Problem & Solution */}
+            <section className="problem-solution-section">
+              <div className="ps-grid">
+                <div className="ps-card problem">
+                  <div className="ps-icon">⚠️</div>
+                  <h3>The Challenge</h3>
+                  <p>
+                    Today's health landscape is overwhelming. Generic advice floods the internet, 
+                    but finding personalized, trustworthy guidance remains difficult. Most health 
+                    apps simply track data without providing meaningful insights tailored to your 
+                    unique needs.
+                  </p>
                 </div>
                 
-                <div className="feature-card">
-                  <div className="feature-header">
-                    <h3>Our Solution: Innovation in Healthcare Through AI</h3>
-                  </div>
-                  <div className="feature-content">
-                    <ul>
-                      <li>Going beyond simple health tracking apps</li>
-                      <li>Leveraging artificial intelligence to analyze your unique body data</li>
-                      <li>Understanding your lifestyle habits and preferences</li>
-                      <li>Providing personalized solutions like having a dedicated doctor</li>
-                    </ul>
-                  </div>
+                <div className="ps-card solution">
+                  <div className="ps-icon">✨</div>
+                  <h3>Our Solution</h3>
+                  <p>
+                    Buddy Your Health goes beyond tracking. Our AI analyzes your health data, 
+                    understands your lifestyle, and delivers personalized recommendations—like 
+                    having a dedicated health advisor in your pocket, available 24/7.
+                  </p>
                 </div>
               </div>
             </section>
             
-            {/* What We Do Section */}
+            {/* Core Features */}
             <section className="features-section">
-              <h2>What We Do: Key Features</h2>
+              <h2>What We Offer</h2>
               <p className="section-intro">
-                Buddy Your Health transforms complex health data into simple, practical action plans. 
-                Our AI technology provides three core differentiators:
+                Three powerful AI-driven features designed to transform your health journey
               </p>
               
               <div className="features-grid">
                 <div className="feature-card">
-                  <div className="feature-header">
-                    <h3>Advanced Personalized Nutrition Analysis</h3>
-                  </div>
-                  <div className="feature-content">
-                    <p><strong>Beyond Calorie Counting:</strong></p>
-                    <ul>
-                      <li>Learns your unique health profile and medical conditions</li>
-                      <li>Identifies food allergies and dietary restrictions</li>
-                      <li>Tracks nutrient limitations like sodium or sugar intake</li>
-                      <li>Considers chronic conditions such as gastritis or diabetes</li>
-                    </ul>
-                    <p><strong>Smart Recommendations:</strong></p>
-                    <ul>
-                      <li>Suggests foods that aid digestion for gastritis patients</li>
-                      <li>Recommends low-salt alternatives for high blood pressure</li>
-                      <li>Provides daily meal plans that align with your health goals</li>
-                      <li>Offers practical tips like incorporating salads for better nutrition</li>
-                    </ul>
+                  <div className="feature-icon">🧠</div>
+                  <h3>Neural Guardian</h3>
+                  <p className="feature-description">
+                    Your intelligent health assistant powered by advanced AI. Get instant answers 
+                    to health questions, personalized advice, and evidence-based recommendations 
+                    tailored to your unique profile.
+                  </p>
+                  <div className="feature-highlights">
+                    <span className="highlight">24/7 AI Support</span>
+                    <span className="highlight">Personalized Insights</span>
+                    <span className="highlight">Evidence-Based</span>
                   </div>
                 </div>
                 
                 <div className="feature-card">
-                  <div className="feature-header">
-                    <h3>Proactive Health Risk Management</h3>
-                  </div>
-                  <div className="feature-content">
-                    <p><strong>Comprehensive Data Analysis:</strong></p>
-                    <ul>
-                      <li>Monitors sleep patterns and quality</li>
-                      <li>Tracks daily activity levels and exercise</li>
-                      <li>Analyzes heart rate variability</li>
-                      <li>Predicts health risks before they become problems</li>
-                    </ul>
-                    <p><strong>Preventive Care:</strong></p>
-                    <ul>
-                      <li>Provides real-time lifestyle improvement feedback</li>
-                      <li>Alerts you to potential health issues early</li>
-                      <li>Suggests preventive measures based on your data trends</li>
-                      <li>Helps you stay ahead of health problems</li>
-                    </ul>
+                  <div className="feature-icon">📊</div>
+                  <h3>Neural Health</h3>
+                  <p className="feature-description">
+                    Comprehensive health analytics that turn your Apple Health data into actionable 
+                    insights. Track trends, identify patterns, and receive AI-powered recommendations 
+                    to optimize your wellness.
+                  </p>
+                  <div className="feature-highlights">
+                    <span className="highlight">Data Visualization</span>
+                    <span className="highlight">Trend Analysis</span>
+                    <span className="highlight">Smart Predictions</span>
                   </div>
                 </div>
                 
                 <div className="feature-card">
-                  <div className="feature-header">
-                    <h3>Data-Driven Medical Reliability</h3>
-                  </div>
-                  <div className="feature-content">
-                    <p><strong>Expert Development Team:</strong></p>
-                    <ul>
-                      <li>Medical experts from around the world</li>
-                      <li>Certified nutritionists and dietitians</li>
-                      <li>AI and data science specialists</li>
-                      <li>Continuous updates based on latest research</li>
-                    </ul>
-                    <p><strong>Proven AI Technology:</strong></p>
-                    <ul>
-                      <li>Trained on over 3 million clinical nutrition data points</li>
-                      <li>Based on the latest scientific evidence</li>
-                      <li>Regularly updated with new medical findings</li>
-                      <li>Validated by healthcare professionals</li>
-                    </ul>
+                  <div className="feature-icon">⏰</div>
+                  <h3>Neural Reminders</h3>
+                  <p className="feature-description">
+                    Never miss important health tasks. Intelligent reminders for medications, 
+                    appointments, exercise, and wellness activities—all personalized to your 
+                    schedule and health goals.
+                  </p>
+                  <div className="feature-highlights">
+                    <span className="highlight">Smart Scheduling</span>
+                    <span className="highlight">Custom Alerts</span>
+                    <span className="highlight">Goal Tracking</span>
                   </div>
                 </div>
               </div>
             </section>
-            
-            {/* Core Values Section */}
-            <section className="features-section">
-              <h2>Our Core Values: Trust and Safety</h2>
-              <p className="section-intro">
-                100% User-Centric and Data Security - Your health data deserves the highest level of protection and transparency.
-              </p>
-              
-              <div className="features-grid">
-                <div className="feature-card">
-                  <div className="feature-header">
-                    <h3>Privacy</h3>
-                  </div>
-                  <div className="feature-content">
-                    <p><strong>Data Protection:</strong></p>
-                    <ul>
-                      <li>Secured by the highest level of encryption technology</li>
-                      <li>Strict compliance with privacy regulations like HIPAA and GDPR standards</li>
-                      <li>Complete control over your personal health information</li>
-                      <li>Regular security audits and updates</li>
-                    </ul>
-                    <p><strong>Your Rights:</strong></p>
-                    <ul>
-                      <li>No data sharing or commercial use with third parties without your consent</li>
-                      <li>Right to access, modify, or delete your data at any time</li>
-                      <li>Clear consent processes for all data usage</li>
-                      <li>Transparent privacy policy and terms of service</li>
-                    </ul>
-                  </div>
+
+            {/* Why Choose Us */}
+            <section className="why-section">
+              <h2>Why Choose Buddy Your Health?</h2>
+              <div className="why-grid">
+                <div className="why-card">
+                  <div className="why-number">01</div>
+                  <h3>AI-Powered Personalization</h3>
+                  <p>
+                    Our advanced AI learns from your unique health data, lifestyle, and goals 
+                    to provide recommendations that actually work for you—not generic advice.
+                  </p>
                 </div>
                 
-                <div className="feature-card">
-                  <div className="feature-header">
-                    <h3>Transparency</h3>
-                  </div>
-                  <div className="feature-content">
-                    <p><strong>AI Explainability:</strong></p>
-                    <ul>
-                      <li>Clear disclosure of AI analysis results and recommendations</li>
-                      <li>Detailed explanations of how conclusions are reached</li>
-                      <li>Source citations for all health recommendations</li>
-                      <li>Regular updates on AI model improvements</li>
-                    </ul>
-                    <p><strong>User Empowerment:</strong></p>
-                    <ul>
-                      <li>Empowering you to make informed health decisions</li>
-                      <li>Open communication about data usage and processing</li>
-                      <li>Access to your complete health data history</li>
-                      <li>Educational resources to understand your health metrics</li>
-                    </ul>
-                  </div>
+                <div className="why-card">
+                  <div className="why-number">02</div>
+                  <h3>Medical-Grade Accuracy</h3>
+                  <p>
+                    Built with input from healthcare professionals and trained on millions of 
+                    clinical data points to ensure reliable, evidence-based guidance.
+                  </p>
+                </div>
+                
+                <div className="why-card">
+                  <div className="why-number">03</div>
+                  <h3>Privacy First</h3>
+                  <p>
+                    Your health data is encrypted and secure. We never share your information 
+                    with third parties. You maintain complete control over your data.
+                  </p>
+                </div>
+                
+                <div className="why-card">
+                  <div className="why-number">04</div>
+                  <h3>Seamless Integration</h3>
+                  <p>
+                    Works effortlessly with Apple Health to automatically sync your data, 
+                    providing insights without manual entry or complicated setup.
+                  </p>
                 </div>
               </div>
             </section>
             
-            {/* CTA (Call to Action) 섹션 */}
+            {/* Our Commitment */}
+            <section className="commitment-section">
+              <h2>Our Commitment to You</h2>
+              <div className="commitment-grid">
+                <div className="commitment-card">
+                  <div className="commitment-icon">🔒</div>
+                  <h3>Privacy & Security</h3>
+                  <p>
+                    Your health data is protected with bank-level encryption. We comply with 
+                    HIPAA and GDPR standards, and we never share your information without 
+                    explicit consent. You own your data—always.
+                  </p>
+                </div>
+                
+                <div className="commitment-card">
+                  <div className="commitment-icon">🎯</div>
+                  <h3>Accuracy & Reliability</h3>
+                  <p>
+                    Our AI is trained on millions of clinical data points and continuously 
+                    updated with the latest medical research. Every recommendation is backed 
+                    by scientific evidence and validated by healthcare professionals.
+                  </p>
+                </div>
+                
+                <div className="commitment-card">
+                  <div className="commitment-icon">💡</div>
+                  <h3>Transparency</h3>
+                  <p>
+                    We believe in clear communication. Our AI explains its reasoning, cites 
+                    sources, and helps you understand the "why" behind every recommendation—
+                    empowering you to make informed decisions.
+                  </p>
+                </div>
+              </div>
+            </section>
+
+            {/* How It Works */}
+            <section className="how-it-works-section">
+              <h2>How It Works</h2>
+              <div className="steps-container">
+                <div className="step">
+                  <div className="step-number">1</div>
+                  <h3>Connect Your Data</h3>
+                  <p>Sync with Apple Health to automatically import your health metrics</p>
+                </div>
+                <div className="step-arrow">→</div>
+                <div className="step">
+                  <div className="step-number">2</div>
+                  <h3>AI Analysis</h3>
+                  <p>Our AI analyzes your data to identify patterns and insights</p>
+                </div>
+                <div className="step-arrow">→</div>
+                <div className="step">
+                  <div className="step-number">3</div>
+                  <h3>Get Personalized Insights</h3>
+                  <p>Receive tailored recommendations and actionable health guidance</p>
+                </div>
+                <div className="step-arrow">→</div>
+                <div className="step">
+                  <div className="step-number">4</div>
+                  <h3>Track Progress</h3>
+                  <p>Monitor your improvements and adjust your health journey</p>
+                </div>
+              </div>
+            </section>
+            
+            {/* CTA Section */}
             <div className="cta-section">
-              <h3>Ready to start your health journey?</h3>
+              <h3>Ready to Transform Your Health?</h3>
+              <p className="cta-description">
+                Join thousands of users who are taking control of their wellness with AI-powered insights
+              </p>
               <div className="cta-buttons">
-                <Link to="/loading/signup" className="cta-button primary">Get Started</Link>
-                <Link to="/contact" className="cta-button secondary">Contact Us</Link>
+                <Link to="/loading/signup" className="cta-button primary">Get Started Free</Link>
+                <Link to="/contact" className="cta-button secondary">Learn More</Link>
               </div>
             </div>
             
