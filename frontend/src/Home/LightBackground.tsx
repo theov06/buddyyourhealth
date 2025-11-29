@@ -4,16 +4,6 @@ import './LightBackground.css';
 const LightBackground: React.FC = () => {
   return (
     <div className="light-background">
-      {/* Floating Health Icons */}
-      <div className="health-icons">
-        <div className="health-icon icon-1">💊</div>
-        <div className="health-icon icon-2">🫀</div>
-        <div className="health-icon icon-3">🧬</div>
-        <div className="health-icon icon-4">⚕️</div>
-        <div className="health-icon icon-5">🩺</div>
-        <div className="health-icon icon-6">💚</div>
-      </div>
-      
       {/* Geometric Health Patterns */}
       <div className="geometric-patterns">
         <div className="pattern-circle circle-1"></div>

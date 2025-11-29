@@ -809,6 +809,8 @@
   font-family: 'Courier New', monospace;
   letter-spacing: 2px;
   margin: 0;
+  background: transparent !important;
+  background-color: transparent !important;
 }
 
 .close-modal-btn {

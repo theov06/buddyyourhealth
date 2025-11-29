@@ -1,131 +1,116 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import './LoadingScreen.css';
+import ParticleBackground from '../Home/ParticleBackground';
+import LightBackground from '../Home/LightBackground';
 import { useTheme } from '../contexts/ThemeContext';
-import './HomeLoading.css';
 
 export default function HomeLoading() {
   const navigate = useNavigate();
   const { theme } = useTheme();
   const [progress, setProgress] = useState(0);
-  const [currentStep, setCurrentStep] = useState(0);
-
-  const loadingSteps = [
-    'INITIALIZING HEALTH PLATFORM...',
-    'LOADING USER INTERFACE...',
-    'CONNECTING TO SERVICES...',
-    'PREPARING DASHBOARD...',
-    'WELCOME HOME'
-  ];
+  const [currentText, setCurrentText] = useState('');
+  const loadingText = 'LOADING HOME';
 
   useEffect(() => {
-    // Progress animation
+    // Animate progress bar
     const progressInterval = setInterval(() => {
       setProgress(prev => {
         if (prev >= 100) {
           clearInterval(progressInterval);
           return 100;
         }
-        return prev + 3;
+        return prev + 2;
       });
-    }, 60);
+    }, 50);
 
-    // Step animation
-    const stepInterval = setInterval(() => {
-      setCurrentStep(prev => {
-        if (prev >= loadingSteps.length - 1) {
-          clearInterval(stepInterval);
-          return prev;
-        }
-        return prev + 1;
-      });
-    }, 700);
+    // Animate text typing effect
+    let textIndex = 0;
+    const textInterval = setInterval(() => {
+      if (textIndex <= loadingText.length) {
+        setCurrentText(loadingText.slice(0, textIndex));
+        textIndex++;
+      } else {
+        clearInterval(textInterval);
+      }
+    }, 100);
 
-    // Navigate after loading completes
+    // Navigate after 2.5 seconds
     const timer = setTimeout(() => {
-      navigate('/');
+      navigate('/', { replace: true });
     }, 2500);
 
     return () => {
-      clearInterval(progressInterval);
-      clearInterval(stepInterval);
       clearTimeout(timer);
+      clearInterval(progressInterval);
+      clearInterval(textInterval);
     };
   }, [navigate]);
 
   return (
-    <div className={`home-loading-container ${theme}`}>
-      {/* Background Effects */}
-      <div className="home-background">
-        <div className="floating-particles"></div>
-        <div className="gradient-waves"></div>
-        <div className="geometric-pattern"></div>
-      </div>
-
-      {/* Main Loading Content */}
-      <div className="home-loading-content">
-        {/* Logo and Title */}
-        <div className="home-loading-header">
-          <div className="home-loading-logo">
+    <div className={`loading-screen ${theme}`} data-theme={theme}>
+      {theme === 'dark' ? <ParticleBackground /> : <LightBackground />}
+      
+      <div className="loadingscreen-content">
+        <div className="loadingscreen-header">
+          <div className="logo">
             <img src="/logo/logo.png" alt="Buddy Your Health Logo" className="logo-image" />
-            <div className="logo-glow"></div>
+            <span className="logo-text">BUDDY YOUR HEALTH®</span>
           </div>
-          <h1 className="home-loading-title">BUDDY YOUR HEALTH</h1>
-          <p className="home-loading-subtitle">Your Personal Health Companion</p>
         </div>
 
-        {/* Progress Section */}
-        <div className="home-progress-section">
-          <div className="home-progress-container">
-            <div className="home-progress-bar">
+        <div className="loading-animation">
+          <div className="loading-circle">
+            <div className="loading-circle-inner">
+              <div className="loading-pulse"></div>
+            </div>
+            <svg className="loading-progress" viewBox="0 0 100 100">
+              <circle
+                cx="50"
+                cy="50"
+                r="45"
+                fill="none"
+                stroke={theme === 'light' ? 'rgba(4, 120, 87, 0.2)' : 'rgba(0, 255, 255, 0.2)'}
+                strokeWidth="2"
+              />
+              <circle
+                cx="50"
+                cy="50"
+                r="45"
+                fill="none"
+                stroke={theme === 'light' ? '#047857' : '#00FFFF'}
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeDasharray="283"
+                strokeDashoffset={283 - (283 * progress) / 100}
+                className="progress-circle"
+              />
+            </svg>
+          </div>
+          
+          <div className="loading-text">
+            <h2 className="loadingscreen-title">{currentText}</h2>
+            <div className="loading-dots">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          </div>
+
+          <div className="loading-bar-container">
+            <div className="loading-bar">
               <div 
-                className="home-progress-fill" 
+                className="loading-bar-fill" 
                 style={{ width: `${progress}%` }}
               ></div>
-              <div className="home-progress-glow"></div>
             </div>
-            <div className="home-progress-text">{progress}%</div>
-          </div>
-
-          {/* Loading Steps */}
-          <div className="home-loading-steps">
-            {loadingSteps.map((step, index) => (
-              <div 
-                key={index}
-                className={`home-loading-step ${index <= currentStep ? 'active' : ''} ${index < currentStep ? 'completed' : ''}`}
-              >
-                <div className="home-step-indicator">
-                  {index < currentStep ? '✓' : index === currentStep ? '●' : '○'}
-                </div>
-                <span className="home-step-text">{step}</span>
-              </div>
-            ))}
+            <span className="loading-percentage">{Math.round(progress)}%</span>
           </div>
         </div>
 
-        {/* Health Icons Animation */}
-        <div className="health-icons-animation">
-          <div className="health-icon icon-1">🏥</div>
-          <div className="health-icon icon-2">💊</div>
-          <div className="health-icon icon-3">🩺</div>
-          <div className="health-icon icon-4">💓</div>
-          <div className="health-icon icon-5">🧘‍♀️</div>
-          <div className="health-icon icon-6">🏃‍♂️</div>
+        <div className="loading-footer">
+          <p className="loadingscreen-subtitle">PREPARING YOUR HEALTH JOURNEY...</p>
         </div>
-
-        {/* Status Display */}
-        <div className="home-status-display">
-          <div className="home-status-indicator">
-            <div className="home-status-dot"></div>
-            <span className="home-status-text">LOADING HEALTH DASHBOARD</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Animated Elements */}
-      <div className="home-animated-elements">
-        <div className="pulse-ring ring-1"></div>
-        <div className="pulse-ring ring-2"></div>
-        <div className="pulse-ring ring-3"></div>
       </div>
     </div>
   );

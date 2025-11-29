@@ -3,7 +3,7 @@
 <div align="center">
 
 ![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)
-![License](https://img.shields.io/badge/license-Educational-green.svg)
+![License](https://img.shields.io/badge/license-MIT-green.svg)
 ![Node](https://img.shields.io/badge/node-%3E%3D14.0.0-brightgreen.svg)
 ![React](https://img.shields.io/badge/react-19.2.0-61dafb.svg)
 
@@ -352,7 +352,7 @@ Open an issue with:
 
 ## 📄 License
 
-This project is for educational purposes only.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---
 

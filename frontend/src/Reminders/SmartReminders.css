@@ -1425,7 +1425,7 @@
   margin: 0;
 }
 
-.close-modal-btn {
+.smart-reminders-container .close-modal-btn {
   background: none !important;
   border: none !important;
   color: #FFA500 !important;
@@ -1435,7 +1435,7 @@
   transition: all 0.3s ease;
 }
 
-.close-modal-btn:hover {
+.smart-reminders-container .close-modal-btn:hover {
   color: #FFD700 !important;
   transform: rotate(90deg);
 }

@@ -48,7 +48,7 @@
   }
 }
 
-.modal-header {
+.time-picker-modal .modal-header {
   padding: 25px 30px;
   border-bottom: 1px solid rgba(255, 165, 0, 0.2);
   display: flex;
@@ -57,7 +57,7 @@
   background: linear-gradient(90deg, rgba(255, 165, 0, 0.1) 0%, transparent 100%);
 }
 
-.modal-header h3 {
+.time-picker-modal .modal-header h3 {
   margin: 0;
   font-size: 1.5rem;
   color: #FFA500;
@@ -362,12 +362,12 @@
   box-shadow: 0 20px 60px rgba(146, 64, 14, 0.2);
 }
 
-.light .modal-header {
+.light .time-picker-modal .modal-header {
   border-bottom-color: rgba(146, 64, 14, 0.2);
   background: linear-gradient(90deg, rgba(251, 191, 36, 0.1) 0%, transparent 100%);
 }
 
-.light .modal-header h3 {
+.light .time-picker-modal .modal-header h3 {
   color: #92400e;
 }
 
@@ -479,11 +479,11 @@
     max-height: 95vh;
   }
 
-  .modal-header {
+  .time-picker-modal .modal-header {
     padding: 20px;
   }
 
-  .modal-header h3 {
+  .time-picker-modal .modal-header h3 {
     font-size: 1.2rem;
   }
 

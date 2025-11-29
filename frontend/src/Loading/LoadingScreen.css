@@ -277,6 +277,38 @@
   }
 }
 
+/* Dark Theme Support */
+[data-theme="dark"] .loading-screen,
+.loading-screen.dark {
+  background: #0A0A0A;
+}
+
+[data-theme="dark"] .loading-circle,
+.loading-screen.dark .loading-circle {
+  opacity: 1;
+  animation: fadeInScale 1s ease-out 0.5s forwards;
+}
+
+[data-theme="dark"] .loading-circle-inner,
+.loading-screen.dark .loading-circle-inner {
+  background: radial-gradient(circle, rgba(0, 255, 255, 0.1), transparent);
+}
+
+[data-theme="dark"] .loading-pulse,
+.loading-screen.dark .loading-pulse {
+  background: #00FFFF;
+  box-shadow: 
+    0 0 20px #00FFFF,
+    0 0 40px #00FFFF,
+    0 0 60px #00FFFF;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+[data-theme="dark"] .progress-circle,
+.loading-screen.dark .progress-circle {
+  filter: drop-shadow(0 0 5px #00FFFF);
+}
+
 /* Light Theme Support */
 [data-theme="light"] .loading-screen,
 .loading-screen.light {
