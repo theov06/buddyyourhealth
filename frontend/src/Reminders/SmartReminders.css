@@ -17,6 +17,55 @@
   overflow-x: hidden;
 }
 
+/* Force orange theme - override any pink from other pages */
+.smart-reminders-container h1,
+.smart-reminders-container h2,
+.smart-reminders-container h3,
+.smart-reminders-container h4,
+.smart-reminders-container h5,
+.smart-reminders-container h6,
+.smart-reminders-container .section-title,
+.smart-reminders-container .panel-header h3,
+.smart-reminders-container .stats-header h3 {
+  color: #FFA500 !important;
+}
+
+/* Force orange for all badges in reminders */
+.smart-reminders-container .priority-badge,
+.smart-reminders-container .category-badge {
+  border-color: rgba(255, 165, 0, 0.3) !important;
+}
+
+.smart-reminders-container .priority-badge.critical {
+  background: rgba(255, 69, 0, 0.2) !important;
+  color: #FF4500 !important;
+  border-color: rgba(255, 69, 0, 0.3) !important;
+}
+
+.smart-reminders-container .priority-badge.high {
+  background: rgba(255, 69, 0, 0.2) !important;
+  color: #ff4500 !important;
+  border-color: rgba(255, 69, 0, 0.3) !important;
+}
+
+.smart-reminders-container .priority-badge.medium {
+  background: rgba(255, 165, 0, 0.2) !important;
+  color: #FFA500 !important;
+  border-color: rgba(255, 165, 0, 0.3) !important;
+}
+
+.smart-reminders-container .priority-badge.low {
+  background: rgba(255, 215, 0, 0.2) !important;
+  color: #ffd700 !important;
+  border-color: rgba(255, 215, 0, 0.3) !important;
+}
+
+.smart-reminders-container .category-badge {
+  background: rgba(255, 165, 0, 0.1) !important;
+  color: rgba(255, 165, 0, 0.7) !important;
+  border-color: rgba(255, 165, 0, 0.2) !important;
+}
+
 /* Neural Background Effects */
 .neural-background {
   position: fixed;
@@ -707,21 +756,21 @@
 }
 
 .priority-badge.high {
-  background: rgba(255, 69, 0, 0.2);
-  color: #ff4500;
-  border: 1px solid rgba(255, 69, 0, 0.3);
+  background: rgba(255, 69, 0, 0.2) !important;
+  color: #ff4500 !important;
+  border: 1px solid rgba(255, 69, 0, 0.3) !important;
 }
 
 .priority-badge.medium {
-  background: rgba(255, 165, 0, 0.2);
-  color: #FFA500;
-  border: 1px solid rgba(255, 165, 0, 0.3);
+  background: rgba(255, 165, 0, 0.2) !important;
+  color: #FFA500 !important;
+  border: 1px solid rgba(255, 165, 0, 0.3) !important;
 }
 
 .priority-badge.low {
-  background: rgba(255, 215, 0, 0.2);
-  color: #ffd700;
-  border: 1px solid rgba(255, 215, 0, 0.3);
+  background: rgba(255, 215, 0, 0.2) !important;
+  color: #ffd700 !important;
+  border: 1px solid rgba(255, 215, 0, 0.3) !important;
 }
 
 .category-badge {
@@ -729,9 +778,9 @@
   border-radius: 10px;
   font-size: 10px;
   font-weight: 500;
-  background: rgba(255, 165, 0, 0.1);
-  color: rgba(255, 165, 0, 0.7);
-  border: 1px solid rgba(255, 165, 0, 0.2);
+  background: rgba(255, 165, 0, 0.1) !important;
+  color: rgba(255, 165, 0, 0.7) !important;
+  border: 1px solid rgba(255, 165, 0, 0.2) !important;
 }
 
 .loading-indicator {
@@ -741,43 +790,59 @@
   animation: pulse-text 1.5s ease-in-out infinite;
 }
 
-.ai-actions {
-  margin-top: 20px;
-  text-align: center;
+.insights-messages {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 15px;
+  justify-content: center;
 }
 
-/* Center the refresh button when there are no insights */
-.ai-suggestions-panel:has(.suggestions-list:empty) .ai-actions,
-.ai-suggestions-panel:has(.suggestions-list:not(:has(.suggestion-item))) .ai-actions {
+.ai-actions {
   display: flex;
-  flex-direction: column;
+  gap: 12px;
   justify-content: center;
   align-items: center;
-  min-height: 250px;
-  margin-top: 0;
+  margin-top: auto;
+  padding-top: 20px;
 }
 
-.refresh-insights-btn {
+.personalized-insights-btn,
+.general-insights-btn {
+  flex: 1;
+  max-width: 350px;
   padding: 12px 20px;
   background: transparent;
   border: 2px solid rgba(255, 165, 0, 0.3);
   border-radius: 20px;
   color: #FFA500;
   font-family: 'Courier New', monospace;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 600;
-  letter-spacing: 1px;
+  letter-spacing: 0.5px;
   cursor: pointer;
   transition: all 0.3s ease;
+  white-space: nowrap;
 }
 
-.refresh-insights-btn:hover:not(:disabled) {
+.personalized-insights-btn {
+  background: rgba(255, 165, 0, 0.05);
+  border-color: rgba(255, 165, 0, 0.4);
+}
+
+.personalized-insights-btn:hover:not(:disabled) {
+  background: rgba(255, 165, 0, 0.15);
+  border-color: #FFA500;
+  transform: translateY(-2px);
+}
+
+.general-insights-btn:hover:not(:disabled) {
   background: rgba(255, 165, 0, 0.1);
   border-color: #FFA500;
   transform: translateY(-2px);
 }
 
-.refresh-insights-btn:disabled {
+.personalized-insights-btn:disabled,
+.general-insights-btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
@@ -1140,7 +1205,7 @@
   left: 50%;
   width: 100px;
   height: 100px;
-  border: 2px solid rgba(255, 165, 0, 0.3);
+  border: 2px solid rgba(255, 165, 0, 0.3) !important;
   border-radius: 50%;
   transform: translate(-50%, -50%);
   animation: neural-expand 3s ease-in-out infinite;
@@ -1148,7 +1213,7 @@
 
 .empty-icon {
   font-size: 64px;
-  filter: drop-shadow(0 0 30px #FFA500);
+  filter: drop-shadow(0 0 30px #FFA500) !important;
   animation: float-icon 3s ease-in-out infinite;
 }
 
@@ -1361,9 +1426,9 @@
 }
 
 .close-modal-btn {
-  background: none;
-  border: none;
-  color: #FFA500;
+  background: none !important;
+  border: none !important;
+  color: #FFA500 !important;
   font-size: 32px;
   cursor: pointer;
   line-height: 1;
@@ -1371,7 +1436,7 @@
 }
 
 .close-modal-btn:hover {
-  color: #FFD700;
+  color: #FFD700 !important;
   transform: rotate(90deg);
 }
 
@@ -1682,8 +1747,8 @@
     #fed7aa 60%, 
     #fef3c7 80%, 
     #fffbeb 100%
-  );
-  color: #92400e;
+  ) !important;
+  color: #92400e !important;
 }
 
 /* Light Mode Neural Background */
@@ -1960,40 +2025,51 @@
   color: rgba(146, 64, 14, 0.8);
 }
 
+.smart-reminders-container.light .priority-badge.critical,
 .smart-reminders-container.light .priority-badge.high {
-  background: rgba(220, 38, 38, 0.15);
-  color: #dc2626;
-  border-color: rgba(220, 38, 38, 0.3);
+  background: rgba(220, 38, 38, 0.15) !important;
+  color: #dc2626 !important;
+  border-color: rgba(220, 38, 38, 0.3) !important;
 }
 
 .smart-reminders-container.light .priority-badge.medium {
-  background: rgba(245, 158, 11, 0.15);
-  color: #f59e0b;
-  border-color: rgba(245, 158, 11, 0.3);
+  background: rgba(245, 158, 11, 0.15) !important;
+  color: #f59e0b !important;
+  border-color: rgba(245, 158, 11, 0.3) !important;
 }
 
 .smart-reminders-container.light .priority-badge.low {
-  background: rgba(34, 197, 94, 0.15);
-  color: #22c55e;
-  border-color: rgba(34, 197, 94, 0.3);
+  background: rgba(34, 197, 94, 0.15) !important;
+  color: #22c55e !important;
+  border-color: rgba(34, 197, 94, 0.3) !important;
 }
 
 .smart-reminders-container.light .category-badge {
-  background: rgba(251, 191, 36, 0.15);
-  color: rgba(146, 64, 14, 0.8);
-  border-color: rgba(146, 64, 14, 0.2);
+  background: rgba(251, 191, 36, 0.15) !important;
+  color: rgba(146, 64, 14, 0.8) !important;
+  border-color: rgba(146, 64, 14, 0.2) !important;
 }
 
 .smart-reminders-container.light .loading-indicator {
   color: rgba(146, 64, 14, 0.6);
 }
 
-.smart-reminders-container.light .refresh-insights-btn {
+.smart-reminders-container.light .personalized-insights-btn,
+.smart-reminders-container.light .general-insights-btn {
   border-color: rgba(146, 64, 14, 0.4);
   color: #92400e;
 }
 
-.smart-reminders-container.light .refresh-insights-btn:hover:not(:disabled) {
+.smart-reminders-container.light .personalized-insights-btn {
+  background: rgba(251, 191, 36, 0.08);
+}
+
+.smart-reminders-container.light .general-insights-btn {
+  background: transparent;
+}
+
+.smart-reminders-container.light .personalized-insights-btn:hover:not(:disabled),
+.smart-reminders-container.light .general-insights-btn:hover:not(:disabled) {
   background: rgba(251, 191, 36, 0.15);
   border-color: #92400e;
 }
@@ -2177,11 +2253,11 @@
 }
 
 .smart-reminders-container.light .close-modal-btn {
-  color: #92400e;
+  color: #92400e !important;
 }
 
 .smart-reminders-container.light .close-modal-btn:hover {
-  color: #f59e0b;
+  color: #f59e0b !important;
 }
 
 .smart-reminders-container.light .share-option-btn {
@@ -2206,11 +2282,11 @@
 }
 
 .smart-reminders-container.light .empty-icon {
-  filter: drop-shadow(0 0 20px #f59e0b);
+  filter: drop-shadow(0 0 20px #f59e0b) !important;
 }
 
 .smart-reminders-container.light .neural-pulse {
-  border-color: rgba(146, 64, 14, 0.2);
+  border-color: rgba(146, 64, 14, 0.2) !important;
 }
 
 .smart-reminders-container.light .initialize-btn {

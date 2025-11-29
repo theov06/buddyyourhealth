@@ -358,6 +358,12 @@ export default function NeuralHealth() {
 
         <div className="nh-header-actions">
           <button 
+            className="nh-action-btn guardian-btn"
+            onClick={() => navigate('/loading/genai')}
+          >
+            NEURAL GUARDIAN
+          </button>
+          <button 
             className="nh-action-btn upload-btn"
             onClick={() => setShowUploadModal(true)}
           >

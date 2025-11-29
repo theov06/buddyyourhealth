@@ -16,13 +16,13 @@
 }
 
 .about-hero h1 {
-  font-size: 3.5rem;
-  font-weight: 700;
-  margin-bottom: 1rem;
-  background: linear-gradient(90deg, transparent, var(--accent-primary), transparent);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  font-size: 3rem;
+  color: var(--accent-primary);
+  margin-bottom: 15px;
+  font-family: 'Courier New', monospace;
+  letter-spacing: 3px;
+  text-shadow: var(--glow-primary);
+  animation: cyber-glow 3s ease-in-out infinite alternate;
   position: relative;
   z-index: 2;
 }
@@ -767,4 +767,92 @@
   .cta-section {
     padding: 20px 15px;
   }
+}
+
+
+/* ========================================
+   LIGHT MODE IMPROVEMENTS
+   ======================================== */
+
+[data-theme="light"] .mission-card p {
+  color: var(--text-secondary);
+}
+
+[data-theme="light"] .ps-card {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.7), rgba(204, 242, 227, 0.5));
+  border-color: var(--border-primary);
+}
+
+[data-theme="light"] .ps-card h3 {
+  color: var(--accent-primary);
+  text-shadow: var(--glow-secondary);
+}
+
+[data-theme="light"] .ps-card p {
+  color: var(--text-secondary);
+}
+
+[data-theme="light"] .ps-card:hover {
+  border-color: var(--accent-primary);
+  box-shadow: var(--shadow-hover);
+}
+
+[data-theme="light"] .commitment-card {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.7), rgba(204, 242, 227, 0.5));
+  border-color: var(--border-primary);
+}
+
+[data-theme="light"] .commitment-card h3 {
+  color: var(--accent-primary);
+  text-shadow: var(--glow-secondary);
+}
+
+[data-theme="light"] .commitment-card p {
+  color: var(--text-secondary);
+}
+
+[data-theme="light"] .step-card {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.7), rgba(204, 242, 227, 0.5));
+  border-color: var(--border-primary);
+}
+
+[data-theme="light"] .step-card h3 {
+  color: var(--accent-primary);
+  text-shadow: var(--glow-secondary);
+}
+
+[data-theme="light"] .step-card p {
+  color: var(--text-secondary);
+}
+
+[data-theme="light"] .step-number {
+  background: var(--accent-primary);
+  color: white;
+  box-shadow: var(--shadow-primary);
+}
+
+[data-theme="light"] .cta-section h2 {
+  color: var(--text-primary);
+}
+
+[data-theme="light"] .cta-button.primary {
+  background: var(--accent-primary) !important;
+  color: white !important;
+  border-color: var(--accent-primary) !important;
+}
+
+[data-theme="light"] .cta-button.primary:hover {
+  background: var(--accent-secondary) !important;
+  box-shadow: var(--shadow-hover) !important;
+}
+
+[data-theme="light"] .cta-button.secondary {
+  background: transparent !important;
+  color: var(--accent-primary) !important;
+  border-color: var(--accent-primary) !important;
+}
+
+[data-theme="light"] .cta-button.secondary:hover {
+  background: var(--bg-glass-hover) !important;
+  box-shadow: var(--shadow-hover) !important;
 }

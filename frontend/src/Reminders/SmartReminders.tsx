@@ -63,37 +63,233 @@ export default function SmartReminders() {
   }, [showNavDropdown]);
 
   // Load AI Health Insights
-  const loadAIInsights = async () => {
+  // Load health data from API
+  const loadHealthData = async () => {
+    try {
+      const token = localStorage.getItem('authToken');
+      if (!token) return null;
+
+      // Fetch health data from backend
+      const response = await fetch('http://localhost:3001/api/health/data', {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        if (data.success && data.data && data.data.length > 0) {
+          return data.data;
+        }
+      }
+    } catch (error) {
+      console.error('Error loading health data:', error);
+    }
+    return null;
+  };
+
+  // Generate insights based on user's health data
+  const loadPersonalizedInsights = async () => {
     setIsLoadingInsights(true);
-    
-    // Add a small delay to show the loading state
     await new Promise(resolve => setTimeout(resolve, 1000));
     
     try {
-      // For now, use mock data with randomization. Replace with real AI call when AWS credentials are configured
-      const mockInsights = generateRandomizedInsights();
-      console.log('Generated new AI insights:', mockInsights);
-      setAiInsights(mockInsights);
+      let healthData = await loadHealthData();
+      let usingSampleData = false;
       
-      // Uncomment below when AWS credentials are configured:
-      // const response = await aiService.generateHealthInsights({
-      //   activityLevel: 'moderate',
-      //   sleepQuality: 'good',
-      //   stressLevel: 'low',
-      //   nutritionScore: 'fair'
-      // });
-      // setAiInsights(response.insights);
+      // If no health data, use sample data
+      if (!healthData || healthData.length === 0) {
+        healthData = getSampleHealthMetrics();
+        usingSampleData = true;
+      }
+      
+      // Convert health data array to metrics object
+      const metricsObj = convertHealthDataToMetrics(healthData);
+      
+      // Generate insights based on health data
+      const personalizedInsights = generatePersonalizedInsights(metricsObj);
+      console.log('Generated personalized AI insights:', personalizedInsights);
+      setAiInsights(personalizedInsights);
+      
+      if (usingSampleData) {
+        setRefreshMessage('✨ Insights generated from sample health data. Upload your data in Neural Health for personalized insights!');
+      } else {
+        setRefreshMessage('✨ Personalized insights generated from your health data!');
+      }
     } catch (error) {
-      console.error('Error loading AI insights:', error);
-      // Fallback to mock data
-      const mockInsights = aiService.getMockHealthInsights();
-      setAiInsights(mockInsights.insights);
+      console.error('Error loading personalized insights:', error);
+      setRefreshMessage('❌ Failed to generate personalized insights');
     } finally {
       setIsLoadingInsights(false);
-      setAppliedInsights(new Set()); // Reset applied insights when new ones are loaded
-      setRefreshMessage('✨ New insights generated!');
+      setAppliedInsights(new Set());
+      setTimeout(() => setRefreshMessage(''), 5000);
+    }
+  };
+
+  // Get sample health metrics for demo
+  const getSampleHealthMetrics = () => {
+    return [
+      { type: 'Blood Pressure Systolic', value: 128, unit: 'mmHg', timestamp: new Date().toISOString() },
+      { type: 'Blood Pressure Diastolic', value: 82, unit: 'mmHg', timestamp: new Date().toISOString() },
+      { type: 'Heart Rate', value: 72, unit: 'bpm', timestamp: new Date().toISOString() },
+      { type: 'Blood Glucose', value: 95, unit: 'mg/dL', timestamp: new Date().toISOString() },
+      { type: 'Weight', value: 75, unit: 'kg', timestamp: new Date().toISOString() },
+      { type: 'Height', value: 175, unit: 'cm', timestamp: new Date().toISOString() },
+      { type: 'Steps', value: 6500, unit: 'steps', timestamp: new Date().toISOString() }
+    ];
+  };
+
+  // Convert health data array to metrics object
+  const convertHealthDataToMetrics = (healthData: any[]) => {
+    const metrics: any = {};
+    
+    healthData.forEach((item: any) => {
+      const type = item.type?.toLowerCase() || '';
+      
+      if (type.includes('blood') && type.includes('pressure')) {
+        if (type.includes('systolic')) {
+          metrics.bloodPressureSystolic = item.value;
+        } else if (type.includes('diastolic')) {
+          metrics.bloodPressureDiastolic = item.value;
+        }
+      } else if (type.includes('heart') && type.includes('rate')) {
+        metrics.heartRate = item.value;
+      } else if (type.includes('glucose') || type.includes('blood') && type.includes('sugar')) {
+        metrics.bloodGlucose = item.value;
+      } else if (type.includes('weight') || type.includes('body') && type.includes('mass')) {
+        metrics.weight = item.value;
+      } else if (type.includes('height')) {
+        metrics.height = item.value;
+      } else if (type.includes('step')) {
+        metrics.steps = item.value;
+      }
+    });
+    
+    return metrics;
+  };
+
+  // Generate general health insights
+  const loadGeneralInsights = async () => {
+    setIsLoadingInsights(true);
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    
+    try {
+      const mockInsights = generateRandomizedInsights();
+      console.log('Generated general AI insights:', mockInsights);
+      setAiInsights(mockInsights);
+      setRefreshMessage('✨ General health insights generated!');
+    } catch (error) {
+      console.error('Error loading general insights:', error);
+      const mockInsights = aiService.getMockHealthInsights();
+      setAiInsights(mockInsights.insights);
+      setRefreshMessage('✨ Insights generated!');
+    } finally {
+      setIsLoadingInsights(false);
+      setAppliedInsights(new Set());
       setTimeout(() => setRefreshMessage(''), 3000);
     }
+  };
+
+  // Generate personalized insights based on health data
+  const generatePersonalizedInsights = (metrics: any) => {
+    const insights: any[] = [];
+    
+    // Analyze blood pressure
+    if (metrics.bloodPressureSystolic && metrics.bloodPressureDiastolic) {
+      const systolic = parseFloat(metrics.bloodPressureSystolic);
+      const diastolic = parseFloat(metrics.bloodPressureDiastolic);
+      
+      if (systolic > 130 || diastolic > 80) {
+        insights.push({
+          title: "Blood Pressure Management",
+          description: `Your blood pressure (${systolic}/${diastolic}) is elevated. Consider reducing sodium intake, increasing physical activity, and managing stress. Consult your doctor for personalized advice.`,
+          priority: "high",
+          category: "wellness"
+        });
+      }
+    }
+    
+    // Analyze heart rate
+    if (metrics.heartRate) {
+      const hr = parseFloat(metrics.heartRate);
+      if (hr > 100) {
+        insights.push({
+          title: "Heart Rate Monitoring",
+          description: `Your resting heart rate (${hr} bpm) is elevated. Focus on stress reduction, adequate sleep, and regular cardiovascular exercise to improve heart health.`,
+          priority: "medium",
+          category: "exercise"
+        });
+      } else if (hr < 60 && hr > 40) {
+        insights.push({
+          title: "Excellent Heart Health",
+          description: `Your resting heart rate (${hr} bpm) indicates good cardiovascular fitness. Maintain your current exercise routine and healthy lifestyle.`,
+          priority: "low",
+          category: "exercise"
+        });
+      }
+    }
+    
+    // Analyze blood glucose
+    if (metrics.bloodGlucose) {
+      const glucose = parseFloat(metrics.bloodGlucose);
+      if (glucose > 100) {
+        insights.push({
+          title: "Blood Sugar Management",
+          description: `Your blood glucose (${glucose} mg/dL) is elevated. Focus on balanced meals, reduce refined carbs, increase fiber intake, and maintain regular physical activity.`,
+          priority: "high",
+          category: "nutrition"
+        });
+      }
+    }
+    
+    // Analyze weight and BMI
+    if (metrics.weight && metrics.height) {
+      const weight = parseFloat(metrics.weight);
+      const height = parseFloat(metrics.height) / 100; // convert cm to m
+      const bmi = weight / (height * height);
+      
+      if (bmi > 25) {
+        insights.push({
+          title: "Weight Management Focus",
+          description: `Your BMI (${bmi.toFixed(1)}) suggests focusing on balanced nutrition and regular exercise. Aim for 150 minutes of moderate activity weekly and a calorie-controlled diet.`,
+          priority: "medium",
+          category: "wellness"
+        });
+      }
+    }
+    
+    // Analyze steps
+    if (metrics.steps) {
+      const steps = parseFloat(metrics.steps);
+      if (steps < 5000) {
+        insights.push({
+          title: "Increase Daily Movement",
+          description: `Your daily steps (${steps}) are below recommended levels. Aim for 7,000-10,000 steps daily. Try short walking breaks every hour and take stairs when possible.`,
+          priority: "medium",
+          category: "exercise"
+        });
+      } else if (steps > 10000) {
+        insights.push({
+          title: "Excellent Activity Level",
+          description: `Great job! You're achieving ${steps} steps daily. Maintain this activity level and consider adding strength training for balanced fitness.`,
+          priority: "low",
+          category: "exercise"
+        });
+      }
+    }
+    
+    // If no specific insights, add general wellness tips
+    if (insights.length === 0) {
+      insights.push({
+        title: "Maintain Healthy Habits",
+        description: "Your health metrics look good! Continue with regular check-ups, balanced nutrition, adequate sleep (7-9 hours), and consistent physical activity.",
+        priority: "low",
+        category: "wellness"
+      });
+    }
+    
+    // Limit to 3 insights
+    return insights.slice(0, 3);
   };
 
   // Generate randomized insights for demo purposes
@@ -485,7 +681,7 @@ export default function SmartReminders() {
     try {
       // Only load insights if they don't exist yet
       if (aiInsights.length === 0) {
-        await loadAIInsights();
+        await loadGeneralInsights();
       }
       
       // Generate initial reminders
@@ -863,32 +1059,35 @@ export default function SmartReminders() {
             ))
           )}
         </div>
+        {(refreshMessage || applyMessage) && (
+          <div className="insights-messages">
+            {refreshMessage && (
+              <div className="refresh-message">
+                {refreshMessage}
+              </div>
+            )}
+            {applyMessage && (
+              <div className="apply-message">
+                {applyMessage}
+              </div>
+            )}
+          </div>
+        )}
         <div className="ai-actions">
           <button 
-            className="refresh-insights-btn"
-            onClick={loadAIInsights}
+            className="personalized-insights-btn"
+            onClick={loadPersonalizedInsights}
             disabled={isLoadingInsights}
           >
-            {isLoadingInsights ? (
-              <>
-                <span className="spinning">🔄</span> Generating Insights...
-              </>
-            ) : (
-              <>
-                🔄 Refresh Insights
-              </>
-            )}
+            {isLoadingInsights ? 'Analyzing...' : 'Generate Insights Based on Your Health Data'}
           </button>
-          {refreshMessage && (
-            <div className="refresh-message">
-              {refreshMessage}
-            </div>
-          )}
-          {applyMessage && (
-            <div className="apply-message">
-              {applyMessage}
-            </div>
-          )}
+          <button 
+            className="general-insights-btn"
+            onClick={loadGeneralInsights}
+            disabled={isLoadingInsights}
+          >
+            {isLoadingInsights ? 'Generating...' : 'Generate General Health Insights'}
+          </button>
         </div>
       </div>
 

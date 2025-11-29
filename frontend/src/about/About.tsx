@@ -23,7 +23,7 @@ function About() {
         <div className="about-container">
           
           <div className="about-hero">
-            <h1>About Buddy Your Health</h1>
+            <h1>About Us</h1>
           </div>
           
           <div className="about-content">

@@ -976,6 +976,42 @@
 .message-bubble {
   max-width: 70%;
   padding: 15px 20px;
+}
+
+/* AI Message Formatting */
+.message-bubble p {
+  margin: 0 0 10px 0;
+  line-height: 1.6;
+}
+
+.message-bubble p:last-child {
+  margin-bottom: 0;
+}
+
+.message-bubble strong {
+  color: #00FA9A;
+  font-weight: 700;
+}
+
+.message-bubble .ai-list {
+  margin: 10px 0;
+  padding-left: 20px;
+  list-style: none;
+}
+
+.message-bubble .ai-list li {
+  position: relative;
+  margin: 8px 0;
+  padding-left: 20px;
+  line-height: 1.6;
+}
+
+.message-bubble .ai-list li::before {
+  content: '▸';
+  position: absolute;
+  left: 0;
+  color: #00FA9A;
+  font-weight: bold;
   border-radius: 12px;
   font-family: 'Courier New', monospace;
   font-size: 14px;
@@ -1439,6 +1475,14 @@
 .genai-container.light .ai-message .message-bubble {
   background: rgba(5, 150, 105, 0.08);
   border-color: rgba(5, 150, 105, 0.3);
+}
+
+.genai-container.light .message-bubble strong {
+  color: #059669;
+}
+
+.genai-container.light .message-bubble .ai-list li::before {
+  color: #059669;
   color: #047857;
   box-shadow: 0 4px 15px rgba(5, 150, 105, 0.1);
 }
@@ -1896,32 +1940,32 @@
   gap: 10px;
 }
 
-/* Reminder Button */
+/* Reminder Button - Orange Theme */
 .genai-reminder-button,
 .welcome-reminder-button {
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 10px 20px;
-  background: rgba(52, 211, 153, 0.1);
-  border: 1px solid rgba(52, 211, 153, 0.4);
+  background: rgba(255, 165, 0, 0.1);
+  border: 1px solid rgba(255, 165, 0, 0.4);
   border-radius: 6px;
-  color: #00FA9A;
+  color: #FFA500;
   font-family: 'Courier New', monospace;
   font-size: 12px;
   font-weight: bold;
   letter-spacing: 1px;
   cursor: pointer;
   transition: all 0.3s ease;
-  text-shadow: 0 0 5px rgba(52, 211, 153, 0.5);
+  text-shadow: 0 0 5px rgba(255, 165, 0, 0.5);
 }
 
 .genai-reminder-button:hover,
 .welcome-reminder-button:hover {
-  background: rgba(52, 211, 153, 0.2);
-  border-color: #00FA9A;
+  background: rgba(255, 165, 0, 0.2);
+  border-color: #FFA500;
   transform: translateY(-2px);
-  box-shadow: 0 4px 20px rgba(52, 211, 153, 0.3);
+  box-shadow: 0 4px 20px rgba(255, 165, 0, 0.3);
 }
 
 .reminder-text {
@@ -1931,15 +1975,15 @@
 /* Light Theme - Reminder Button */
 .genai-container.light .genai-reminder-button,
 .genai-container.light .welcome-reminder-button {
-  background: rgba(5, 150, 105, 0.1);
-  border-color: rgba(5, 150, 105, 0.4);
-  color: #047857;
+  background: rgba(217, 119, 6, 0.1);
+  border-color: rgba(217, 119, 6, 0.4);
+  color: #d97706;
   text-shadow: none;
 }
 
 .genai-container.light .genai-reminder-button:hover,
 .genai-container.light .welcome-reminder-button:hover {
-  background: rgba(5, 150, 105, 0.2);
-  border-color: #047857;
-  box-shadow: 0 4px 20px rgba(5, 150, 105, 0.2);
+  background: rgba(217, 119, 6, 0.2);
+  border-color: #d97706;
+  box-shadow: 0 4px 20px rgba(217, 119, 6, 0.2);
 }

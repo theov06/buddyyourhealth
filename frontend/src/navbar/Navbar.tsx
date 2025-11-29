@@ -47,7 +47,6 @@ function Navbar({ activeLink }: NavbarProps) {
         <Link to="/contact" className={activeLink === 'contact' ? 'active' : ''}>Contact</Link>
         {isAuthenticated && (
           <>
-            <Link to="/neural-health" className={activeLink === 'health' ? 'active' : ''}>Health Data</Link>
             <Link to="/account" className={activeLink === 'account' ? 'active' : ''}>Account</Link>
           </>
         )}

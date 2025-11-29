@@ -11,6 +11,51 @@ interface Message {
   timestamp: Date;
 }
 
+// Helper function to format AI messages with better organization
+const formatAIMessage = (text: string) => {
+  // Convert markdown-style bold to HTML
+  let formatted = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+  
+  // Convert bullet points to proper list items
+  const lines = formatted.split('\n');
+  let inList = false;
+  let result: string[] = [];
+  
+  lines.forEach((line, index) => {
+    const trimmed = line.trim();
+    
+    // Check if line starts with a bullet point or dash
+    if (trimmed.match(/^[-•*]\s/)) {
+      if (!inList) {
+        result.push('<ul class="ai-list">');
+        inList = true;
+      }
+      // Remove the bullet and wrap in li
+      const content = trimmed.replace(/^[-•*]\s/, '');
+      result.push(`<li>${content}</li>`);
+    } else if (trimmed === '') {
+      if (inList) {
+        result.push('</ul>');
+        inList = false;
+      }
+      result.push('<br/>');
+    } else {
+      if (inList) {
+        result.push('</ul>');
+        inList = false;
+      }
+      result.push(`<p>${trimmed}</p>`);
+    }
+  });
+  
+  // Close list if still open
+  if (inList) {
+    result.push('</ul>');
+  }
+  
+  return result.join('');
+};
+
 interface ChatHistory {
   id: number;
   title: string;
@@ -765,7 +810,11 @@ export default function GenAI() {
               </div>
               <div className="message-content">
                 <div className="message-bubble">
-                  {message.text}
+                  {message.sender === 'ai' ? (
+                    <div dangerouslySetInnerHTML={{ __html: formatAIMessage(message.text) }} />
+                  ) : (
+                    message.text
+                  )}
                 </div>
                 <div className="message-timestamp">
                   {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
