@@ -27,9 +27,9 @@ export default function NeuralHealthLoading() {
           clearInterval(progressInterval);
           return 100;
         }
-        return prev + 5;
+        return prev + 2;
       });
-    }, 20);
+    }, 50);
 
     // Step animation
     const stepInterval = setInterval(() => {
@@ -40,12 +40,12 @@ export default function NeuralHealthLoading() {
         }
         return prev + 1;
       });
-    }, 200);
+    }, 600);
 
     // Navigate after loading completes
     const timer = setTimeout(() => {
       navigate('/neural-health', { replace: true });
-    }, 1000);
+    }, 3000);
 
     return () => {
       clearInterval(progressInterval);

@@ -35,7 +35,8 @@
   align-items: center;
   justify-content: center;
   gap: 15px;
-  opacity: 1;
+  opacity: 0;
+  animation: fadeInUp 1s ease-out 0.2s forwards;
 }
 
 .loadingscreen-header .logo-image {
@@ -65,7 +66,8 @@
   position: relative;
   width: 120px;
   height: 120px;
-  opacity: 1;
+  opacity: 0;
+  animation: fadeInScale 1s ease-out 0.5s forwards;
 }
 
 .loading-circle-inner {
@@ -110,7 +112,8 @@
 
 /* Loading Text */
 .loading-text {
-  opacity: 1;
+  opacity: 0;
+  animation: fadeInUp 1s ease-out 0.8s forwards;
 }
 
 .loadingscreen-title {
@@ -162,7 +165,8 @@
   gap: 15px;
   width: 100%;
   max-width: 300px;
-  opacity: 1;
+  opacity: 0;
+  animation: fadeInUp 1s ease-out 1.1s forwards;
 }
 
 .loading-bar {
@@ -206,7 +210,8 @@
 /* Loading Footer */
 .loading-footer {
   margin-top: 40px;
-  opacity: 1;
+  opacity: 0;
+  animation: fadeInUp 1s ease-out 1.4s forwards;
 }
 
 .loadingscreen-subtitle {
@@ -281,6 +286,7 @@
 [data-theme="dark"] .loading-circle,
 .loading-screen.dark .loading-circle {
   opacity: 1;
+  animation: fadeInScale 1s ease-out 0.5s forwards;
 }
 
 [data-theme="dark"] .loading-circle-inner,
@@ -335,7 +341,7 @@
 
 [data-theme="light"] .loading-circle,
 .loading-screen.light .loading-circle {
-  opacity: 1;
+  animation: fadeInScale 1s ease-out 0.5s forwards;
 }
 
 [data-theme="light"] .loading-circle-inner,

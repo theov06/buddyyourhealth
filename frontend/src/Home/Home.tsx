@@ -46,7 +46,7 @@ function Home() {
               navigate('/loading/neural-health');
             }}
           >
-            NEURAL HEALTH
+            Health monitoring
           </button>
         </div>
       )}
@@ -61,7 +61,7 @@ function Home() {
               navigate('/loading/genai');
             }}
           >
-            NEURAL GUARDIAN
+            Generative AI
           </button>
         </div>
       )}
@@ -76,7 +76,7 @@ function Home() {
               navigate('/loading/neural-reminders');
             }}
           >
-            NEURAL REMINDERS
+            Reminder
           </button>
         </div>
       )}

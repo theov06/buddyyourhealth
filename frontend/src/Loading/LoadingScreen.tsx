@@ -24,9 +24,9 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ destination, loadingText 
           clearInterval(progressInterval);
           return 100;
         }
-        return prev + 5;
+        return prev + 2;
       });
-    }, 20);
+    }, 50);
 
     // Animate text typing effect
     let textIndex = 0;
@@ -37,12 +37,12 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ destination, loadingText 
       } else {
         clearInterval(textInterval);
       }
-    }, 40);
+    }, 100);
 
-    // Navigate after 1 second
+    // Navigate after 2.5 seconds
     const timer = setTimeout(() => {
       navigate(destination, { replace: true });
-    }, 1000);
+    }, 2500);
 
     return () => {
       clearTimeout(timer);

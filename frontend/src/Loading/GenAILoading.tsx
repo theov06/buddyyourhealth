@@ -16,14 +16,14 @@ export default function GenAILoading() {
           clearInterval(progressInterval);
           return 100;
         }
-        return prev + 5;
+        return prev + 2;
       });
-    }, 20);
+    }, 50);
 
     // Navigate after loading completes
     const timer = setTimeout(() => {
       navigate('/genai', { replace: true });
-    }, 1000);
+    }, 3000);
 
     return () => {
       clearInterval(progressInterval);
