@@ -25,9 +25,9 @@ export default function NeuralRemindersLoading() {
           clearInterval(progressInterval);
           return 100;
         }
-        return prev + 2;
+        return prev + 5;
       });
-    }, 50);
+    }, 20);
 
     // Step animation
     const stepInterval = setInterval(() => {
@@ -38,12 +38,12 @@ export default function NeuralRemindersLoading() {
         }
         return prev + 1;
       });
-    }, 600);
+    }, 200);
 
     // Navigate after loading completes
     const timer = setTimeout(() => {
       navigate('/smart-reminders', { replace: true });
-    }, 3000);
+    }, 1000);
 
     return () => {
       clearInterval(progressInterval);

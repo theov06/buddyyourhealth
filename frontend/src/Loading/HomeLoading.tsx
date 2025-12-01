@@ -20,9 +20,9 @@ export default function HomeLoading() {
           clearInterval(progressInterval);
           return 100;
         }
-        return prev + 2;
+        return prev + 5;
       });
-    }, 50);
+    }, 20);
 
     // Animate text typing effect
     let textIndex = 0;
@@ -33,12 +33,12 @@ export default function HomeLoading() {
       } else {
         clearInterval(textInterval);
       }
-    }, 100);
+    }, 40);
 
-    // Navigate after 2.5 seconds
+    // Navigate after 1 second
     const timer = setTimeout(() => {
       navigate('/', { replace: true });
-    }, 2500);
+    }, 1000);
 
     return () => {
       clearTimeout(timer);

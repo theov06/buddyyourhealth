@@ -1,7 +1,7 @@
 // Tool Executor Service
 // Executes AI tool calls and returns results
 
-const User = require('../models/User');
+const User = require('../System/backend/models/User');
 
 class ToolExecutor {
   
